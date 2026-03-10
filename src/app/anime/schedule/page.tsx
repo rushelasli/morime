@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { getSchedules } from "@/hooks/UseSchedule";
+import { getSchedules } from "@/hooks/useSchedule";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 import { DayFilterTabs } from "@/components/forms/DayFilterTabs";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { notFound } from "next/navigation";
 import type { SchedulePageProps } from "@/types/pages";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
 export async function generateMetadata({
   searchParams,
@@ -40,10 +43,12 @@ export default async function Page({ searchParams }: SchedulePageProps) {
   }
 
   const currentPage = parseInt((await searchParams)?.page) || 1;
+  const isSfw = await getSfwCookie();
 
   const apiConfig = {
     limit: 24,
     filter: dayFilter,
+    sfw: isSfw,
   };
 
   const animeScheduleData = await getSchedules(currentPage, apiConfig);
@@ -51,14 +56,15 @@ export default async function Page({ searchParams }: SchedulePageProps) {
   const animeData = animeScheduleData
     ? {
         data:
-          animeScheduleData.data?.map((anime) => ({
+          animeScheduleData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
-            imageUrl: anime.images?.webp?.large_image_url,
+            title: getTitle(anime.titles),
+            imageUrl: anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
             year: anime.year,
             type: anime.type,
+            members: anime.members,
           })) || [],
         totalPages: animeScheduleData.totalPages,
       }

@@ -3,8 +3,6 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { StarIcon, Calendar, BookOpen } from "lucide-react";
-import { Link } from "@/components/ui/Link";
-import { toSnakeCase } from "@/lib/utils/Formatter";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { getImageWithFallback } from "@/lib/utils/ImageFallback";
 import { useState } from "react";

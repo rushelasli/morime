@@ -19,11 +19,11 @@ const NAVIGATION_ITEMS = [
   { key: "favorite", label: "Most Favorited", href: "/anime/top/favorite" },
 ];
 
-export function TopAnimeNavigation({ currentType }) {
+export function TopAnimeNavigation({ currentType }: { currentType: string }) {
   return (
     <div className="mb-6">
       <nav className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:flex lg:items-center lg:justify-center gap-2 lg:flex-wrap">
-        {NAVIGATION_ITEMS.map((item) => (
+        {NAVIGATION_ITEMS.map((item: { key: string; label: string; href: string }) => (
           <Button
             key={item.key}
             variant={currentType === item.key ? "default" : "ghost"}

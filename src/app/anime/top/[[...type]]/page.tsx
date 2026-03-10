@@ -1,12 +1,19 @@
-import { getTopAnime } from "@/hooks/UseAnime";
+import { getTopAnime } from "@/hooks/useAnime";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export default async function TopAnimePage({ params, searchParams }) {
+export default async function TopAnimePage({ params, searchParams }: {
+  params: Promise<{ type?: string[] }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const type = resolvedParams?.type?.[0] || "all";
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
-  const apiConfig: any = { limit: 24 };
+  const isSfw = await getSfwCookie();
+  const apiConfig: any = { limit: 24, sfw: isSfw };
 
   if (["tv", "movie", "ova", "ona", "special"].includes(type)) {
     apiConfig.type = type;
@@ -21,9 +28,9 @@ export default async function TopAnimePage({ params, searchParams }) {
   const topAnimeData = animeData
     ? {
         data:
-          animeData.data?.map((anime) => ({
+          animeData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
+            title: getTitle(anime.titles),
             imageUrl: anime.images?.webp?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,

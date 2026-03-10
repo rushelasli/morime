@@ -1,36 +1,46 @@
-import { getManga, getMangaGenresList } from "@/hooks/UseManga";
-import { getMangaSearch } from "@/hooks/UseSearch";
-import { MangaList } from "@/components/display/manga/MangaList";
+import { getManga, getMangaGenresList } from "@/hooks/useManga";
+import { searchManga } from "@/hooks/useManga";
 import { SearchInput } from "@/components/forms/SearchInput";
 import { GenreGrid } from "@/components/display/manga/GenreGrid";
-import { Separator } from "@/components/ui/Separator";
-import { MorimePagination } from "@/components/navigation/Pagination";
 import { GenreCategories } from "@/components/display/manga/GenreCategories";
+import { MangaSearchResults } from "@/components/manga/MangaSearchResults";
 import {
   PageContainer,
   PageHeader,
   ContentSection,
 } from "@/components/layout/PageContainer";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Manga as JikanManga } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export default async function MangaPageContent({ searchParams }) {
-  const currentPage = parseInt((await searchParams)?.page) || 1;
-  const searchQuery = (await searchParams)?.q || "";
+interface MangaPageContentProps {
+  searchParams: Promise<{
+    page?: string;
+    q?: string;
+  }>;
+}
+
+export default async function MangaPageContent({ searchParams }: MangaPageContentProps) {
+  const resolvedSearchParams = await searchParams;
+  const currentPage = parseInt(resolvedSearchParams?.page) || 1;
+  const searchQuery = resolvedSearchParams?.q || "";
+  const isSfw = await getSfwCookie();
   const genresList = await getMangaGenresList();
 
-  let mangaData;
+  let mangaData: {
+    data: JikanManga[];
+    totalPages?: number;
+    total?: number;
+  } | null = null;
 
   if (searchQuery) {
-    const searchConfig = {
-      limit: 24,
-      q: searchQuery,
-      sfw: true,
-    };
-    mangaData = await getMangaSearch(currentPage, searchConfig);
+    mangaData = await searchManga(searchQuery, currentPage, 24, isSfw);
   } else {
     const apiConfig = {
       limit: 24,
       order_by: "favorites",
       sort: "desc",
+      sfw: isSfw,
     };
     mangaData = await getManga(currentPage, apiConfig);
   }
@@ -38,18 +48,17 @@ export default async function MangaPageContent({ searchParams }) {
   const mangaListData = mangaData
     ? {
         data:
-          mangaData.data?.map((manga) => ({
+          mangaData.data?.map((manga: JikanManga) => ({
             mal_id: manga.mal_id,
-            title: manga.title,
+            title: getTitle(manga.titles),
             imageUrl: manga.images?.webp?.large_image_url,
             score: manga.score,
             chapters: manga.chapters,
-            published: manga.published,
+            volumes: manga.volumes,
             type: manga.type,
-            status: manga.status,
             members: manga.members,
           })) || [],
-        totalPages: mangaData.totalPages,
+        totalPages: mangaData.totalPages || Math.ceil((mangaData.total || 0) / 24),
       }
     : null;
 
@@ -61,7 +70,7 @@ export default async function MangaPageContent({ searchParams }) {
           description={
             searchQuery
               ? `Search results for "${searchQuery}"`
-              : "Browse all manga series, movies, and specials from our extensive collection"
+              : "Browse all manga series from extensive collection"
           }
         />
 
@@ -73,32 +82,11 @@ export default async function MangaPageContent({ searchParams }) {
         />
 
         {searchQuery ? (
-          <>
-            <MangaList
-              mangaData={mangaListData}
-              currentPage={currentPage}
-              basePath="/manga"
-              queryParams={{
-                ...(searchQuery && { q: searchQuery }),
-              }}
-            />
-
-            {mangaListData &&
-              mangaListData.data &&
-              mangaListData.data.length > 0 && (
-                <>
-                  <Separator className="my-8" />
-                  <MorimePagination
-                    currentPage={currentPage}
-                    totalPages={mangaListData.totalPages || 1}
-                    basePath="/manga"
-                    queryParams={{
-                      ...(searchQuery && { q: searchQuery }),
-                    }}
-                  />
-                </>
-              )}
-          </>
+          <MangaSearchResults
+            mangaListData={mangaListData}
+            currentPage={currentPage}
+            searchQuery={searchQuery}
+          />
         ) : (
           <GenreCategories genres={genresList} />
         )}

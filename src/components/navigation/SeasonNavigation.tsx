@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import { generateSeasonNavigation } from "@/lib/navigation/SeasonUtils";
 
-export function SeasonNavigation({ routeParams }) {
+export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
   const seasonNavItems = generateSeasonNavigation(routeParams);
 
   const findActiveIndex = () => {
@@ -45,7 +45,7 @@ export function SeasonNavigation({ routeParams }) {
   const desktop = getDesktopVisibleItems();
   const mobile = getMobileVisibleItems();
 
-  const NavigationButton = ({ item, isMobile = false }) => (
+  const NavigationButton = ({ item, isMobile = false }: { item: any; isMobile?: boolean }) => (
     <Button
       variant={item.isActive ? "default" : isMobile ? "outline" : "ghost"}
       size="sm"
@@ -58,7 +58,7 @@ export function SeasonNavigation({ routeParams }) {
     </Button>
   );
 
-  const EllipsisButton = ({ href, title, children, className = "" }) => (
+  const EllipsisButton = ({ href, title, children, className = "" }: { href: string; title: string; children: React.ReactNode; className?: string }) => (
     <Button variant="ghost" size="sm" asChild className={className}>
       <Link href={href} title={title}>
         {children}

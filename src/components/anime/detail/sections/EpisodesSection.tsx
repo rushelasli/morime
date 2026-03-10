@@ -29,7 +29,7 @@ export function EpisodesSection({ episodes }: EpisodesSectionProps) {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {displayEpisodes.map((episode) => (
+        {displayEpisodes.map((episode: Episode) => (
           <div
             key={episode.mal_id}
             className="bg-card hover:bg-card/80 border rounded-md p-3"

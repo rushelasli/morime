@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { getDetailManga, getMangaCharacters } from "@/hooks/UseManga";
 import { notFound } from "next/navigation";
 import { ContentSection } from "@/components/layout/PageContainer";
 import { MangaHeroSection } from "@/components/manga/detail/sections/HeroSection";
 import { MangaSidebar } from "@/components/manga/detail/sections/Sidebar";
 import { MangaContentSections } from "@/components/manga/detail/sections/ContentSections";
+import { getDetailManga, getMangaCharacters } from "@/hooks/useManga";
+import { getTitle, getEnglishTitle, getJapaneseTitle, getTitleSynonyms } from "@/lib/utils/TitleExtractor";
 
 interface PageProps {
   params: Promise<{
@@ -16,102 +17,98 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  try {
-    const { malId } = await params;
-    const mangaData = await getDetailManga(Number(malId));
+  const { malId } = await params;
 
-    if (isNaN(Number(malId)) || !mangaData) {
-      return {
-        title: "Manga Not Found | Morime",
-      };
-    }
-
+  if (isNaN(Number(malId))) {
     return {
-      title: `${mangaData.title} | Morime`,
-      description:
-        mangaData.synopsis?.slice(0, 160) || "View manga details on Morime",
-      openGraph: {
-        title: mangaData.title,
-        description: mangaData.synopsis?.slice(0, 160),
-        images: mangaData.images?.webp?.image_url
-          ? [mangaData.images.webp.image_url]
-          : [],
-      },
+      title: "Manga Not Found | Morime",
+    };
+  }
+
+  try {
+    const manga = await getDetailManga(Number(malId));
+    const title = getTitle(manga.titles) || 'Manga Details';
+    return {
+      title: `${title} | Morime`,
+      description: manga.synopsis || "View manga details on Morime",
     };
   } catch (error) {
     return {
-      title: "Manga Details",
-      description: "Manga information",
+      title: "Manga Details | Morime",
+      description: "View manga details on Morime",
     };
   }
 }
 
 export default async function MangaDetailsPage({ params }: PageProps) {
   const { malId } = await params;
-  const [mangaData, charactersData] = await Promise.all([
-    getDetailManga(Number(malId)),
-    getMangaCharacters(Number(malId)),
-  ]);
 
-  if (isNaN(Number(malId)) || !mangaData) {
+  if (isNaN(Number(malId))) {
     notFound();
   }
 
-  const heroData = {
-    imageUrl: mangaData.images?.webp?.large_image_url,
-    title: mangaData.title,
-    titleEnglish: mangaData.title_english,
-    titleJapanese: mangaData.title_japanese,
-    titleSynonyms: mangaData.title_synonyms,
-    type: mangaData.type,
-    status: mangaData.status,
-    score: mangaData.score,
-    scoredBy: mangaData.scored_by,
-    rank: mangaData.rank,
-    popularity: mangaData.popularity,
-    members: mangaData.members,
-    published: mangaData.published,
-    authors: mangaData.authors,
-  };
+  try {
+    const [manga, characters] = await Promise.all([
+      getDetailManga(Number(malId)),
+      getMangaCharacters(Number(malId)),
+    ]);
 
-  const sidebarData = {
-    titleJapanese: mangaData.title_japanese,
-    titleSynonyms: mangaData.title_synonyms,
-    status: mangaData.status,
-    chapters: mangaData.chapters,
-    volumes: mangaData.volumes,
-    published: mangaData.published,
-    type: mangaData.type,
-    authors: mangaData.authors,
-    serializations: mangaData.serializations,
-    genres: mangaData.genres,
-    themes: mangaData.themes,
-    demographics: mangaData.demographics,
-    rank: mangaData.rank,
-    popularity: mangaData.popularity,
-    members: mangaData.members,
-    favorites: mangaData.favorites,
-  };
+    const heroData = {
+      imageUrl: manga.images?.jpg?.large_image_url || manga.images?.jpg?.image_url,
+      title: getTitle(manga.titles),
+      titleEnglish: getEnglishTitle(manga.titles),
+      titleJapanese: getJapaneseTitle(manga.titles),
+      titleSynonyms: getTitleSynonyms(manga.titles),
+      type: manga.type,
+      status: manga.status || "Unknown",
+      score: manga.score,
+      scoredBy: manga.scored_by,
+      rank: manga.rank,
+      popularity: manga.popularity,
+      members: manga.members,
+    };
 
-  const contentData = {
-    synopsis: mangaData.synopsis,
-    charactersData: charactersData,
-    relationsData: mangaData.relations,
-  };
+    const sidebarData = {
+      titleJapanese: getJapaneseTitle(manga.titles),
+      titleSynonyms: getTitleSynonyms(manga.titles),
+      status: manga.status || "Unknown",
+      chapters: manga.chapters,
+      volumes: manga.volumes,
+      published: manga.published || { from: null, to: null, prop: { from: {}, to: {} }, string: "" },
+      authors: manga.authors || [],
+      serializations: manga.serializations || [],
+      genres: manga.genres || [],
+      themes: manga.themes || [],
+      demographics: manga.demographics || [],
+      rank: manga.rank,
+      popularity: manga.popularity,
+      members: manga.members,
+      favorites: manga.favorites,
+    };
 
-  return (
-    <>
-      <MangaHeroSection heroData={heroData} />
-      <ContentSection className="mt-0 md:-mt-24 lg:-mt-48 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
-          <div className="lg:col-span-1">
-            <MangaSidebar sidebarData={sidebarData} />
+    const contentData = {
+      synopsis: manga.synopsis || "No synopsis available.",
+      charactersData: characters || [],
+      relationsData: manga.relations || [],
+    };
+
+    return (
+      <>
+        <MangaHeroSection heroData={heroData} />
+        <ContentSection className="mt-0 md:-mt-24 lg:-mt-48 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="lg:col-span-1">
+              <MangaSidebar sidebarData={sidebarData} />
+            </div>
+            <div className="lg:col-span-3">
+              <MangaContentSections contentData={contentData} />
+            </div>
           </div>
-          <div className="lg:col-span-3">
-            <MangaContentSections contentData={contentData} />
-          </div>
-        </div>
-      </ContentSection>
-    </>
-  );
+        </ContentSection>
+      </>
+    );
+  } catch (error) {
+    console.error(`Error loading manga details for ID ${malId}:`, error);
+    notFound();
+  }
 }

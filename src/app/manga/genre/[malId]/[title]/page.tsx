@@ -1,57 +1,54 @@
 import type { Metadata } from "next";
-import { getManga, getMangaGenresList } from "@/hooks/UseManga";
+import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { MangaGrid } from "@/components/display/manga/MangaGrid";
-import { Badge } from "@/components/ui/Badge";
-import { GenreGrid } from "@/components/display/anime/GenreGrid";
-import {
-  PageContainer,
-  PageHeader,
-  ContentSection,
-} from "@/components/layout/PageContainer";
-import type { DetailWithPaginationProps } from "@/types/pages";
+import { getManga } from "@/hooks/useManga";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Manga as JikanManga } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
+export const metadata: Metadata = {
+  title: "Manga by Genre | Morime",
+  description: "Browse manga by genre",
+};
 
-export async function generateMetadata({
-  params,
-}: DetailWithPaginationProps): Promise<Metadata> {
-  const { title } = await params;
-  const genreName = title?.replace(/_/g, " ") || "Genre";
-
-  return {
-    title: `${genreName} Manga`,
-    description: `Browse ${genreName} manga series.`,
-  };
+interface PageProps {
+  params: Promise<{
+    malId: string;
+    title: string;
+  }>;
+  searchParams: Promise<{
+    page?: string;
+    type?: string;
+  }>;
 }
 
-export default async function MangaGenrePage({
-  params,
-  searchParams,
-}: DetailWithPaginationProps) {
+export default async function GenreMangaPage({ params, searchParams }: PageProps) {
   const { malId, title } = await params;
-  const genresList = await getMangaGenresList();
-  const currentPage = parseInt((await searchParams)?.page) || 1;
+  const { page, type } = await searchParams;
+  const currentPage = parseInt(page || "1");
+  const genreName = title.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const isSfw = await getSfwCookie();
 
-  const genreName = title?.replace(/_/g, " ") || "Genre";
-
-  const apiConfig = {
-    limit: 24,
+  const mangaData = await getManga(currentPage, {
     genres: malId,
-  };
-
-  const mangaData = await getManga(currentPage, apiConfig);
+    type,
+    limit: 24,
+    order_by: "members",
+    sort: "desc",
+    sfw: isSfw,
+  });
 
   const mangaListData = mangaData
     ? {
         data:
-          mangaData.data?.map((manga) => ({
+          mangaData.data?.map((manga: JikanManga) => ({
             mal_id: manga.mal_id,
-            title: manga.title,
-            imageUrl: manga.images?.webp?.large_image_url,
+            title: getTitle(manga.titles),
+            imageUrl: manga.images?.webp?.large_image_url || manga.images?.jpg?.large_image_url,
             score: manga.score,
             chapters: manga.chapters,
-            published: manga.published,
+            volumes: manga.volumes,
             type: manga.type,
-            status: manga.status,
             members: manga.members,
           })) || [],
         totalPages: mangaData.totalPages,
@@ -59,29 +56,17 @@ export default async function MangaGenrePage({
     : null;
 
   return (
-    <>
-      <PageContainer as="section">
-        <PageHeader
-          title={`${genreName} Manga`}
-          description={`Browse manga series in the ${genreName} genre`}
-          badge={
-            <Badge variant="secondary" className="text-sm px-3 py-1">
-              Genre
-            </Badge>
-          }
-        />
-
-        <MangaGrid
-          mangaData={mangaListData}
-          currentPage={currentPage}
-          basePath={`/manga/genre/${malId}/${title}`}
-          queryParams={{}}
-        />
-      </PageContainer>
-
-      <ContentSection>
-        <GenreGrid genres={genresList} />
-      </ContentSection>
-    </>
+    <PageContainer>
+      <PageHeader
+        title={`${genreName} Manga`}
+        description={`Browse manga in the ${genreName} genre`}
+      />
+      <MangaGrid
+        mangaData={mangaListData}
+        currentPage={currentPage}
+        basePath={`/manga/genre/${malId}/${title}`}
+        queryParams={type ? { type } : {}}
+      />
+    </PageContainer>
   );
 }

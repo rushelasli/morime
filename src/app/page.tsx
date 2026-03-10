@@ -1,21 +1,42 @@
-import type { Anime } from "@/types/anime";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import HomePage from "@/components/anime/home/HomePage";
-import { getTopAnime, getAnimeGenresList } from "@/hooks/UseAnime";
-import { getSeason } from "@/hooks/UseSeason";
-import { Suspense } from "react";
+import { getTopAnime, getAnimeGenresList } from "@/hooks/useAnime";
+import { getSeason } from "@/hooks/useSeason";
+import { getSfwCookie } from "@/actions/CookieActions";
+import { Suspense, cache } from "react";
 import { HomePageSkeleton } from "@/components/loading/HomePageSkeleton";
+import { getTitle, getJapaneseTitle } from "@/lib/utils/TitleExtractor";
+
+// Cache API calls to prevent rate limiting
+const getCachedUpcoming = cache(async (sfw: boolean) => {
+  return await getSeason(1, { type: "seasons/upcoming", limit: 6, sfw });
+});
+
+const getCachedTopAnime = cache(async (sfw: boolean) => {
+  return await getTopAnime(1, { limit: 20, sfw });
+});
+
+const getCachedCurrentSeason = cache(async (sfw: boolean) => {
+  return await getSeason(1, { type: "seasons/now", limit: 20, sfw });
+});
+
+const getCachedGenres = cache(async () => {
+  return await getAnimeGenresList();
+});
 
 export default async function Home() {
-  const upcomings = await getSeason(2, { type: "seasons/upcoming", limit: 6 });
-  const topAnimes = await getTopAnime(1, { limit: 20 });
-  const animes = await getSeason(1, { type: "seasons/now", limit: 20 });
-  const genresList = await getAnimeGenresList();
+  const isSfw = await getSfwCookie();
+  
+  const upcomings = await getCachedUpcoming(isSfw);
+  const topAnimes = await getCachedTopAnime(isSfw);
+  const animes = await getCachedCurrentSeason(isSfw);
+  const genresList = await getCachedGenres();
 
   const upcomingData =
-    upcomings.data?.map((anime: Anime) => ({
+    upcomings.data?.map((anime: JikanAnime) => ({
       mal_id: anime.mal_id,
-      title: anime.title,
-      title_japanese: anime.title_japanese,
+      title: getTitle(anime.titles),
+      title_japanese: getJapaneseTitle(anime.titles),
       status: anime.status,
       genres: anime.genres?.slice(0, 3),
       imageUrl: anime.images?.webp?.large_image_url,
@@ -23,9 +44,9 @@ export default async function Home() {
     })) || [];
 
   const topAnimeData =
-    topAnimes.data?.map((anime: Anime) => ({
+    topAnimes.data?.map((anime: JikanAnime) => ({
       mal_id: anime.mal_id,
-      title: anime.title,
+      title: getTitle(anime.titles),
       imageUrl: anime.images?.webp?.large_image_url,
       score: anime.score,
       episodes: anime.episodes,
@@ -34,9 +55,9 @@ export default async function Home() {
     })) || [];
 
   const currentAnimeData =
-    animes.data?.map((anime: Anime) => ({
+    animes.data?.map((anime: JikanAnime) => ({
       mal_id: anime.mal_id,
-      title: anime.title,
+      title: getTitle(anime.titles),
       imageUrl: anime.images?.webp?.large_image_url,
       score: anime.score,
       episodes: anime.episodes,

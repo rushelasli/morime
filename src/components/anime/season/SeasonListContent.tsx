@@ -1,22 +1,45 @@
-import { getSeasonList } from "@/hooks/UseSeason";
+import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { SeasonList } from "@/components/anime/season/SeasonList";
-import { PageContainer } from "@/components/layout/PageContainer";
+import { seasonsClient } from "@/lib/api/jikan";
+
+interface SeasonListItem {
+  year: number;
+  seasons: string[];
+}
 
 export default async function SeasonListContent() {
-  const listData = await getSeasonList();
+  let seasons: SeasonListItem[] = [];
+
+  try {
+    const response = await seasonsClient.getSeasonsList();
+    
+    if (response.data) {
+      seasons = response.data.map((item: SeasonListItem) => ({
+        year: item.year,
+        seasons: item.seasons,
+      }));
+    }
+  } catch (error) {
+    console.error('Error fetching seasons list:', error);
+  }
 
   return (
     <PageContainer as="section">
-      <div className="text-center space-y-2 mb-8">
-        <h1 className="text-2xl font-bold text-foreground">
-          Anime Season List
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Browse anime seasons by year and season
-        </p>
-      </div>
+      <PageHeader
+        title="Anime Seasons Archive"
+        description="Browse anime by season and year - Explore past, present, and upcoming seasons"
+      />
 
-      <SeasonList listData={listData} />
+      {seasons.length > 0 ? (
+        <SeasonList listData={seasons} />
+      ) : (
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-bold mb-4">No Seasons Available</h2>
+          <p className="text-muted-foreground">
+            Unable to load season data. Please try again later.
+          </p>
+        </div>
+      )}
     </PageContainer>
   );
 }

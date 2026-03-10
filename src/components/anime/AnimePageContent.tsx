@@ -1,37 +1,42 @@
-import { getAnime, getAnimeGenresList } from "@/hooks/UseAnime";
-import { getAnimeSearch } from "@/hooks/UseSearch";
-import { AnimeList } from "@/components/display/anime/AnimeList";
+import { getAnime, getAnimeGenresList } from "@/hooks/useAnime";
+import { searchAnime } from "@/hooks/useAnime";
 import { SearchInput } from "@/components/forms/SearchInput";
 import { GenreGrid } from "@/components/display/anime/GenreGrid";
-import { Separator } from "@/components/ui/Separator";
-import { MorimePagination } from "@/components/navigation/Pagination";
-import { GenreCategories } from "../display/anime/GenreCategories";
-import {
-  PageContainer,
-  PageHeader,
-  ContentSection,
-} from "@/components/layout/PageContainer";
+import { GenreCategories } from "@/components/display/anime/GenreCategories";
+import { AnimeSearchResults } from "@/components/anime/AnimeSearchResults";
+import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export default async function AnimePageContent({ searchParams }) {
+interface AnimePageContentProps {
+  searchParams: Promise<{
+    page?: string;
+    q?: string;
+  }>;
+}
+
+export default async function AnimePageContent({ searchParams }: AnimePageContentProps) {
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";
+  const isSfw = await getSfwCookie();
   const genresList = await getAnimeGenresList();
 
-  let animeData;
+  let animeData: {
+    data: JikanAnime[];
+    totalPages?: number;
+    total?: number;
+  } | null = null;
 
   if (searchQuery) {
-    const searchConfig = {
-      limit: 24,
-      q: searchQuery,
-      sfw: true,
-    };
-    animeData = await getAnimeSearch(currentPage, searchConfig);
+    animeData = await searchAnime(searchQuery, currentPage, 24, isSfw);
   } else {
     const apiConfig = {
       limit: 24,
       order_by: "favorites",
       sort: "desc",
+      sfw: isSfw,
     };
     animeData = await getAnime(currentPage, apiConfig);
   }
@@ -39,9 +44,9 @@ export default async function AnimePageContent({ searchParams }) {
   const animeListData = animeData
     ? {
         data:
-          animeData.data?.map((anime) => ({
+          animeData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
+            title: getTitle(anime.titles),
             imageUrl: anime.images?.webp?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
@@ -49,7 +54,7 @@ export default async function AnimePageContent({ searchParams }) {
             type: anime.type,
             members: anime.members,
           })) || [],
-        totalPages: animeData.totalPages,
+        totalPages: animeData.totalPages || Math.ceil((animeData.total || 0) / 24),
       }
     : null;
 
@@ -73,32 +78,11 @@ export default async function AnimePageContent({ searchParams }) {
         />
 
         {searchQuery ? (
-          <>
-            <AnimeList
-              animeData={animeListData}
-              currentPage={currentPage}
-              basePath="/anime"
-              queryParams={{
-                ...(searchQuery && { q: searchQuery }),
-              }}
-            />
-
-            {animeListData &&
-              animeListData.data &&
-              animeListData.data.length > 0 && (
-                <>
-                  <Separator className="my-8" />
-                  <MorimePagination
-                    currentPage={currentPage}
-                    totalPages={animeListData.totalPages || 1}
-                    basePath="/anime"
-                    queryParams={{
-                      ...(searchQuery && { q: searchQuery }),
-                    }}
-                  />
-                </>
-              )}
-          </>
+          <AnimeSearchResults
+            animeListData={animeListData}
+            currentPage={currentPage}
+            searchQuery={searchQuery}
+          />
         ) : (
           <GenreCategories genres={genresList} />
         )}

@@ -9,9 +9,9 @@ const MangaPageContent = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Manga List",
+  title: "Manga List | Morime",
   description:
-    "Browse thousands of manga series, manhwa, and manhua. Search by genre, filter by type, and discover your next favorite manga with detailed information and ratings.",
+    "Browse and discover manga. Search, filter by type and status, and explore thousands of manga titles.",
 };
 
 function MangaPageSkeleton({ searchParams }: { searchParams: { q?: string } }) {

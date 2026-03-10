@@ -21,7 +21,7 @@ export function MangaGrid({
   queryParams,
 }: MangaGridProps) {
   if (!mangaData || !mangaData.data || mangaData.data.length === 0) {
-    return <EmptyState />;
+    return <EmptyState type="manga" />;
   }
 
   return (

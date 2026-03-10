@@ -34,7 +34,7 @@ export function ProducerDetails({
       <Card>
         <CardHeader className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
-            <div className="shrink-0 w-24 h-24 sm:w-32 sm:h-32 mx-auto sm:mx-0 overflow-hidden rounded-lg bg-muted border relative">
+            <div className="shrink-0 w-24 h-24 sm:w-32 sm:h-32 mx-auto sm:mx-0 overflow-hidden rounded-lg bg-muted/50 border border-border relative">
               {imageUrl && !imageError ? (
                 <Image
                   src={getImageWithFallback(imageUrl)}
@@ -45,8 +45,8 @@ export function ProducerDetails({
                   onError={() => setImageError(true)}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Building2 className="w-8 h-8 sm:w-12 sm:h-12 text-muted-foreground" />
+                <div className="w-full h-full flex items-center justify-center bg-muted">
+                  <Building2 className="w-10 h-10 sm:w-14 sm:h-14 text-muted-foreground/60" />
                 </div>
               )}
             </div>

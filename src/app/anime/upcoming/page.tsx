@@ -1,67 +1,65 @@
 import type { Metadata } from "next";
-import { getAnime } from "@/hooks/UseAnime";
-import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
-import { TypeFilterTabs } from "@/components/forms/TypeFilterTabs";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
-import type { ListPageProps } from "@/types/pages";
+import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
+import { getAnime } from "@/hooks/useAnime";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export async function generateMetadata({
-  searchParams,
-}: ListPageProps): Promise<Metadata> {
-  const currentPage = parseInt((await searchParams)?.page) || 1;
-  const title =
-    currentPage > 1 ? `Upcoming Anime - Page ${currentPage}` : "Upcoming Anime";
+export const metadata: Metadata = {
+  title: "Upcoming Anime | Morime",
+  description: "Browse upcoming anime series",
+};
 
-  return {
-    title,
-    description: "Discover upcoming anime releases and new seasons",
-  };
+interface PageProps {
+  searchParams: Promise<{
+    page?: string;
+    type?: string;
+  }>;
 }
 
-export default async function Page({ searchParams }: ListPageProps) {
-  const typeFilter = (await searchParams)?.type || "";
-  const currentPage = parseInt((await searchParams)?.page) || 1;
+export default async function UpcomingAnimePage({ searchParams }: PageProps) {
+  const { page, type } = await searchParams;
+  const currentPage = parseInt(page || "1");
+  const isSfw = await getSfwCookie();
 
-  const apiConfig = {
+  const animeData = await getAnime(currentPage, {
+    status: "upcoming",
+    type,
     limit: 24,
-    type: "seasons/upcoming",
-    ...(typeFilter && { filter: typeFilter }),
-  };
+    order_by: "members",
+    sort: "desc",
+    sfw: isSfw,
+  });
 
-  const animeUpcomingData = await getAnime(currentPage, apiConfig);
-
-  const animeData = animeUpcomingData
+  const animeListData = animeData
     ? {
         data:
-          animeUpcomingData.data?.map((anime) => ({
+          animeData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
-            imageUrl: anime.images?.webp?.large_image_url,
+            title: getTitle(anime.titles),
+            imageUrl: anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
             year: anime.year,
             type: anime.type,
+            members: anime.members,
           })) || [],
-        totalPages: animeUpcomingData.totalPages,
+        totalPages: animeData.totalPages,
       }
     : null;
 
   return (
-    <PageContainer as="section">
+    <PageContainer>
       <PageHeader
         title="Upcoming Anime"
-        description="Discover upcoming anime releases and new seasons"
+        description="Discover anime that will be released soon"
       />
-
-      <TypeFilterTabs typeFilter={typeFilter} basePath="/anime/upcoming" />
-
       <AnimeGrid
-        animeData={animeData}
+        animeData={animeListData}
         currentPage={currentPage}
         basePath="/anime/upcoming"
-        queryParams={{
-          ...(typeFilter && { type: typeFilter }),
-        }}
+        queryParams={type ? { type } : {}}
       />
     </PageContainer>
   );

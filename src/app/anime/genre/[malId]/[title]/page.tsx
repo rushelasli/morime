@@ -1,50 +1,50 @@
 import type { Metadata } from "next";
-import { getAnime, getAnimeGenresList } from "@/hooks/UseAnime";
+import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
-import { Badge } from "@/components/ui/Badge";
-import { GenreGrid } from "@/components/display/anime/GenreGrid";
-import {
-  PageContainer,
-  PageHeader,
-  ContentSection,
-} from "@/components/layout/PageContainer";
-import type { DetailWithPaginationProps } from "@/types/pages";
+import { getAnime } from "@/hooks/useAnime";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export async function generateMetadata({
-  params,
-}: DetailWithPaginationProps): Promise<Metadata> {
-  const { title } = await params;
-  const genreName = title?.replace(/_/g, " ") || "Genre";
+export const metadata: Metadata = {
+  title: "Anime by Genre | Morime",
+  description: "Browse anime by genre",
+};
 
-  return {
-    title: `${genreName} Anime`,
-    description: `Browse ${genreName} anime series and movies.`,
-  };
+interface PageProps {
+  params: Promise<{
+    malId: string;
+    title: string;
+  }>;
+  searchParams: Promise<{
+    page?: string;
+    type?: string;
+  }>;
 }
 
-export default async function AnimeGenrePage({
-  params,
-  searchParams,
-}: DetailWithPaginationProps) {
+export default async function GenreAnimePage({ params, searchParams }: PageProps) {
   const { malId, title } = await params;
-  const genresList = await getAnimeGenresList();
-  const currentPage = parseInt((await searchParams)?.page) || 1;
-  const genreName = title?.replace(/_/g, " ") || "Genre";
+  const { page, type } = await searchParams;
+  const currentPage = parseInt(page || "1");
+  const genreName = title.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const isSfw = await getSfwCookie();
 
-  const apiConfig = {
-    limit: 24,
+  const animeData = await getAnime(currentPage, {
     genres: malId,
-  };
-
-  const animeData = await getAnime(currentPage, apiConfig);
+    type,
+    limit: 24,
+    order_by: "members",
+    sort: "desc",
+    sfw: isSfw,
+  });
 
   const animeListData = animeData
     ? {
         data:
-          animeData.data?.map((anime) => ({
+          animeData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
-            imageUrl: anime.images?.webp?.large_image_url,
+            title: getTitle(anime.titles),
+            imageUrl: anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
             year: anime.year,
@@ -56,29 +56,17 @@ export default async function AnimeGenrePage({
     : null;
 
   return (
-    <>
-      <PageContainer as="section">
-        <PageHeader
-          title={`${genreName} Anime`}
-          description={`Browse anime series and movies in the ${genreName} genre`}
-          badge={
-            <Badge variant="secondary" className="text-sm px-3 py-1">
-              Genre
-            </Badge>
-          }
-        />
-
-        <AnimeGrid
-          animeData={animeListData}
-          currentPage={currentPage}
-          basePath={`/anime/genre/${malId}/${title}`}
-          queryParams={{}}
-        />
-      </PageContainer>
-
-      <ContentSection>
-        <GenreGrid genres={genresList} />
-      </ContentSection>
-    </>
+    <PageContainer>
+      <PageHeader
+        title={`${genreName} Anime`}
+        description={`Browse anime in the ${genreName} genre`}
+      />
+      <AnimeGrid
+        animeData={animeListData}
+        currentPage={currentPage}
+        basePath={`/anime/genre/${malId}/${title}`}
+        queryParams={type ? { type } : {}}
+      />
+    </PageContainer>
   );
 }

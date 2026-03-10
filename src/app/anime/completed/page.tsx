@@ -1,44 +1,41 @@
 import type { Metadata } from "next";
-import { getRecentlyCompletedAnime } from "@/hooks/UseAnime";
-import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
-import { TypeFilterTabs } from "@/components/forms/TypeFilterTabs";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
-import type { ListPageProps } from "@/types/pages";
+import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
+import { getRecentlyCompletedAnime } from "@/hooks/useAnime";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export async function generateMetadata({
-  searchParams,
-}: ListPageProps): Promise<Metadata> {
-  const currentPage = parseInt((await searchParams)?.page) || 1;
-  const title =
-    currentPage > 1
-      ? `Recently Completed Anime - Page ${currentPage}`
-      : "Recently Completed Anime";
+export const metadata: Metadata = {
+  title: "Completed Anime | Morime",
+  description: "Browse completed anime series",
+};
 
-  return {
-    title,
-    description:
-      "Browse anime series that recently finished airing in current and recent seasons",
-  };
+interface PageProps {
+  searchParams: Promise<{
+    page?: string;
+    type?: string;
+  }>;
 }
 
-export default async function Page({ searchParams }: ListPageProps) {
-  const typeFilter = (await searchParams)?.type || "";
-  const currentPage = parseInt((await searchParams)?.page) || 1;
+export default async function CompletedAnimePage({ searchParams }: PageProps) {
+  const { page, type } = await searchParams;
+  const currentPage = parseInt(page || "1");
+  const isSfw = await getSfwCookie();
 
-  const apiConfig = {
+  const animeData = await getRecentlyCompletedAnime(currentPage, {
+    type,
     limit: 24,
-    ...(typeFilter && { type: typeFilter }),
-  };
+    sfw: isSfw,
+  });
 
-  const animeData = await getRecentlyCompletedAnime(currentPage, apiConfig);
-
-  const completedAnimeData = animeData
+  const animeListData = animeData
     ? {
         data:
-          animeData.data?.map((anime) => ({
+          animeData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
-            imageUrl: anime.images?.webp?.large_image_url,
+            title: getTitle(anime.titles),
+            imageUrl: anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
             year: anime.year,
@@ -52,19 +49,14 @@ export default async function Page({ searchParams }: ListPageProps) {
   return (
     <PageContainer>
       <PageHeader
-        title="Recently Completed Anime"
-        description="Browse anime series that recently finished airing"
+        title="Completed Anime"
+        description="Browse anime that have finished airing"
       />
-
-      <div className="mb-6">
-        <TypeFilterTabs typeFilter={typeFilter} basePath="/anime/completed" />
-      </div>
-
       <AnimeGrid
-        animeData={completedAnimeData}
+        animeData={animeListData}
         currentPage={currentPage}
         basePath="/anime/completed"
-        queryParams={typeFilter ? { type: typeFilter } : {}}
+        queryParams={type ? { type } : {}}
       />
     </PageContainer>
   );

@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { getSeason } from "@/hooks/UseSeason";
+
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 import { TypeFilterTabs } from "@/components/forms/TypeFilterTabs";
-import { notFound } from "next/navigation";
-import type { SeasonPageProps } from "@/types/pages";
+import { getSeason } from "@/hooks/useSeason";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
 export async function generateMetadata({
   params,
   searchParams,
-}: SeasonPageProps): Promise<Metadata> {
+}: {
+  params: Promise<{ year: string; season: string }>;
+  searchParams: Promise<{ page?: string; type?: string }>;
+}): Promise<Metadata> {
   const { year, season } = await params;
-  const currentPage = parseInt((await searchParams)?.page) || 1;
+  const currentPage = parseInt((await searchParams)?.page || "1");
   const title =
     currentPage > 1
       ? `${season.charAt(0).toUpperCase() + season.slice(1)} ${year} Anime - Page ${currentPage}`
@@ -22,15 +27,23 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params, searchParams }: SeasonPageProps) {
+export default async function SeasonalAnimePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ year: string; season: string }>;
+  searchParams: Promise<{ page?: string; type?: string }>;
+}) {
   const { year, season } = await params;
   const typeFilter = (await searchParams)?.type || "";
-  const currentPage = parseInt((await searchParams)?.page) || 1;
+  const currentPage = parseInt((await searchParams)?.page || "1");
+  const isSfw = await getSfwCookie();
 
   const apiConfig = {
     limit: 24,
     type: `seasons/${year}/${season}`,
     ...(typeFilter && { filter: typeFilter }),
+    sfw: isSfw,
   };
 
   const animeSeasonalData = await getSeason(currentPage, apiConfig);
@@ -38,14 +51,15 @@ export default async function Page({ params, searchParams }: SeasonPageProps) {
   const animeData = animeSeasonalData
     ? {
         data:
-          animeSeasonalData.data?.map((anime) => ({
+          animeSeasonalData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
-            imageUrl: anime.images?.webp?.large_image_url,
+            title: getTitle(anime.titles),
+            imageUrl: anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
             year: anime.year,
             type: anime.type,
+            members: anime.members,
           })) || [],
         totalPages: animeSeasonalData.totalPages,
       }

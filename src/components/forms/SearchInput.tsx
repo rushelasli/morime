@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/Input";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 export function SearchInput({
   defaultValue = "",
@@ -39,17 +39,7 @@ export function SearchInput({
     router.push(url);
   };
 
-  const handleClear = () => {
-    setSearchQuery("");
-    const params = new URLSearchParams(searchParams);
-    params.delete("q");
-    params.delete("page");
 
-    const queryString = params.toString();
-    const url = queryString ? `${basePath}?${queryString}` : basePath;
-
-    router.push(url);
-  };
 
   return (
     <div className="mb-6">

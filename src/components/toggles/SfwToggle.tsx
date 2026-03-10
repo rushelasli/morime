@@ -21,14 +21,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/AlertDialog";
 import { setSfwCookie, getSfwCookie } from "@/actions/CookieActions";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export function SfwToggle() {
   const [isSfw, setIsSfw] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState<"sfw" | "nsfw" | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const loadCookieValue = async () => {
@@ -49,19 +51,59 @@ export function SfwToggle() {
   }, [showAlert]);
 
   const enableSfw = async () => {
+    if (isRefreshing) return;
+    
+    setIsRefreshing(true);
     setIsSfw(true);
     await setSfwCookie("true");
     setAlertType("sfw");
     setShowAlert(true);
-    router.refresh();
+    
+    // Skip reload on home page - it rarely has NSFW content
+    if (pathname === "/" || window?.location?.pathname === "/") {
+      setIsRefreshing(false);
+      return;
+    }
+    
+    // Use router.push with the current URL to trigger a soft refresh
+    // This preserves search params without causing rate limiting
+    if (typeof window !== "undefined") {
+      const currentPath = window.location.pathname + window.location.search;
+      router.push(currentPath);
+      
+      // Small delay to allow cookie to be set before refresh
+      setTimeout(() => {
+        setIsRefreshing(false);
+      }, 500);
+    }
   };
 
   const enableNsfw = async () => {
+    if (isRefreshing) return;
+    
+    setIsRefreshing(true);
     setIsSfw(false);
     await setSfwCookie("false");
     setAlertType("nsfw");
     setShowAlert(true);
-    router.refresh();
+    
+    // Skip reload on home page - it rarely has NSFW content
+    if (pathname === "/" || window?.location?.pathname === "/") {
+      setIsRefreshing(false);
+      return;
+    }
+    
+    // Use router.push with the current URL to trigger a soft refresh
+    // This preserves search params without causing rate limiting
+    if (typeof window !== "undefined") {
+      const currentPath = window.location.pathname + window.location.search;
+      router.push(currentPath);
+      
+      // Small delay to allow cookie to be set before refresh
+      setTimeout(() => {
+        setIsRefreshing(false);
+      }, 500);
+    }
   };
 
   if (!isLoaded) return null;
@@ -104,6 +146,7 @@ export function SfwToggle() {
             onClick={enableSfw}
             className="relative"
             title="Currently in NSFW mode. Click to enable SFW mode."
+            disabled={isRefreshing}
           >
             <ShieldAlert className="h-[1.2rem] w-[1.2rem] text-red-500" />
             <span className="sr-only">Enable SFW mode</span>
@@ -118,6 +161,7 @@ export function SfwToggle() {
                 size="icon"
                 className="relative"
                 title="Currently in SFW mode. Click to enable NSFW mode."
+                disabled={isRefreshing}
               >
                 <ShieldCheck className="h-[1.2rem] w-[1.2rem] text-green-500" />
                 <span className="sr-only">Enable NSFW mode</span>

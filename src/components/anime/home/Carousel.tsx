@@ -36,7 +36,6 @@ interface HomeCarouselProps {
 export function HomeCarousel({ items }: HomeCarouselProps) {
   const [api, setApi] = useState<EmblaCarouselType | null>(null);
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
 
   const plugin = useRef(Fade());
 
@@ -45,7 +44,6 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
 
     api.on("select", () => {

@@ -1,44 +1,44 @@
 import type { Metadata } from "next";
-import { getAnime } from "@/hooks/UseAnime";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
-import { TypeFilterTabs } from "@/components/forms/TypeFilterTabs";
-import type { ListPageProps } from "@/types/pages";
+import { getAnime } from "@/hooks/useAnime";
+import { getSfwCookie } from "@/actions/CookieActions";
+import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export async function generateMetadata({
-  searchParams,
-}: ListPageProps): Promise<Metadata> {
-  const currentPage = parseInt((await searchParams)?.page) || 1;
-  const title =
-    currentPage > 1
-      ? `Currently Airing Anime - Page ${currentPage}`
-      : "Currently Airing Anime";
+export const metadata: Metadata = {
+  title: "Airing Anime | Morime",
+  description: "Browse currently airing anime series",
+};
 
-  return {
-    title,
-    description: "Browse anime that are currently airing this season",
-  };
+interface PageProps {
+  searchParams: Promise<{
+    page?: string;
+    type?: string;
+  }>;
 }
 
-export default async function Page({ searchParams }: ListPageProps) {
-  const typeFilter = (await searchParams)?.type || "";
-  const currentPage = parseInt((await searchParams)?.page) || 1;
+export default async function AiringAnimePage({ searchParams }: PageProps) {
+  const { page, type } = await searchParams;
+  const currentPage = parseInt(page || "1");
+  const isSfw = await getSfwCookie();
 
-  const apiConfig = {
-    limit: 24,
+  const animeData = await getAnime(currentPage, {
     status: "airing",
-    ...(typeFilter && { type: typeFilter }),
-  };
+    type,
+    limit: 24,
+    order_by: "members",
+    sort: "desc",
+    sfw: isSfw,
+  });
 
-  const animeData = await getAnime(currentPage, apiConfig);
-
-  const airingAnimeData = animeData
+  const animeListData = animeData
     ? {
         data:
-          animeData.data?.map((anime) => ({
+          animeData.data?.map((anime: JikanAnime) => ({
             mal_id: anime.mal_id,
-            title: anime.title,
-            imageUrl: anime.images?.webp?.large_image_url,
+            title: getTitle(anime.titles),
+            imageUrl: anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url,
             score: anime.score,
             episodes: anime.episodes,
             year: anime.year,
@@ -52,19 +52,14 @@ export default async function Page({ searchParams }: ListPageProps) {
   return (
     <PageContainer>
       <PageHeader
-        title="Currently Airing Anime"
-        description="Discover anime that are currently airing this season"
+        title="Airing Anime"
+        description="Currently airing anime series"
       />
-
-      <div className="mb-6">
-        <TypeFilterTabs typeFilter={typeFilter} basePath="/anime/airing" />
-      </div>
-
       <AnimeGrid
-        animeData={airingAnimeData}
+        animeData={animeListData}
         currentPage={currentPage}
         basePath="/anime/airing"
-        queryParams={typeFilter ? { type: typeFilter } : {}}
+        queryParams={type ? { type } : {}}
       />
     </PageContainer>
   );

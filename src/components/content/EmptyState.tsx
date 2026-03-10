@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 
-type EmptyStateType = "anime" | "search" | "error" | "producer" | "generic";
+type EmptyStateType = "anime" | "manga" | "search" | "error" | "producer" | "generic";
 
 interface EmptyStateConfig {
   title: string;
@@ -29,6 +29,11 @@ export function EmptyState({
       title: "No Anime Found",
       description:
         "No anime data available. Try adjusting your filters or check back later.",
+    },
+    manga: {
+      title: "No Manga Found",
+      description:
+        "No manga data available. Try adjusting your filters or check back later.",
     },
     search: {
       title: "No Results Found",
