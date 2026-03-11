@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import MangaListSkeleton from "@/components/loading/MangaListSkeleton";
+import MangaSearchSkeleton from "@/components/loading/MangaSearchSkeleton";
+import MangaBrowseSkeleton from "@/components/loading/MangaBrowseSkeleton";
 import type { SearchPageProps } from "@/types/pages";
 
 const MangaPageContent = dynamic(
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 
 function MangaPageSkeleton({ searchParams }: { searchParams: { q?: string } }) {
   const hasSearchQuery = searchParams?.q && searchParams.q.trim() !== "";
-  return <MangaListSkeleton showSearch={true} isSearching={hasSearchQuery} />;
+  return hasSearchQuery ? <MangaSearchSkeleton /> : <MangaBrowseSkeleton />;
 }
 
 export default async function Page(props: SearchPageProps) {
