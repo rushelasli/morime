@@ -10,7 +10,7 @@ const AnimePageContent = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Anime List | Morime",
+  title: "Anime List",
   description:
     "Browse and discover anime. Search, filter by type and status, and explore thousands of anime titles.",
 };

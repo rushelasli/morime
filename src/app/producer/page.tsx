@@ -9,7 +9,7 @@ const ProducerPageContent = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Producers & Studios | Morime",
+  title: "Producers & Studios",
   description:
     "Browse anime producers and studios. Search, filter and discover production companies.",
 };

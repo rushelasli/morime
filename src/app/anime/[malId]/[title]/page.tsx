@@ -15,7 +15,7 @@ export async function generateMetadata({
 
   if (isNaN(Number(malId))) {
     return {
-      title: "Anime Not Found | Morime",
+      title: "Anime Not Found",
     };
   }
 
@@ -25,7 +25,7 @@ export async function generateMetadata({
     const title = getTitle(animeData.titles);
     
     return {
-      title: `${title} | Morime`,
+      title: title,
       description:
         animeData.synopsis?.slice(0, 160) || "View anime details on Morime",
       openGraph: {
@@ -38,7 +38,7 @@ export async function generateMetadata({
     };
   } catch (error) {
     return {
-      title: "Anime Details | Morime",
+      title: "Anime Details",
       description: "View anime details on Morime",
     };
   }

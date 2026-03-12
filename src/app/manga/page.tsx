@@ -10,7 +10,7 @@ const MangaPageContent = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Manga List | Morime",
+  title: "Manga List",
   description:
     "Browse and discover manga. Search, filter by type and status, and explore thousands of manga titles.",
 };

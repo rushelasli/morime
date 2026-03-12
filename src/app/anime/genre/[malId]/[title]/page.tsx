@@ -8,7 +8,7 @@ import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { PagePropsWithBoth, MalIdParams, FilterSearchParams } from "@/types/pages";
 
 export const metadata: Metadata = {
-  title: "Anime by Genre | Morime",
+  title: "Anime by Genre",
   description: "Browse anime by genre",
 };
 

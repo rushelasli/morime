@@ -8,7 +8,7 @@ import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { ListPageProps } from "@/types/pages";
 
 export const metadata: Metadata = {
-  title: "Airing Anime | Morime",
+  title: "Airing Anime",
   description: "Browse currently airing anime series",
 };
 

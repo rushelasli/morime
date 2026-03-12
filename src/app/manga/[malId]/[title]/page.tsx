@@ -15,7 +15,7 @@ export async function generateMetadata({
 
   if (isNaN(Number(malId))) {
     return {
-      title: "Manga Not Found | Morime",
+      title: "Manga Not Found",
     };
   }
 
@@ -23,12 +23,12 @@ export async function generateMetadata({
     const manga = await getDetailManga(Number(malId));
     const title = getTitle(manga.titles) || 'Manga Details';
     return {
-      title: `${title} | Morime`,
+      title: title,
       description: manga.synopsis || "View manga details on Morime",
     };
   } catch (error) {
     return {
-      title: "Manga Details | Morime",
+      title: "Manga Details",
       description: "View manga details on Morime",
     };
   }

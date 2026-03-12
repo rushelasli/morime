@@ -9,7 +9,7 @@ import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { PagePropsWithBoth, MalIdParams, BaseSearchParams } from "@/types/pages";
 
 export const metadata: Metadata = {
-  title: "Producer Details | Morime",
+  title: "Producer Details",
   description: "View producer and studio details",
 };
 
