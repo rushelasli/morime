@@ -5,20 +5,14 @@ import { getAnime } from "@/hooks/useAnime";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { ListPageProps } from "@/types/pages";
 
 export const metadata: Metadata = {
   title: "Upcoming Anime | Morime",
-  description: "Browse upcoming anime series",
+  description: "Browse upcoming anime releases",
 };
 
-interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    type?: string;
-  }>;
-}
-
-export default async function UpcomingAnimePage({ searchParams }: PageProps) {
+export default async function UpcomingAnimePage({ searchParams }: ListPageProps) {
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
   const isSfw = await getSfwCookie();

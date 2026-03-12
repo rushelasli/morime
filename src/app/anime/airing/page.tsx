@@ -5,20 +5,14 @@ import { getAnime } from "@/hooks/useAnime";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { ListPageProps } from "@/types/pages";
 
 export const metadata: Metadata = {
   title: "Airing Anime | Morime",
   description: "Browse currently airing anime series",
 };
 
-interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    type?: string;
-  }>;
-}
-
-export default async function AiringAnimePage({ searchParams }: PageProps) {
+export default async function AiringAnimePage({ searchParams }: ListPageProps) {
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
   const isSfw = await getSfwCookie();

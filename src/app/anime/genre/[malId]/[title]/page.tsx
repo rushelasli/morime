@@ -5,24 +5,14 @@ import { getAnime } from "@/hooks/useAnime";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { PagePropsWithBoth, MalIdParams, FilterSearchParams } from "@/types/pages";
 
 export const metadata: Metadata = {
   title: "Anime by Genre | Morime",
   description: "Browse anime by genre",
 };
 
-interface PageProps {
-  params: Promise<{
-    malId: string;
-    title: string;
-  }>;
-  searchParams: Promise<{
-    page?: string;
-    type?: string;
-  }>;
-}
-
-export default async function GenreAnimePage({ params, searchParams }: PageProps) {
+export default async function GenreAnimePage({ params, searchParams }: PagePropsWithBoth<MalIdParams, FilterSearchParams>) {
   const { malId, title } = await params;
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");

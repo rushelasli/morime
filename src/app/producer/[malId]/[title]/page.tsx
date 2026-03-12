@@ -6,23 +6,14 @@ import { getProducerById, getProducerAnime } from "@/hooks/useProducer";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { PagePropsWithBoth, MalIdParams, BaseSearchParams } from "@/types/pages";
 
 export const metadata: Metadata = {
   title: "Producer Details | Morime",
   description: "View producer and studio details",
 };
 
-interface PageProps {
-  params: Promise<{
-    malId: string;
-    title: string;
-  }>;
-  searchParams: Promise<{
-    page?: string;
-  }>;
-}
-
-export default async function ProducerDetailsPage({ params, searchParams }: PageProps) {
+export default async function ProducerDetailsPage({ params, searchParams }: PagePropsWithBoth<MalIdParams, BaseSearchParams>) {
   const { malId } = await params;
   const { page } = await searchParams;
   const currentPage = parseInt(page || "1");

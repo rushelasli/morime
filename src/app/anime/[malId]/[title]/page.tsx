@@ -6,17 +6,11 @@ import { AnimeHeroSection } from "@/components/anime/detail/sections/HeroSection
 import { AnimeSidebar } from "@/components/anime/detail/sections/Sidebar";
 import { AnimeContentSections } from "@/components/anime/detail/sections/ContentSections";
 import { getTitle, getEnglishTitle, getJapaneseTitle, getTitleSynonyms } from "@/lib/utils/TitleExtractor";
-
-interface PageProps {
-  params: Promise<{
-    malId: string;
-    title: string;
-  }>;
-}
+import type { DetailPageProps } from "@/types/pages";
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: DetailPageProps): Promise<Metadata> {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {
@@ -50,7 +44,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function AnimeDetailsPage({ params }: PageProps) {
+export default async function AnimeDetailPage({ params }: DetailPageProps) {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {

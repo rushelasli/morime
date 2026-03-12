@@ -5,20 +5,14 @@ import { getRecentlyCompletedAnime } from "@/hooks/useAnime";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { ListPageProps } from "@/types/pages";
 
 export const metadata: Metadata = {
   title: "Completed Anime | Morime",
   description: "Browse completed anime series",
 };
 
-interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    type?: string;
-  }>;
-}
-
-export default async function CompletedAnimePage({ searchParams }: PageProps) {
+export default async function CompletedAnimePage({ searchParams }: ListPageProps) {
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
   const isSfw = await getSfwCookie();

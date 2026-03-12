@@ -54,3 +54,9 @@ export type DetailWithPaginationProps = PagePropsWithBoth<MalIdParams, BaseSearc
 export type SeasonPageProps = PagePropsWithBoth<SeasonParams, FilterSearchParams>;
 export type SchedulePageProps = PagePropsWithSearch<ScheduleSearchParams>;
 export type ProducerPageProps = PagePropsWithSearch<ProducerSearchParams>;
+
+export interface TopAnimeParams {
+  type?: string[];
+}
+
+export type TopAnimePageProps = PagePropsWithBoth<TopAnimeParams, BaseSearchParams>;

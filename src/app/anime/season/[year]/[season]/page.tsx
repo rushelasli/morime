@@ -6,14 +6,12 @@ import { getSeason } from "@/hooks/useSeason";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { SeasonPageProps } from "@/types/pages";
 
 export async function generateMetadata({
   params,
   searchParams,
-}: {
-  params: Promise<{ year: string; season: string }>;
-  searchParams: Promise<{ page?: string; type?: string }>;
-}): Promise<Metadata> {
+}: SeasonPageProps): Promise<Metadata> {
   const { year, season } = await params;
   const currentPage = parseInt((await searchParams)?.page || "1");
   const title =
@@ -30,10 +28,7 @@ export async function generateMetadata({
 export default async function SeasonalAnimePage({
   params,
   searchParams,
-}: {
-  params: Promise<{ year: string; season: string }>;
-  searchParams: Promise<{ page?: string; type?: string }>;
-}) {
+}: SeasonPageProps) {
   const { year, season } = await params;
   const typeFilter = (await searchParams)?.type || "";
   const currentPage = parseInt((await searchParams)?.page || "1");

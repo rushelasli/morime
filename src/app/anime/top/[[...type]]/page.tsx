@@ -3,11 +3,9 @@ import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { TopAnimePageProps } from "@/types/pages";
 
-export default async function TopAnimePage({ params, searchParams }: {
-  params: Promise<{ type?: string[] }>;
-  searchParams: Promise<{ page?: string }>;
-}) {
+export default async function TopAnimePage({ params, searchParams }: TopAnimePageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const type = resolvedParams?.type?.[0] || "all";

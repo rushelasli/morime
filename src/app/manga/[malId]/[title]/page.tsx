@@ -6,17 +6,11 @@ import { MangaSidebar } from "@/components/manga/detail/sections/Sidebar";
 import { MangaContentSections } from "@/components/manga/detail/sections/ContentSections";
 import { getDetailManga, getMangaCharacters } from "@/hooks/useManga";
 import { getTitle, getEnglishTitle, getJapaneseTitle, getTitleSynonyms } from "@/lib/utils/TitleExtractor";
-
-interface PageProps {
-  params: Promise<{
-    malId: string;
-    title: string;
-  }>;
-}
+import type { DetailPageProps } from "@/types/pages";
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: DetailPageProps): Promise<Metadata> {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {
@@ -40,7 +34,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function MangaDetailsPage({ params }: PageProps) {
+export default async function MangaDetailPage({ params }: DetailPageProps) {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {

@@ -5,24 +5,14 @@ import { getManga } from "@/hooks/useManga";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Manga as JikanManga } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import type { PagePropsWithBoth, MalIdParams, FilterSearchParams } from "@/types/pages";
 
 export const metadata: Metadata = {
   title: "Manga by Genre | Morime",
   description: "Browse manga by genre",
 };
 
-interface PageProps {
-  params: Promise<{
-    malId: string;
-    title: string;
-  }>;
-  searchParams: Promise<{
-    page?: string;
-    type?: string;
-  }>;
-}
-
-export default async function GenreMangaPage({ params, searchParams }: PageProps) {
+export default async function GenreMangaPage({ params, searchParams }: PagePropsWithBoth<MalIdParams, FilterSearchParams>) {
   const { malId, title } = await params;
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
