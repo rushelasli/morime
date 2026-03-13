@@ -9,10 +9,8 @@ import { JikanClient } from "@rushelasli/jikants";
  * - Rate limiting compliance
  */
 
-// Cache configuration (24 hours = 86400000ms)
 const CACHE_TTL = 24 * 60 * 60 * 1000;
 
-// Create singleton instance
 let jikanInstance: JikanClient | null = null;
 
 /**
@@ -47,5 +45,4 @@ export async function clearJikanCacheEntry(key: string): Promise<void> {
   await client.clearCacheEntry(key);
 }
 
-// Export default instance
 export const jikan = getJikanClient();

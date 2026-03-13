@@ -7,7 +7,6 @@ import { Suspense, cache } from "react";
 import { HomePageSkeleton } from "@/components/loading/HomePageSkeleton";
 import { getTitle, getJapaneseTitle } from "@/lib/utils/TitleExtractor";
 
-// Cache API calls to prevent rate limiting
 const getCachedUpcoming = cache(async (sfw: boolean) => {
   return await getSeason(1, { type: "seasons/upcoming", limit: 6, sfw });
 });

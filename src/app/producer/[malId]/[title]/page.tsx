@@ -30,7 +30,6 @@ export default async function ProducerDetailsPage({ params, searchParams }: Page
       getProducerAnime(Number(malId), currentPage, 24, isSfw),
     ]);
 
-    // Transform anime data to match component expectations
     const animeListData = animeData
       ? {
           data:

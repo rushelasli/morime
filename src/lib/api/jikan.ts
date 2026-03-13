@@ -1,6 +1,5 @@
 import { JikanClient } from '@rushelasli/jikants';
 
-// Create a singleton instance of JikanClient with caching enabled
 const jikanClient = new JikanClient({
   cacheOptions: {
     ttl: 1000 * 60 * 60 * 24, // 24 hours cache
@@ -10,7 +9,6 @@ const jikanClient = new JikanClient({
 
 export { jikanClient };
 
-// Export individual clients for tree-shaking if needed
 export const {
   anime: animeClient,
   manga: mangaClient,
@@ -30,12 +28,10 @@ export const {
   watch: watchClient,
 } = jikanClient;
 
-// Helper function to clear cache if needed
 export async function clearJikanCache() {
   await jikanClient.clearCache();
 }
 
-// Helper function to clear specific cache entry
 export async function clearJikanCacheEntry(endpoint: string) {
   await jikanClient.clearCacheEntry(endpoint);
 }
