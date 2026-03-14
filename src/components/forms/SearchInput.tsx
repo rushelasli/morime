@@ -5,12 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/Input";
 import { Search } from "lucide-react";
 
-export function SearchInput({
-  defaultValue = "",
-  basePath = "/anime",
-  placeholder = "Search anime...",
-  autoFocus = false,
-}) {
+export function SearchInput({ defaultValue = "", basePath = "/anime", placeholder = "Search anime...", autoFocus = false }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(defaultValue);
@@ -19,7 +14,7 @@ export function SearchInput({
     setSearchQuery(defaultValue);
   }, [defaultValue]);
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
 
     const params = new URLSearchParams(searchParams);
@@ -39,8 +34,6 @@ export function SearchInput({
     router.push(url);
   };
 
-
-
   return (
     <div className="mb-6">
       <form onSubmit={handleSearch}>
@@ -50,7 +43,7 @@ export function SearchInput({
             type="search"
             placeholder={placeholder}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="pl-10"
             autoFocus={autoFocus}
           />

@@ -6,48 +6,29 @@ import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils/Cn";
 
-export interface DropdownMenuProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Root
-> {}
+export interface DropdownMenuProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Root> {}
 
 function DropdownMenu({ ...props }: DropdownMenuProps) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
 }
 
-export interface DropdownMenuPortalProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Portal
-> {}
+export interface DropdownMenuPortalProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Portal> {}
 
 function DropdownMenuPortal({ ...props }: DropdownMenuPortalProps) {
-  return (
-    <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
-  );
+  return <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />;
 }
 
-export interface DropdownMenuTriggerProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Trigger
-> {}
+export interface DropdownMenuTriggerProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Trigger> {}
 
 function DropdownMenuTrigger({ ...props }: DropdownMenuTriggerProps) {
-  return (
-    <DropdownMenuPrimitive.Trigger
-      data-slot="dropdown-menu-trigger"
-      {...props}
-    />
-  );
+  return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
 }
 
-export interface DropdownMenuContentProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Content
-> {
+export interface DropdownMenuContentProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> {
   sideOffset?: number;
 }
 
-function DropdownMenuContent({
-  className,
-  sideOffset = 4,
-  ...props
-}: DropdownMenuContentProps) {
+function DropdownMenuContent({ className, sideOffset = 4, ...props }: DropdownMenuContentProps) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
@@ -55,7 +36,7 @@ function DropdownMenuContent({
         sideOffset={sideOffset}
         className={cn(
           "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md",
-          className,
+          className
         )}
         {...props}
       />
@@ -63,29 +44,18 @@ function DropdownMenuContent({
   );
 }
 
-export interface DropdownMenuGroupProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Group
-> {}
+export interface DropdownMenuGroupProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Group> {}
 
 function DropdownMenuGroup({ ...props }: DropdownMenuGroupProps) {
-  return (
-    <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
-  );
+  return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />;
 }
 
-interface DropdownMenuItemProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Item
-> {
+interface DropdownMenuItemProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> {
   inset?: boolean;
   variant?: "default" | "destructive";
 }
 
-function DropdownMenuItem({
-  className,
-  inset,
-  variant = "default",
-  ...props
-}: DropdownMenuItemProps) {
+function DropdownMenuItem({ className, inset, variant = "default", ...props }: DropdownMenuItemProps) {
   return (
     <DropdownMenuPrimitive.Item
       data-slot="dropdown-menu-item"
@@ -93,29 +63,23 @@ function DropdownMenuItem({
       data-variant={variant}
       className={cn(
         "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-inset:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
+        className
       )}
       {...props}
     />
   );
 }
 
-export interface DropdownMenuCheckboxItemProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.CheckboxItem
-> {}
+export interface DropdownMenuCheckboxItemProps
+  extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem> {}
 
-function DropdownMenuCheckboxItem({
-  className,
-  children,
-  checked,
-  ...props
-}: DropdownMenuCheckboxItemProps) {
+function DropdownMenuCheckboxItem({ className, children, checked, ...props }: DropdownMenuCheckboxItemProps) {
   return (
     <DropdownMenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
+        className
       )}
       checked={checked}
       {...props}
@@ -130,34 +94,22 @@ function DropdownMenuCheckboxItem({
   );
 }
 
-export interface DropdownMenuRadioGroupProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.RadioGroup
-> {}
+export interface DropdownMenuRadioGroupProps
+  extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioGroup> {}
 
 function DropdownMenuRadioGroup({ ...props }: DropdownMenuRadioGroupProps) {
-  return (
-    <DropdownMenuPrimitive.RadioGroup
-      data-slot="dropdown-menu-radio-group"
-      {...props}
-    />
-  );
+  return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />;
 }
 
-export interface DropdownMenuRadioItemProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.RadioItem
-> {}
+export interface DropdownMenuRadioItemProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem> {}
 
-function DropdownMenuRadioItem({
-  className,
-  children,
-  ...props
-}: DropdownMenuRadioItemProps) {
+function DropdownMenuRadioItem({ className, children, ...props }: DropdownMenuRadioItemProps) {
   return (
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
+        className
       )}
       {...props}
     >
@@ -171,38 +123,24 @@ function DropdownMenuRadioItem({
   );
 }
 
-export interface DropdownMenuLabelProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Label
-> {
+export interface DropdownMenuLabelProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> {
   inset?: boolean;
 }
 
-function DropdownMenuLabel({
-  className,
-  inset,
-  ...props
-}: DropdownMenuLabelProps) {
+function DropdownMenuLabel({ className, inset, ...props }: DropdownMenuLabelProps) {
   return (
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
       data-inset={inset}
-      className={cn(
-        "px-2 py-1.5 text-sm font-medium data-inset:pl-8",
-        className,
-      )}
+      className={cn("px-2 py-1.5 text-sm font-medium data-inset:pl-8", className)}
       {...props}
     />
   );
 }
 
-export interface DropdownMenuSeparatorProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Separator
-> {}
+export interface DropdownMenuSeparatorProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator> {}
 
-function DropdownMenuSeparator({
-  className,
-  ...props
-}: DropdownMenuSeparatorProps) {
+function DropdownMenuSeparator({ className, ...props }: DropdownMenuSeparatorProps) {
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
@@ -212,49 +150,35 @@ function DropdownMenuSeparator({
   );
 }
 
-function DropdownMenuShortcut({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLSpanElement>) {
+function DropdownMenuShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
       data-slot="dropdown-menu-shortcut"
-      className={cn(
-        "text-muted-foreground ml-auto text-xs tracking-widest",
-        className,
-      )}
+      className={cn("text-muted-foreground ml-auto text-xs tracking-widest", className)}
       {...props}
     />
   );
 }
 
-export interface DropdownMenuSubProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Sub
-> {}
+export interface DropdownMenuSubProps extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Sub> {}
 
 function DropdownMenuSub({ ...props }: DropdownMenuSubProps) {
   return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />;
 }
 
-export interface DropdownMenuSubTriggerProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.SubTrigger
-> {
+export interface DropdownMenuSubTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> {
   inset?: boolean;
 }
 
-function DropdownMenuSubTrigger({
-  className,
-  inset,
-  children,
-  ...props
-}: DropdownMenuSubTriggerProps) {
+function DropdownMenuSubTrigger({ className, inset, children, ...props }: DropdownMenuSubTriggerProps) {
   return (
     <DropdownMenuPrimitive.SubTrigger
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
       className={cn(
         "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-inset:pl-8",
-        className,
+        className
       )}
       {...props}
     >
@@ -264,20 +188,16 @@ function DropdownMenuSubTrigger({
   );
 }
 
-export interface DropdownMenuSubContentProps extends React.ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.SubContent
-> {}
+export interface DropdownMenuSubContentProps
+  extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> {}
 
-function DropdownMenuSubContent({
-  className,
-  ...props
-}: DropdownMenuSubContentProps) {
+function DropdownMenuSubContent({ className, ...props }: DropdownMenuSubContentProps) {
   return (
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
       className={cn(
         "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-lg",
-        className,
+        className
       )}
       {...props}
     />

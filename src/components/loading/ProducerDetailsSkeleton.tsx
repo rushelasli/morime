@@ -22,7 +22,7 @@ export default function ProducerDetailsSkeleton() {
               {/* Producer Info */}
               <div className="flex-1 min-w-0 text-center sm:text-left space-y-3 w-full">
                 <Skeleton className="h-8 sm:h-10 w-48 mx-auto sm:mx-0" />
-                
+
                 <div className="flex justify-center sm:justify-start gap-2">
                   <Skeleton className="h-6 w-32" />
                 </div>
@@ -44,7 +44,7 @@ export default function ProducerDetailsSkeleton() {
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-              {[1, 2, 3].map((i) => (
+              {[1, 2, 3].map(i => (
                 <div key={i} className="text-center p-3 sm:p-4 border rounded-lg">
                   <Skeleton className="h-8 w-16 mx-auto mb-2" />
                   <Skeleton className="h-4 w-24 mx-auto" />

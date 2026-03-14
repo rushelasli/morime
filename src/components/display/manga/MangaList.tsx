@@ -40,15 +40,11 @@ function MangaListCard({ manga }: MangaListCardProps) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">
-            {manga.title}
-          </h3>
+          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">{manga.title}</h3>
 
           <div className="mt-2 space-y-1">
             <div className="text-xs text-muted-foreground">
-              {manga.chapters
-                ? `${manga.type || "Manga"} (${manga.chapters} chapters)`
-                : manga.type || "Manga"}
+              {manga.chapters ? `${manga.type || "Manga"} (${manga.chapters} chapters)` : manga.type || "Manga"}
             </div>
 
             <div className="flex items-center text-xs text-muted-foreground">
@@ -56,11 +52,7 @@ function MangaListCard({ manga }: MangaListCardProps) {
               <span>{manga.score || "N/A"}</span>
             </div>
 
-            {manga.status && (
-              <div className="text-xs text-muted-foreground">
-                {manga.status}
-              </div>
-            )}
+            {manga.status && <div className="text-xs text-muted-foreground">{manga.status}</div>}
           </div>
         </div>
       </div>
@@ -81,9 +73,7 @@ export function MangaList({ mangaData }: MangaListProps) {
   if (!mangaData || !mangaData.data || mangaData.data.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-muted-foreground">
-          No manga found matching your search.
-        </p>
+        <p className="text-muted-foreground">No manga found matching your search.</p>
       </div>
     );
   }

@@ -3,11 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Fade from "embla-carousel-fade";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/Carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/Carousel";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/Cn";
@@ -69,10 +65,7 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
       >
         <CarouselContent>
           {items.map((item, i) => (
-            <CarouselItem
-              key={`${item.mal_id}-${i}`}
-              className="relative h-87.5 md:h-100 lg:h-137.5"
-            >
+            <CarouselItem key={`${item.mal_id}-${i}`} className="relative h-87.5 md:h-100 lg:h-137.5">
               <Link
                 href={`/anime/${item.mal_id}/${toSnakeCase(item.title)}`}
                 className="absolute inset-0 z-30 cursor-pointer"
@@ -119,10 +112,7 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
                   <div className="flex flex-col justify-end pb-9 lg:pb-0 lg:justify-center flex-1">
                     {item.status && (
                       <div className="mb-3">
-                        <Badge
-                          variant="secondary"
-                          className="bg-amber-400/90 text-black hover:bg-amber-400"
-                        >
+                        <Badge variant="secondary" className="bg-amber-400/90 text-black hover:bg-amber-400">
                           {item.status === "Currently Airing"
                             ? "Airing"
                             : item.status === "Not yet aired"
@@ -132,9 +122,7 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
                       </div>
                     )}
 
-                    <h2 className="text-xl lg:text-4xl font-bold text-foreground truncate mr-10">
-                      {item.title}
-                    </h2>
+                    <h2 className="text-xl lg:text-4xl font-bold text-foreground truncate mr-10">{item.title}</h2>
                     {item.title_japanese && (
                       <div className="text-sm lg:text-base font-normal text-muted-foreground mt-1">
                         {item.title_japanese}
@@ -144,11 +132,7 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
                     {item.genres && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {item.genres.map((genre, idx) => (
-                          <Badge
-                            key={idx}
-                            variant="outline"
-                            className="text-xs border-border"
-                          >
+                          <Badge key={idx} variant="outline" className="text-xs border-border">
                             {genre.name}
                           </Badge>
                         ))}
@@ -172,9 +156,7 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
               size="icon"
               className={cn(
                 "w-2 h-2 p-0 rounded-full transition-all",
-                i === current
-                  ? "bg-primary w-6"
-                  : "bg-primary/40 hover:bg-primary/30",
+                i === current ? "bg-primary w-6" : "bg-primary/40 hover:bg-primary/30"
               )}
               aria-label={`Go to slide ${i + 1}`}
             />

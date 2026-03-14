@@ -97,10 +97,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
   const displayStatus = status?.replace(/_/g, " ") || "Unknown";
 
   return (
-    <Badge
-      variant="outline"
-      className={`text-xs sm:text-sm px-2.5 py-0.5 font-medium border ${getStatusColor(status)}`}
-    >
+    <Badge variant="outline" className={`text-xs sm:text-sm px-2.5 py-0.5 font-medium border ${getStatusColor(status)}`}>
       {displayStatus}
     </Badge>
   );
@@ -113,12 +110,7 @@ interface MangaTitleProps {
   titleSynonyms?: string[];
 }
 
-const MangaTitle = ({
-  title,
-  titleEnglish,
-  titleJapanese,
-  titleSynonyms,
-}: MangaTitleProps) => {
+const MangaTitle = ({ title, titleEnglish, titleJapanese, titleSynonyms }: MangaTitleProps) => {
   const getAlternativeTitle = () => {
     if (titleEnglish && titleEnglish !== title) {
       return titleEnglish;
@@ -178,7 +170,7 @@ const InfoTags = ({ score, published, authors }: InfoTagsProps) => {
         </div>
       )}
 
-      {authors?.map((author) => (
+      {authors?.map(author => (
         <div
           key={author.mal_id}
           className="flex items-center bg-card/60 backdrop-blur-md border border-white/5 rounded-full px-3 py-1 text-xs"
@@ -208,17 +200,13 @@ const ScoreCard = ({ score, scoredBy }: ScoreCardProps) => {
 
   return (
     <div className="bg-card/40 backdrop-blur-sm rounded-lg p-3 border border-border/20 flex flex-col items-center">
-      <div className="text-xs uppercase tracking-wider text-muted-foreground/80 mb-1">
-        Score
-      </div>
+      <div className="text-xs uppercase tracking-wider text-muted-foreground/80 mb-1">Score</div>
       <div className="font-bold text-lg sm:text-xl flex items-center gap-1">
         {score}
         <StarIcon className="h-4 w-4 text-yellow-500" />
       </div>
       {scoredBy && (
-        <div className="text-xs text-muted-foreground/60 mt-0.5 text-center">
-          {formatUserCount(scoredBy)} users
-        </div>
+        <div className="text-xs text-muted-foreground/60 mt-0.5 text-center">{formatUserCount(scoredBy)} users</div>
       )}
     </div>
   );
@@ -232,9 +220,7 @@ interface StatCardProps {
 
 const StatCard = ({ label, value, icon }: StatCardProps) => (
   <div className="bg-card/40 backdrop-blur-sm rounded-lg p-3 border border-border/20 flex flex-col items-center justify-center">
-    <div className="text-xs uppercase tracking-wider text-muted-foreground/80 mb-1">
-      {label}
-    </div>
+    <div className="text-xs uppercase tracking-wider text-muted-foreground/80 mb-1">{label}</div>
     <div className="font-bold text-lg sm:text-xl flex items-center gap-1">
       {value}
       {icon}
@@ -250,13 +236,7 @@ interface StatsGridProps {
   members?: number | null;
 }
 
-const StatsGrid = ({
-  score,
-  scoredBy,
-  rank,
-  popularity,
-  members,
-}: StatsGridProps) => {
+const StatsGrid = ({ score, scoredBy, rank, popularity, members }: StatsGridProps) => {
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("en-US", {
       notation: "compact",
@@ -325,10 +305,7 @@ export function MangaHeroSection({ heroData }: MangaHeroSectionProps) {
 
             <div className="flex-1 text-center sm:text-left max-w-full">
               <div className="flex items-center justify-center sm:justify-start flex-wrap gap-2 mb-2 sm:mb-3">
-                <Badge
-                  variant="secondary"
-                  className="text-xs sm:text-sm px-2.5 py-0.5"
-                >
+                <Badge variant="secondary" className="text-xs sm:text-sm px-2.5 py-0.5">
                   {type || "Manga"}
                 </Badge>
                 <StatusBadge status={status} />
@@ -341,13 +318,7 @@ export function MangaHeroSection({ heroData }: MangaHeroSectionProps) {
                 titleSynonyms={titleSynonyms}
               />
               <InfoTags score={score} published={published} authors={authors} />
-              <StatsGrid
-                score={score}
-                scoredBy={scoredBy}
-                rank={rank}
-                popularity={popularity}
-                members={members}
-              />
+              <StatsGrid score={score} scoredBy={scoredBy} rank={rank} popularity={popularity} members={members} />
 
               <div className="mt-4 flex sm:hidden">
                 <Button className="w-full">

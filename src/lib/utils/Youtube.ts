@@ -9,9 +9,7 @@ interface YouTubeEmbedOptions {
   noCookie?: boolean;
 }
 
-export function extractYouTubeVideoId(
-  url: string | null | undefined,
-): string | null {
+export function extractYouTubeVideoId(url: string | null | undefined): string | null {
   if (!url) return null;
 
   try {
@@ -38,7 +36,7 @@ export function extractYouTubeVideoId(
 
 export function getYouTubeThumbnail(
   videoIdOrUrl: string | null | undefined,
-  quality: ThumbnailQuality | string = "maxresdefault",
+  quality: ThumbnailQuality | string = "maxresdefault"
 ): string | null {
   if (!videoIdOrUrl) return null;
 
@@ -62,10 +60,7 @@ export function getYouTubeThumbnail(
   return `https://img.youtube.com/vi/${videoId}/${thumbnailQuality}.jpg`;
 }
 
-export function setYouTubeAutoplay(
-  embedUrl: string | null | undefined,
-  autoplay: boolean = false,
-): string | null {
+export function setYouTubeAutoplay(embedUrl: string | null | undefined, autoplay: boolean = false): string | null {
   if (!embedUrl) return null;
 
   try {
@@ -84,9 +79,7 @@ export function setYouTubeAutoplay(
   }
 }
 
-export function removeYouTubeAutoplay(
-  embedUrl: string | null | undefined,
-): string | null {
+export function removeYouTubeAutoplay(embedUrl: string | null | undefined): string | null {
   if (!embedUrl) return null;
 
   try {
@@ -101,7 +94,7 @@ export function removeYouTubeAutoplay(
 
 export function getYouTubeEmbedUrl(
   videoIdOrUrl: string | null | undefined,
-  options: YouTubeEmbedOptions = {},
+  options: YouTubeEmbedOptions = {}
 ): string | null {
   if (!videoIdOrUrl) return null;
 
@@ -112,14 +105,7 @@ export function getYouTubeEmbedUrl(
 
   if (!videoId) return null;
 
-  const {
-    autoplay = false,
-    mute = false,
-    controls = true,
-    loop = false,
-    enablejsapi = false,
-    noCookie = true,
-  } = options;
+  const { autoplay = false, mute = false, controls = true, loop = false, enablejsapi = false, noCookie = true } = options;
 
   const domain = noCookie ? "youtube-nocookie.com" : "youtube.com";
   const url = new URL(`https://www.${domain}/embed/${videoId}`);

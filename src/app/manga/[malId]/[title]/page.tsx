@@ -8,9 +8,7 @@ import { getDetailManga, getMangaCharacters } from "@/hooks/useManga";
 import { getTitle, getEnglishTitle, getJapaneseTitle, getTitleSynonyms } from "@/lib/utils/TitleExtractor";
 import type { DetailPageProps } from "@/types/pages";
 
-export async function generateMetadata({
-  params,
-}: DetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: DetailPageProps): Promise<Metadata> {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {
@@ -21,7 +19,7 @@ export async function generateMetadata({
 
   try {
     const manga = await getDetailManga(Number(malId));
-    const title = getTitle(manga.titles) || 'Manga Details';
+    const title = getTitle(manga.titles) || "Manga Details";
     return {
       title: title,
       description: manga.synopsis || "View manga details on Morime",
@@ -42,10 +40,7 @@ export default async function MangaDetailPage({ params }: DetailPageProps) {
   }
 
   try {
-    const [manga, characters] = await Promise.all([
-      getDetailManga(Number(malId)),
-      getMangaCharacters(Number(malId)),
-    ]);
+    const [manga, characters] = await Promise.all([getDetailManga(Number(malId)), getMangaCharacters(Number(malId))]);
 
     const heroData = {
       imageUrl: manga.images?.jpg?.large_image_url || manga.images?.jpg?.image_url,

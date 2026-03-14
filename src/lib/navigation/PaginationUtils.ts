@@ -1,7 +1,7 @@
 export const getPageUrl = (
   basePath: string,
   page: number,
-  queryParams: Record<string, string | number | boolean> = {},
+  queryParams: Record<string, string | number | boolean> = {}
 ): string => {
   const url = new URL(basePath, "http://localhost");
 
@@ -18,11 +18,7 @@ export const getPageUrl = (
   return url.pathname + url.search;
 };
 
-export function getVisiblePages(
-  currentPage: number,
-  totalPages: number,
-  maxVisible: number = 5,
-): (number | "ellipsis")[] {
+export function getVisiblePages(currentPage: number, totalPages: number, maxVisible: number = 5): (number | "ellipsis")[] {
   if (totalPages <= maxVisible) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
@@ -45,11 +41,7 @@ export function getVisiblePages(
   } else {
     pages.push(1);
     pages.push("ellipsis");
-    for (
-      let i = currentPage - halfVisible + 1;
-      i <= currentPage + halfVisible - 1;
-      i++
-    ) {
+    for (let i = currentPage - halfVisible + 1; i <= currentPage + halfVisible - 1; i++) {
       pages.push(i);
     }
     pages.push("ellipsis");

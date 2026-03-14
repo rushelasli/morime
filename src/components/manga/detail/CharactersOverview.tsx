@@ -19,10 +19,7 @@ interface CharacterTabProps {
 }
 
 const CharacterTab = ({ value, label, count }: CharacterTabProps) => (
-  <TabsTrigger
-    value={value}
-    className="w-full py-2.5 md:py-0 text-sm justify-center cursor-pointer"
-  >
+  <TabsTrigger value={value} className="w-full py-2.5 md:py-0 text-sm justify-center cursor-pointer">
     {label} ({count})
   </TabsTrigger>
 );
@@ -32,10 +29,7 @@ interface CharacterTabContentProps {
   type: string;
 }
 
-const CharacterTabContent = ({
-  characters,
-  type,
-}: CharacterTabContentProps) => (
+const CharacterTabContent = ({ characters, type }: CharacterTabContentProps) => (
   <TabsContent value={type} className="mt-4">
     {characters.length > 0 ? (
       <MangaCharactersSection characters={characters} />
@@ -58,10 +52,7 @@ interface CharacterTabData {
   characters: Character[];
 }
 
-const getCharacterTabs = (
-  charactersData: Character[],
-  characterGroups: CharacterGroups,
-): CharacterTabData[] => [
+const getCharacterTabs = (charactersData: Character[], characterGroups: CharacterGroups): CharacterTabData[] => [
   {
     value: "all",
     label: "All",
@@ -94,17 +85,10 @@ export function MangaCharactersOverview({
   onBackToOverview,
 }: MangaCharactersOverviewProps) {
   const hasCharacters = charactersData && charactersData.length > 0;
-  const characterTabs = hasCharacters
-    ? getCharacterTabs(charactersData, characterGroups)
-    : [];
+  const characterTabs = hasCharacters ? getCharacterTabs(charactersData, characterGroups) : [];
 
   const headerActions = (
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={onBackToOverview}
-      className="text-xs"
-    >
+    <Button variant="ghost" size="sm" onClick={onBackToOverview} className="text-xs">
       Back to Overview
     </Button>
   );
@@ -126,23 +110,14 @@ export function MangaCharactersOverview({
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto md:h-10 gap-1 md:gap-0 p-1 md:p-0">
             {characterTabs.map((tab, i) => (
               <>
-                <CharacterTab
-                  key={`${tab.value}-${i}`}
-                  value={tab.value}
-                  label={tab.label}
-                  count={tab.count}
-                />
+                <CharacterTab key={`${tab.value}-${i}`} value={tab.value} label={tab.label} count={tab.count} />
                 {i < characterTabs.length - 1 && <TabSeparator />}
               </>
             ))}
           </TabsList>
 
-          {characterTabs.map((tab) => (
-            <CharacterTabContent
-              key={tab.value}
-              characters={tab.characters}
-              type={tab.value}
-            />
+          {characterTabs.map(tab => (
+            <CharacterTabContent key={tab.value} characters={tab.characters} type={tab.value} />
           ))}
         </Tabs>
       </SectionCard>

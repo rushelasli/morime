@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   description: "View producer and studio details",
 };
 
-export default async function ProducerDetailsPage({ params, searchParams }: PagePropsWithBoth<MalIdParams, BaseSearchParams>) {
+export default async function ProducerDetailsPage({
+  params,
+  searchParams,
+}: PagePropsWithBoth<MalIdParams, BaseSearchParams>) {
   const { malId } = await params;
   const { page } = await searchParams;
   const currentPage = parseInt(page || "1");
@@ -49,15 +52,8 @@ export default async function ProducerDetailsPage({ params, searchParams }: Page
 
     return (
       <PageContainer>
-        <PageHeader
-          title={producerData.name}
-          description="Producer and studio information"
-        />
-        <ProducerDetails
-          producer={producerData}
-          animes={animeListData}
-          currentPage={currentPage}
-        />
+        <PageHeader title={producerData.name} description="Producer and studio information" />
+        <ProducerDetails producer={producerData} animes={animeListData} currentPage={currentPage} />
       </PageContainer>
     );
   } catch (error) {

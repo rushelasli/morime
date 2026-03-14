@@ -2,7 +2,7 @@ import { JikanClient } from "@rushelasli/jikants";
 
 /**
  * Jikan API Client Singleton
- * 
+ *
  * This client provides access to all Jikan API endpoints with:
  * - Built-in caching (24 hours default)
  * - Full TypeScript support

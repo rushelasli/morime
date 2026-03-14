@@ -14,8 +14,7 @@ interface ProducerCardProps {
 export function ProducerCard({ producers }: ProducerCardProps) {
   const [imageError, setImageError] = useState(false);
 
-  const producerName =
-    producers.titles?.[0]?.title || producers.name || "Unknown Producer";
+  const producerName = producers.titles?.[0]?.title || producers.name || "Unknown Producer";
   const imageUrl = producers.images?.jpg?.image_url;
 
   return (
@@ -42,9 +41,7 @@ export function ProducerCard({ producers }: ProducerCardProps) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">
-            {producerName}
-          </h3>
+          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">{producerName}</h3>
 
           <div className="mt-2 space-y-1">
             <div className="flex items-center text-xs text-muted-foreground">

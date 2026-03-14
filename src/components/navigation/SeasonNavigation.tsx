@@ -7,7 +7,7 @@ export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
   const seasonNavItems = generateSeasonNavigation(routeParams);
 
   const findActiveIndex = () => {
-    const index = seasonNavItems.findIndex((item) => item.isActive);
+    const index = seasonNavItems.findIndex(item => item.isActive);
 
     return index !== -1 ? index : Math.floor(seasonNavItems.length / 2);
   };
@@ -17,10 +17,7 @@ export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
   const mobileVisible = 2;
 
   const getDesktopVisibleItems = () => {
-    const startIndex = Math.max(
-      0,
-      Math.min(activeIndex - 1, seasonNavItems.length - totalVisible),
-    );
+    const startIndex = Math.max(0, Math.min(activeIndex - 1, seasonNavItems.length - totalVisible));
     const endIndex = Math.min(seasonNavItems.length, startIndex + totalVisible);
     return {
       startIndex,
@@ -31,10 +28,7 @@ export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
 
   const getMobileVisibleItems = () => {
     const startIndex = Math.max(0, activeIndex - 1);
-    const endIndex = Math.min(
-      seasonNavItems.length,
-      startIndex + mobileVisible,
-    );
+    const endIndex = Math.min(seasonNavItems.length, startIndex + mobileVisible);
     return {
       startIndex,
       endIndex,
@@ -58,7 +52,17 @@ export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
     </Button>
   );
 
-  const EllipsisButton = ({ href, title, children, className = "" }: { href: string; title: string; children: React.ReactNode; className?: string }) => (
+  const EllipsisButton = ({
+    href,
+    title,
+    children,
+    className = "",
+  }: {
+    href: string;
+    title: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
     <Button variant="ghost" size="sm" asChild className={className}>
       <Link href={href} title={title}>
         {children}
@@ -71,30 +75,20 @@ export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
       <nav className="hidden md:flex items-center justify-center gap-2">
         {desktop.startIndex > 0 && (
           <EllipsisButton
-            href={
-              seasonNavItems[Math.max(0, desktop.startIndex - totalVisible)]
-                .href
-            }
+            href={seasonNavItems[Math.max(0, desktop.startIndex - totalVisible)].href}
             title="Go to earlier seasons"
           >
             ...
           </EllipsisButton>
         )}
 
-        {desktop.items.map((item) => (
+        {desktop.items.map(item => (
           <NavigationButton key={`${item.year}-${item.season}`} item={item} />
         ))}
 
         {desktop.endIndex < seasonNavItems.length && (
           <EllipsisButton
-            href={
-              seasonNavItems[
-                Math.min(
-                  seasonNavItems.length - 1,
-                  desktop.endIndex + totalVisible - 1,
-                )
-              ].href
-            }
+            href={seasonNavItems[Math.min(seasonNavItems.length - 1, desktop.endIndex + totalVisible - 1)].href}
             title="Go to later seasons"
           >
             ...
@@ -115,21 +109,13 @@ export function SeasonNavigation({ routeParams }: { routeParams: string[] }) {
               </EllipsisButton>
             )}
 
-            {mobile.items.map((item) => (
-              <NavigationButton
-                key={`${item.year}-${item.season}`}
-                item={item}
-                isMobile
-              />
+            {mobile.items.map(item => (
+              <NavigationButton key={`${item.year}-${item.season}`} item={item} isMobile />
             ))}
 
             {mobile.endIndex < seasonNavItems.length && (
               <EllipsisButton
-                href={
-                  seasonNavItems[
-                    Math.min(seasonNavItems.length - 1, mobile.endIndex + 1)
-                  ].href
-                }
+                href={seasonNavItems[Math.min(seasonNavItems.length - 1, mobile.endIndex + 1)].href}
                 title="Later seasons"
                 className="shrink-0"
               >

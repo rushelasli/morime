@@ -23,21 +23,16 @@ export function EpisodesSection({ episodes }: EpisodesSectionProps) {
   const hasMoreEpisodes = visibleEpisodes < episodes.length;
 
   const loadMore = () => {
-    setVisibleEpisodes((prev) => Math.min(prev + INCREMENT, episodes.length));
+    setVisibleEpisodes(prev => Math.min(prev + INCREMENT, episodes.length));
   };
 
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {displayEpisodes.map((episode: Episode) => (
-          <div
-            key={episode.mal_id}
-            className="bg-card hover:bg-card/80 border rounded-md p-3"
-          >
+          <div key={episode.mal_id} className="bg-card hover:bg-card/80 border rounded-md p-3">
             <div className="font-medium">Episode {episode.mal_id}</div>
-            <div className="text-sm text-muted-foreground truncate">
-              {episode.title || "No title"}
-            </div>
+            <div className="text-sm text-muted-foreground truncate">{episode.title || "No title"}</div>
           </div>
         ))}
       </div>

@@ -10,8 +10,7 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">Morime</h3>
             <p className="text-muted-foreground text-sm">
-              Your ultimate anime tracking platform with comprehensive content
-              discovery and personalized recommendations.
+              Your ultimate anime tracking platform with comprehensive content discovery and personalized recommendations.
             </p>
             <div className="flex mt-4 space-x-4">
               <Link
@@ -22,11 +21,7 @@ export function Footer() {
                 <Github size={20} />
                 <span className="sr-only">GitHub</span>
               </Link>
-              <Link
-                href="https://twitter.com"
-                prefetch={true}
-                className="text-muted-foreground hover:text-foreground"
-              >
+              <Link href="https://twitter.com" prefetch={true} className="text-muted-foreground hover:text-foreground">
                 <Twitter size={20} />
                 <span className="sr-only">Twitter</span>
               </Link>
@@ -46,42 +41,27 @@ export function Footer() {
               <h3 className="font-bold text-lg mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link
-                    href="/anime/top"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/top" className="text-muted-foreground hover:text-foreground">
                     Top Anime
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/season"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/season" className="text-muted-foreground hover:text-foreground">
                     Seasonal Anime
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/schedule"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/schedule" className="text-muted-foreground hover:text-foreground">
                     Schedule
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/upcoming"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/upcoming" className="text-muted-foreground hover:text-foreground">
                     Upcoming
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/producer"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/producer" className="text-muted-foreground hover:text-foreground">
                     Producers
                   </Link>
                 </li>
@@ -92,42 +72,27 @@ export function Footer() {
               <h3 className="font-bold text-lg mb-4">Browse</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link
-                    href="/anime/top/movie"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/top/movie" className="text-muted-foreground hover:text-foreground">
                     Top Movies
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/top/tv"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/top/tv" className="text-muted-foreground hover:text-foreground">
                     Top TV Series
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/top/airing"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/top/airing" className="text-muted-foreground hover:text-foreground">
                     Currently Airing
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/top/upcoming"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/top/upcoming" className="text-muted-foreground hover:text-foreground">
                     Most Anticipated
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/anime/top/bypopularity"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link href="/anime/top/bypopularity" className="text-muted-foreground hover:text-foreground">
                     Most Popular
                   </Link>
                 </li>
@@ -138,47 +103,27 @@ export function Footer() {
               <h3 className="font-bold text-lg mb-4">Community</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link
-                    prefetch={true}
-                    href="/about"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link prefetch={true} href="/about" className="text-muted-foreground hover:text-foreground">
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    prefetch={true}
-                    href="/contact"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link prefetch={true} href="/contact" className="text-muted-foreground hover:text-foreground">
                     Contact
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    prefetch={true}
-                    href="/privacy"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link prefetch={true} href="/privacy" className="text-muted-foreground hover:text-foreground">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    prefetch={true}
-                    href="/terms"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link prefetch={true} href="/terms" className="text-muted-foreground hover:text-foreground">
                     Terms of Service
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    prefetch={true}
-                    href="/help"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Link prefetch={true} href="/help" className="text-muted-foreground hover:text-foreground">
                     Help Center
                   </Link>
                 </li>
@@ -195,11 +140,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} Morime. All rights reserved.</p>
           <p className="mt-2 md:mt-0">
             Powered by{" "}
-            <Link
-              prefetch={true}
-              href="https://jikan.moe/"
-              className="underline"
-            >
+            <Link prefetch={true} href="https://jikan.moe/" className="underline">
               Jikan API
             </Link>
           </p>

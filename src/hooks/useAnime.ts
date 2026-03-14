@@ -1,11 +1,6 @@
-import { animeClient, topClient, genresClient } from '@/lib/api/jikan';
-import type {
-  JikanResponseWithPagination, 
-  AnimeSearchParams, 
-  Anime as JikanAnime, 
-  Pagination
-} from '@rushelasli/jikants';
-import { adaptAnimeCharacters, adaptAnimeEpisodes } from '@/lib/api/adapters';
+import { animeClient, topClient, genresClient } from "@/lib/api/jikan";
+import type { JikanResponseWithPagination, AnimeSearchParams, Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
+import { adaptAnimeCharacters, adaptAnimeEpisodes } from "@/lib/api/adapters";
 
 interface AnimeResponse {
   data: JikanAnime[];
@@ -52,7 +47,9 @@ export async function getAnime(
     if (options.order_by) params.order_by = options.order_by;
     if (options.sort) params.sort = options.sort;
 
-    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime(params as Partial<AnimeSearchParams>);
+    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime(
+      params as Partial<AnimeSearchParams>
+    );
 
     return {
       data: response.data || [],
@@ -61,13 +58,13 @@ export async function getAnime(
       totalItems: response.pagination?.items?.total || 0,
     };
   } catch (error: unknown) {
-    console.error('Error fetching anime list:', error);
+    console.error("Error fetching anime list:", error);
     return {
       data: [],
       totalPages: 0,
       currentPage: page,
       totalItems: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -94,7 +91,7 @@ export async function getTopAnime(
     if (options.rating) params.rating = options.rating;
 
     const response = await topClient.getTopAnime(params);
-    const pagination = 'pagination' in response ? response.pagination as Pagination | undefined : undefined;
+    const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
       data: response.data || [],
@@ -103,13 +100,13 @@ export async function getTopAnime(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error('Error fetching top anime:', error);
+    console.error("Error fetching top anime:", error);
     return {
       data: [],
       totalPages: 0,
       currentPage: page,
       totalItems: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -149,7 +146,7 @@ export async function getAnimeGenresList() {
     const response = await genresClient.getAnimeGenres();
     return response.data || [];
   } catch (error) {
-    console.error('Error fetching anime genres list:', error);
+    console.error("Error fetching anime genres list:", error);
     return [];
   }
 }
@@ -179,13 +176,13 @@ export async function searchAnime(
       currentPage: page,
     };
   } catch (error: unknown) {
-    console.error('Error searching anime:', error);
+    console.error("Error searching anime:", error);
     return {
       data: [],
       total: 0,
       hasNextPage: false,
       currentPage: page,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -199,9 +196,9 @@ export async function getRecentlyCompletedAnime(
     const params: Record<string, string | number | boolean> = {
       page,
       limit,
-      status: 'complete',
-      order_by: 'end_date',
-      sort: 'desc',
+      status: "complete",
+      order_by: "end_date",
+      sort: "desc",
       sfw: options.sfw ?? true,
     };
 
@@ -209,7 +206,9 @@ export async function getRecentlyCompletedAnime(
       params.type = options.type;
     }
 
-    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime(params as Partial<AnimeSearchParams>);
+    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime(
+      params as Partial<AnimeSearchParams>
+    );
 
     return {
       data: response.data || [],
@@ -220,7 +219,7 @@ export async function getRecentlyCompletedAnime(
       hasNextPage: response.pagination?.has_next_page || false,
     };
   } catch (error: unknown) {
-    console.error('Error fetching recently completed anime:', error);
+    console.error("Error fetching recently completed anime:", error);
     return {
       data: [],
       totalPages: 1,
@@ -228,7 +227,7 @@ export async function getRecentlyCompletedAnime(
       totalItems: 0,
       total: 0,
       hasNextPage: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }

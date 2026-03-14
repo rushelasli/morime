@@ -70,19 +70,10 @@ export default async function AnimePageContent({ searchParams }: AnimePageConten
           }
         />
 
-        <SearchInput
-          defaultValue={searchQuery}
-          basePath="/anime"
-          placeholder="Search anime titles..."
-          autoFocus={true}
-        />
+        <SearchInput defaultValue={searchQuery} basePath="/anime" placeholder="Search anime titles..." autoFocus={true} />
 
         {searchQuery ? (
-          <AnimeSearchResults
-            animeListData={animeListData}
-            currentPage={currentPage}
-            searchQuery={searchQuery}
-          />
+          <AnimeSearchResults animeListData={animeListData} currentPage={currentPage} searchQuery={searchQuery} />
         ) : (
           <GenreCategories genres={genresList} />
         )}

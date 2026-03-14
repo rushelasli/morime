@@ -7,9 +7,7 @@ interface RelatedAnimeSectionProps {
   relationsData?: Relation[] | null;
 }
 
-export function RelatedAnimeSection({
-  relationsData,
-}: RelatedAnimeSectionProps) {
+export function RelatedAnimeSection({ relationsData }: RelatedAnimeSectionProps) {
   if (!relationsData || relationsData.length === 0) {
     return <EmptyState message="No related anime available." />;
   }
@@ -17,13 +15,8 @@ export function RelatedAnimeSection({
   return (
     <div className="space-y-1.5 sm:space-y-2">
       {relationsData.map((relation, i) => (
-        <div
-          key={`${relation.relation}-${i}`}
-          className="bg-muted/50 rounded-md p-2 sm:p-3"
-        >
-          <div className="text-sm sm:text-base font-medium">
-            {relation.relation}
-          </div>
+        <div key={`${relation.relation}-${i}`} className="bg-muted/50 rounded-md p-2 sm:p-3">
+          <div className="text-sm sm:text-base font-medium">{relation.relation}</div>
           <div className="text-xs sm:text-sm text-muted-foreground">
             {relation.entry.map((entry, j) => (
               <span key={entry.mal_id}>

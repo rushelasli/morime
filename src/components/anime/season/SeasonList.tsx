@@ -11,10 +11,7 @@ function YearDisplay({ year }) {
         .toString()
         .split("")
         .map((digit, i) => (
-          <span
-            key={i}
-            className="text-2xl font-bold text-foreground/90 leading-none tracking-tight"
-          >
+          <span key={i} className="text-2xl font-bold text-foreground/90 leading-none tracking-tight">
             {digit}
           </span>
         ))}
@@ -58,7 +55,7 @@ function ListCard({ list }) {
           <YearDisplay year={list.year} />
           <div className="flex-1 p-4">
             <div className="flex flex-col gap-2 justify-center h-full">
-              {list.seasons.map((season) => (
+              {list.seasons.map(season => (
                 <SeasonButton key={season} season={season} year={list.year} />
               ))}
             </div>
@@ -73,7 +70,7 @@ export function SeasonList({ listData }) {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {listData.map((list) => (
+        {listData.map(list => (
           <ListCard key={list.year} list={list} />
         ))}
       </div>

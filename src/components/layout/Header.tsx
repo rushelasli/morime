@@ -14,7 +14,7 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/anime?q=${encodeURIComponent(searchQuery.trim())}`);
@@ -42,9 +42,7 @@ export function Header() {
       <div className="flex items-center justify-between p-4 max-w-7xl mx-auto">
         <Link href="/" className="flex items-center">
           <div className="w-33.75 h-10 flex items-center justify-center">
-            <span className="font-bold text-4xl text-foreground font-[Poppins]">
-              MORIME
-            </span>
+            <span className="font-bold text-4xl text-foreground font-[Poppins]">MORIME</span>
           </div>
         </Link>
 
@@ -69,7 +67,7 @@ export function Header() {
               placeholder="Search anime..."
               className="pl-10"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />
           </form>
 
@@ -89,7 +87,7 @@ export function Header() {
               placeholder="Search anime..."
               className="pl-10"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               autoFocus
             />
           </form>
@@ -101,21 +99,13 @@ export function Header() {
       <div className="overflow-x-auto">
         <div className="flex items-center justify-normal 2xl:justify-center gap-1 p-2 mx-auto whitespace-nowrap 2xl:flex">
           <Link href="/">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="text-xs cursor-pointer shrink-0"
-            >
+            <Button variant="secondary" size="sm" className="text-xs cursor-pointer shrink-0">
               <House />
             </Button>
           </Link>
           {navItems.map((item, i) => (
             <Link key={i} href={`/${item.link}`}>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="text-xs cursor-pointer shrink-0"
-              >
+              <Button variant="secondary" size="sm" className="text-xs cursor-pointer shrink-0">
                 {item.label}
               </Button>
             </Link>

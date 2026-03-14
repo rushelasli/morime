@@ -38,7 +38,7 @@ export function PageContainer({
         maxWidth && maxWidthClasses[maxWidth],
         !noPadding && !noPaddingY && "py-8 sm:py-10",
         !noPadding && !noPaddingX && "px-4",
-        className,
+        className
       )}
       {...props}
     >
@@ -56,33 +56,12 @@ export interface PageHeaderProps {
   [key: string]: any;
 }
 
-export function PageHeader({
-  title,
-  description,
-  badge,
-  className,
-  centered = true,
-  ...props
-}: PageHeaderProps) {
+export function PageHeader({ title, description, badge, className, centered = true, ...props }: PageHeaderProps) {
   return (
-    <div
-      className={cn("space-y-2 mb-8", centered && "text-center", className)}
-      {...props}
-    >
-      {badge && (
-        <div
-          className={cn(
-            "flex items-center gap-2 mb-4",
-            centered && "justify-center",
-          )}
-        >
-          {badge}
-        </div>
-      )}
+    <div className={cn("space-y-2 mb-8", centered && "text-center", className)} {...props}>
+      {badge && <div className={cn("flex items-center gap-2 mb-4", centered && "justify-center")}>{badge}</div>}
       <h1 className="text-2xl font-bold text-foreground capitalize">{title}</h1>
-      {description && (
-        <p className="text-sm text-muted-foreground">{description}</p>
-      )}
+      {description && <p className="text-sm text-muted-foreground">{description}</p>}
     </div>
   );
 }
@@ -94,21 +73,9 @@ export interface ContentSectionProps {
   [key: string]: any;
 }
 
-export function ContentSection({
-  children,
-  className,
-  noPadding = false,
-  ...props
-}: ContentSectionProps) {
+export function ContentSection({ children, className, noPadding = false, ...props }: ContentSectionProps) {
   return (
-    <section
-      className={cn(
-        "container mx-auto",
-        !noPadding && "pb-8 sm:pb-10 px-4",
-        className,
-      )}
-      {...props}
-    >
+    <section className={cn("container mx-auto", !noPadding && "pb-8 sm:pb-10 px-4", className)} {...props}>
       {children}
     </section>
   );

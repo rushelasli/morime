@@ -54,8 +54,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Morime - Anime & Manga Discovery",
-    description:
-      "Discover and track anime and manga. Browse thousands of titles and explore seasonal anime.",
+    description: "Discover and track anime and manga. Browse thousands of titles and explore seasonal anime.",
     creator: "rushelasli",
   },
   robots: {
@@ -76,12 +75,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body className={`${poppins.variable} font-sans`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <Header />
           {children}
           <Footer />

@@ -7,11 +7,7 @@ export default async function SeasonLayout({ children, params }) {
   const { year, season } = await params;
 
   const yearNum = parseInt(year);
-  if (
-    isNaN(yearNum) ||
-    yearNum < 1917 ||
-    yearNum > new Date().getFullYear() + 2
-  ) {
+  if (isNaN(yearNum) || yearNum < 1917 || yearNum > new Date().getFullYear() + 2) {
     notFound();
   }
 
@@ -20,16 +16,11 @@ export default async function SeasonLayout({ children, params }) {
     notFound();
   }
 
-  const seasonTitle = `${
-    season.charAt(0).toUpperCase() + season.slice(1)
-  } ${year} Anime`;
+  const seasonTitle = `${season.charAt(0).toUpperCase() + season.slice(1)} ${year} Anime`;
 
   return (
     <PageContainer as="section">
-      <PageHeader
-        title={seasonTitle}
-        description={`Anime from ${season} ${year} season`}
-      />
+      <PageHeader title={seasonTitle} description={`Anime from ${season} ${year} season`} />
 
       <SeasonNavigation routeParams={[year, season]} />
 

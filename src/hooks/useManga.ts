@@ -1,11 +1,6 @@
-import { mangaClient, topClient, genresClient } from '@/lib/api/jikan';
-import type {
-  JikanResponseWithPagination, 
-  MangaSearchParams, 
-  Manga as JikanManga,
-  Pagination
-} from '@rushelasli/jikants';
-import { adaptAnimeCharacters } from '@/lib/api/adapters';
+import { mangaClient, topClient, genresClient } from "@/lib/api/jikan";
+import type { JikanResponseWithPagination, MangaSearchParams, Manga as JikanManga, Pagination } from "@rushelasli/jikants";
+import { adaptAnimeCharacters } from "@/lib/api/adapters";
 
 interface MangaResponse {
   data: JikanManga[];
@@ -50,7 +45,9 @@ export async function getManga(
     if (options.order_by) params.order_by = options.order_by;
     if (options.sort) params.sort = options.sort;
 
-    const response: JikanResponseWithPagination<JikanManga[]> = await mangaClient.searchManga(params as Partial<MangaSearchParams>);
+    const response: JikanResponseWithPagination<JikanManga[]> = await mangaClient.searchManga(
+      params as Partial<MangaSearchParams>
+    );
 
     return {
       data: response.data || [],
@@ -59,13 +56,13 @@ export async function getManga(
       totalItems: response.pagination?.items?.total || 0,
     };
   } catch (error: unknown) {
-    console.error('Error fetching manga list:', error);
+    console.error("Error fetching manga list:", error);
     return {
       data: [],
       totalPages: 0,
       currentPage: page,
       totalItems: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -90,7 +87,7 @@ export async function getTopManga(
     if (options.filter) params.filter = options.filter;
 
     const response = await topClient.getTopManga(params);
-    const pagination = 'pagination' in response ? response.pagination as Pagination | undefined : undefined;
+    const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
       data: response.data || [],
@@ -99,13 +96,13 @@ export async function getTopManga(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error('Error fetching top manga:', error);
+    console.error("Error fetching top manga:", error);
     return {
       data: [],
       totalPages: 0,
       currentPage: page,
       totalItems: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -135,7 +132,7 @@ export async function getMangaGenresList() {
     const response = await genresClient.getMangaGenres();
     return response.data || [];
   } catch (error) {
-    console.error('Error fetching manga genres list:', error);
+    console.error("Error fetching manga genres list:", error);
     return [];
   }
 }
@@ -165,13 +162,13 @@ export async function searchManga(
       currentPage: page,
     };
   } catch (error: unknown) {
-    console.error('Error searching manga:', error);
+    console.error("Error searching manga:", error);
     return {
       data: [],
       total: 0,
       hasNextPage: false,
       currentPage: page,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }

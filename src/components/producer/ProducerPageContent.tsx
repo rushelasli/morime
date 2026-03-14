@@ -2,10 +2,7 @@ import { getProducers } from "@/hooks/useProducer";
 import { searchProducers } from "@/hooks/useProducer";
 import { ProducersGrid } from "@/components/producer/ProducersGrid";
 import { SearchInput } from "@/components/forms/SearchInput";
-import {
-  PageContainer,
-  PageHeader,
-} from "@/components/layout/PageContainer";
+import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import type { Producer as JikanProducer } from "@rushelasli/jikants";
 
 interface ProducerPageContentProps {
@@ -49,18 +46,19 @@ export default async function ProducerPageContent({ searchParams }: ProducerPage
 
   const producerListData = producersData
     ? {
-        data: producersData.data?.map((producer: JikanProducer) => ({
-          mal_id: producer.mal_id,
-          type: 'anime',
-          name: producer.titles?.[0]?.title || 'Unknown',
-          url: producer.url || '',
-          titles: producer.titles || [],
-          images: producer.images || { jpg: { image_url: null } },
-          favorites: producer.favorites || 0,
-          established: producer.established || null,
-          about: producer.about || null,
-          count: producer.count || 0,
-        })) || [],
+        data:
+          producersData.data?.map((producer: JikanProducer) => ({
+            mal_id: producer.mal_id,
+            type: "anime",
+            name: producer.titles?.[0]?.title || "Unknown",
+            url: producer.url || "",
+            titles: producer.titles || [],
+            images: producer.images || { jpg: { image_url: null } },
+            favorites: producer.favorites || 0,
+            established: producer.established || null,
+            about: producer.about || null,
+            count: producer.count || 0,
+          })) || [],
         totalPages: producersData.totalPages || 1,
       }
     : null;
@@ -69,11 +67,7 @@ export default async function ProducerPageContent({ searchParams }: ProducerPage
     <PageContainer as="section">
       <PageHeader
         title={searchQuery ? `Search: ${searchQuery}` : "Producers & Studios"}
-        description={
-          searchQuery
-            ? `Search results for "${searchQuery}"`
-            : "Discover anime production companies and studios"
-        }
+        description={searchQuery ? `Search results for "${searchQuery}"` : "Discover anime production companies and studios"}
       />
 
       <SearchInput

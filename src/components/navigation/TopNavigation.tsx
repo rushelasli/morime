@@ -1,4 +1,4 @@
-import { Link } from "@/components/ui/Link"; 
+import { Link } from "@/components/ui/Link";
 import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 
@@ -24,12 +24,7 @@ export function TopAnimeNavigation({ currentType }: { currentType: string }) {
     <div className="mb-6">
       <nav className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:flex lg:items-center lg:justify-center gap-2 lg:flex-wrap">
         {NAVIGATION_ITEMS.map((item: { key: string; label: string; href: string }) => (
-          <Button
-            key={item.key}
-            variant={currentType === item.key ? "default" : "ghost"}
-            size="sm"
-            asChild
-          >
+          <Button key={item.key} variant={currentType === item.key ? "default" : "ghost"} size="sm" asChild>
             <Link href={item.href}>{item.label}</Link>
           </Button>
         ))}

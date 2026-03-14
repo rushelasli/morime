@@ -1,8 +1,5 @@
-import { schedulesClient } from '@/lib/api/jikan';
-import type {
-  Anime as JikanAnime,
-  Pagination
-} from '@rushelasli/jikants';
+import { schedulesClient } from "@/lib/api/jikan";
+import type { Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
 
 interface ScheduleResponse {
   data: JikanAnime[];
@@ -33,8 +30,8 @@ export async function getSchedules(
       params.filter = options.filter;
     }
 
-    if (options.kids !== 'false') {
-      params.kids = 'false';
+    if (options.kids !== "false") {
+      params.kids = "false";
     }
 
     if (options.unapproved !== undefined) {
@@ -42,7 +39,7 @@ export async function getSchedules(
     }
 
     const response = await schedulesClient.getSchedules(params);
-    const pagination = 'pagination' in response ? response.pagination as Pagination | undefined : undefined;
+    const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
       data: response.data || [],
@@ -51,13 +48,13 @@ export async function getSchedules(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error('Error fetching schedule data:', error);
+    console.error("Error fetching schedule data:", error);
     return {
       data: [],
       totalPages: 0,
       currentPage: page,
       totalItems: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }

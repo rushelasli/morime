@@ -5,14 +5,11 @@ import AnimeSearchSkeleton from "@/components/loading/AnimeSearchSkeleton";
 import AnimeBrowseSkeleton from "@/components/loading/AnimeBrowseSkeleton";
 import type { SearchPageProps } from "@/types/pages";
 
-const AnimePageContent = dynamic(
-  () => import("@/components/anime/AnimePageContent"),
-);
+const AnimePageContent = dynamic(() => import("@/components/anime/AnimePageContent"));
 
 export const metadata: Metadata = {
   title: "Anime List",
-  description:
-    "Browse and discover anime. Search, filter by type and status, and explore thousands of anime titles.",
+  description: "Browse and discover anime. Search, filter by type and status, and explore thousands of anime titles.",
 };
 
 function AnimePageSkeleton({ searchParams }: { searchParams: { q?: string } }) {

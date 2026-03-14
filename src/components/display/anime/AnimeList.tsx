@@ -40,15 +40,11 @@ function AnimeListCard({ anime }: AnimeListCardProps) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">
-            {anime.title}
-          </h3>
+          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">{anime.title}</h3>
 
           <div className="mt-2 space-y-1">
             <div className="text-xs text-muted-foreground">
-              {anime.episodes
-                ? `${anime.type || "TV"} (${anime.episodes} eps)`
-                : anime.type || "TV"}
+              {anime.episodes ? `${anime.type || "TV"} (${anime.episodes} eps)` : anime.type || "TV"}
             </div>
 
             <div className="flex items-center text-xs text-muted-foreground">
@@ -56,11 +52,7 @@ function AnimeListCard({ anime }: AnimeListCardProps) {
               <span>{anime.score || "N/A"}</span>
             </div>
 
-            {anime.members && (
-              <div className="text-xs text-muted-foreground">
-                {anime.members.toLocaleString()} members
-              </div>
-            )}
+            {anime.members && <div className="text-xs text-muted-foreground">{anime.members.toLocaleString()} members</div>}
           </div>
         </div>
       </div>
@@ -81,9 +73,7 @@ export function AnimeList({ animeData }: AnimeListProps) {
   if (!animeData || !animeData.data || animeData.data.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-muted-foreground">
-          No anime found matching your search.
-        </p>
+        <p className="text-muted-foreground">No anime found matching your search.</p>
       </div>
     );
   }

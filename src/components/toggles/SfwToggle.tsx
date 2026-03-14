@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  ShieldAlert,
-  ShieldCheck,
-  AlertCircle,
-  CheckCircle2,
-} from "lucide-react";
+import { ShieldAlert, ShieldCheck, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import {
@@ -52,25 +47,25 @@ export function SfwToggle() {
 
   const enableSfw = async () => {
     if (isRefreshing) return;
-    
+
     setIsRefreshing(true);
     setIsSfw(true);
     await setSfwCookie("true");
     setAlertType("sfw");
     setShowAlert(true);
-    
+
     // Skip reload on home page - it rarely has NSFW content
     if (pathname === "/" || window?.location?.pathname === "/") {
       setIsRefreshing(false);
       return;
     }
-    
+
     // Use router.push with the current URL to trigger a soft refresh
     // This preserves search params without causing rate limiting
     if (typeof window !== "undefined") {
       const currentPath = window.location.pathname + window.location.search;
       router.push(currentPath);
-      
+
       // Small delay to allow cookie to be set before refresh
       setTimeout(() => {
         setIsRefreshing(false);
@@ -80,25 +75,25 @@ export function SfwToggle() {
 
   const enableNsfw = async () => {
     if (isRefreshing) return;
-    
+
     setIsRefreshing(true);
     setIsSfw(false);
     await setSfwCookie("false");
     setAlertType("nsfw");
     setShowAlert(true);
-    
+
     // Skip reload on home page - it rarely has NSFW content
     if (pathname === "/" || window?.location?.pathname === "/") {
       setIsRefreshing(false);
       return;
     }
-    
+
     // Use router.push with the current URL to trigger a soft refresh
     // This preserves search params without causing rate limiting
     if (typeof window !== "undefined") {
       const currentPath = window.location.pathname + window.location.search;
       router.push(currentPath);
-      
+
       // Small delay to allow cookie to be set before refresh
       setTimeout(() => {
         setIsRefreshing(false);
@@ -117,10 +112,7 @@ export function SfwToggle() {
             <Alert>
               <CheckCircle2 className="h-4 w-4" />
               <AlertTitle>SFW Mode Enabled</AlertTitle>
-              <AlertDescription>
-                Safe for work content is now active. NSFW content will be
-                filtered out.
-              </AlertDescription>
+              <AlertDescription>Safe for work content is now active. NSFW content will be filtered out.</AlertDescription>
             </Alert>
           )}
 
@@ -128,10 +120,7 @@ export function SfwToggle() {
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>NSFW Mode Enabled</AlertTitle>
-              <AlertDescription>
-                You now have access to mature content. Please browse
-                responsibly.
-              </AlertDescription>
+              <AlertDescription>You now have access to mature content. Please browse responsibly.</AlertDescription>
             </Alert>
           )}
         </div>
@@ -171,18 +160,13 @@ export function SfwToggle() {
               <AlertDialogHeader>
                 <AlertDialogTitle>Enable NSFW Content?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  You are about to enable content that may contain mature themes
-                  not suitable for all audiences. By continuing, you confirm
-                  that you are of legal age to view such content in your
-                  jurisdiction.
+                  You are about to enable content that may contain mature themes not suitable for all audiences. By
+                  continuing, you confirm that you are of legal age to view such content in your jurisdiction.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={enableNsfw}
-                  className="bg-red-500 hover:bg-red-600"
-                >
+                <AlertDialogAction onClick={enableNsfw} className="bg-red-500 hover:bg-red-600">
                   I Confirm
                 </AlertDialogAction>
               </AlertDialogFooter>

@@ -22,18 +22,13 @@ export function ThemeSongsSection({ themesData }: ThemeSongsSectionProps) {
         {hasOpenings ? (
           <ul className="space-y-1 text-sm text-muted-foreground">
             {themesData.openings!.map((opening, i) => (
-              <li
-                key={`opening-${i}-${opening.substring(0, 20)}`}
-                className="pl-2 border-l-2 border-primary/30"
-              >
+              <li key={`opening-${i}-${opening.substring(0, 20)}`} className="pl-2 border-l-2 border-primary/30">
                 {opening}
               </li>
             ))}
           </ul>
         ) : (
-          <div className="text-muted-foreground text-sm">
-            No opening themes available.
-          </div>
+          <div className="text-muted-foreground text-sm">No opening themes available.</div>
         )}
       </div>
 
@@ -42,18 +37,13 @@ export function ThemeSongsSection({ themesData }: ThemeSongsSectionProps) {
         {hasEndings ? (
           <ul className="space-y-1 text-sm text-muted-foreground">
             {themesData.endings!.map((ending, i) => (
-              <li
-                key={`ending-${i}-${ending.substring(0, 20)}`}
-                className="pl-2 border-l-2 border-primary/30"
-              >
+              <li key={`ending-${i}-${ending.substring(0, 20)}`} className="pl-2 border-l-2 border-primary/30">
                 {ending}
               </li>
             ))}
           </ul>
         ) : (
-          <div className="text-muted-foreground text-sm">
-            No ending themes available.
-          </div>
+          <div className="text-muted-foreground text-sm">No ending themes available.</div>
         )}
       </div>
     </div>

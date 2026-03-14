@@ -1,10 +1,7 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Separator } from "@/components/ui/Separator";
 import { Badge } from "@/components/ui/Badge";
-import {
-  PageContainer,
-  ContentSection,
-} from "@/components/layout/PageContainer";
+import { PageContainer, ContentSection } from "@/components/layout/PageContainer";
 
 export default function GenrePageSkeleton() {
   return (

@@ -14,12 +14,7 @@ interface MangaGridProps {
   queryParams?: Record<string, string>;
 }
 
-export function MangaGrid({
-  mangaData,
-  currentPage,
-  basePath,
-  queryParams,
-}: MangaGridProps) {
+export function MangaGrid({ mangaData, currentPage, basePath, queryParams }: MangaGridProps) {
   if (!mangaData || !mangaData.data || mangaData.data.length === 0) {
     return <EmptyState type="manga" />;
   }
@@ -28,11 +23,7 @@ export function MangaGrid({
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {mangaData.data.map((manga, i) => (
-          <MangaCard
-            key={`${manga.mal_id}-${i}`}
-            manga={manga}
-            priority={i < 24}
-          />
+          <MangaCard key={`${manga.mal_id}-${i}`} manga={manga} priority={i < 24} />
         ))}
       </div>
 

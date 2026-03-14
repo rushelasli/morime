@@ -17,23 +17,15 @@ interface EmptyStateProps {
   className?: string;
 }
 
-export function EmptyState({
-  type = "anime",
-  message,
-  showButton = false,
-  onRetry,
-  className = "",
-}: EmptyStateProps) {
+export function EmptyState({ type = "anime", message, showButton = false, onRetry, className = "" }: EmptyStateProps) {
   const configs: Record<EmptyStateType, EmptyStateConfig> = {
     anime: {
       title: "No Anime Found",
-      description:
-        "No anime data available. Try adjusting your filters or check back later.",
+      description: "No anime data available. Try adjusting your filters or check back later.",
     },
     manga: {
       title: "No Manga Found",
-      description:
-        "No manga data available. Try adjusting your filters or check back later.",
+      description: "No manga data available. Try adjusting your filters or check back later.",
     },
     search: {
       title: "No Results Found",
@@ -62,13 +54,9 @@ export function EmptyState({
   return (
     <div className={`text-center py-16 ${className}`}>
       <div className="space-y-4">
-        <h2 className="text-2xl font-semibold text-foreground">
-          {message || config.title}
-        </h2>
+        <h2 className="text-2xl font-semibold text-foreground">{message || config.title}</h2>
 
-        <p className="text-muted-foreground max-w-md mx-auto">
-          {config.description}
-        </p>
+        <p className="text-muted-foreground max-w-md mx-auto">{config.description}</p>
 
         {showButton && onRetry && (
           <Button onClick={onRetry} variant="outline" className="mt-4">

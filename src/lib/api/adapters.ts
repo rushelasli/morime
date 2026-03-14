@@ -5,8 +5,8 @@ import type {
   Manga as JikanManga,
   MangaFull as JikanMangaFull,
   Producer as JikanProducer,
-} from '@rushelasli/jikants';
-import type { Anime, Manga, Character, Episode } from '@/types/anime';
+} from "@rushelasli/jikants";
+import type { Anime, Manga, Character, Episode } from "@/types/anime";
 
 /**
  * Adapt jikants Anime type to our internal Anime type
@@ -28,15 +28,16 @@ export function adaptAnimeCharacter(jikanChar: any): Character {
     },
     role: jikanChar.role,
     favorites: jikanChar.favorites,
-    voice_actors: jikanChar.voice_actors?.map((va: any) => ({
-      person: {
-        mal_id: va.person.mal_id,
-        url: va.person.url,
-        images: va.person.images,
-        name: va.person.name,
-      },
-      language: va.language,
-    })) || [],
+    voice_actors:
+      jikanChar.voice_actors?.map((va: any) => ({
+        person: {
+          mal_id: va.person.mal_id,
+          url: va.person.url,
+          images: va.person.images,
+          name: va.person.name,
+        },
+        language: va.language,
+      })) || [],
   };
 }
 
@@ -85,8 +86,8 @@ export function adaptManga(jikanManga: JikanManga | JikanMangaFull): Manga {
 export function adaptProducer(jikanProducer: JikanProducer) {
   return {
     mal_id: jikanProducer.mal_id,
-    type: 'producers',
-    name: jikanProducer.titles?.[0]?.title || 'Unknown',
+    type: "producers",
+    name: jikanProducer.titles?.[0]?.title || "Unknown",
     url: `https://myanimelist.net/anime/producer/${jikanProducer.mal_id}`,
     titles: jikanProducer.titles || [],
     images: jikanProducer.images,

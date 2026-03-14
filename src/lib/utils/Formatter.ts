@@ -14,9 +14,7 @@ export function toCamelCase(text: string): string {
     .replace(/-+/g, "-");
 }
 
-export function formatEstablished(
-  established: string | null | undefined,
-): string | null {
+export function formatEstablished(established: string | null | undefined): string | null {
   if (!established) return null;
 
   const date = new Date(established);
@@ -45,9 +43,7 @@ export function formatEstablished(
   return `Est. ${establishedYear}`;
 }
 
-export function formatEstablishedDate(
-  established: string | null | undefined,
-): string | null {
+export function formatEstablishedDate(established: string | null | undefined): string | null {
   if (!established) return null;
 
   const date = new Date(established);

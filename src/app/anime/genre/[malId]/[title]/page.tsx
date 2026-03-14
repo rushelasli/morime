@@ -16,7 +16,7 @@ export default async function GenreAnimePage({ params, searchParams }: PageProps
   const { malId, title } = await params;
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
-  const genreName = title.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const genreName = title.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
   const isSfw = await getSfwCookie();
 
   const animeData = await getAnime(currentPage, {
@@ -47,10 +47,7 @@ export default async function GenreAnimePage({ params, searchParams }: PageProps
 
   return (
     <PageContainer>
-      <PageHeader
-        title={`${genreName} Anime`}
-        description={`Browse anime in the ${genreName} genre`}
-      />
+      <PageHeader title={`${genreName} Anime`} description={`Browse anime in the ${genreName} genre`} />
       <AnimeGrid
         animeData={animeListData}
         currentPage={currentPage}

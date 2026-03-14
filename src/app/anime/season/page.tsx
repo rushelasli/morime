@@ -8,9 +8,7 @@ export const metadata: Metadata = {
   description: "Browse anime seasons by year and season",
 };
 
-const SeasonListContent = dynamic(
-  () => import("@/components/anime/season/SeasonListContent"),
-);
+const SeasonListContent = dynamic(() => import("@/components/anime/season/SeasonListContent"));
 
 export default function SeasonListPage() {
   return (

@@ -20,11 +20,7 @@ interface AnimeSearchResultsProps {
   searchQuery: string;
 }
 
-export function AnimeSearchResults({
-  animeListData,
-  currentPage,
-  searchQuery,
-}: AnimeSearchResultsProps) {
+export function AnimeSearchResults({ animeListData, currentPage, searchQuery }: AnimeSearchResultsProps) {
   return (
     <>
       <AnimeList
@@ -36,21 +32,19 @@ export function AnimeSearchResults({
         }}
       />
 
-      {animeListData &&
-        animeListData.data &&
-        animeListData.data.length > 0 && (
-          <>
-            <Separator className="my-8" />
-            <MorimePagination
-              currentPage={currentPage}
-              totalPages={animeListData.totalPages || 1}
-              basePath="/anime"
-              queryParams={{
-                ...(searchQuery && { q: searchQuery }),
-              }}
-            />
-          </>
-        )}
+      {animeListData && animeListData.data && animeListData.data.length > 0 && (
+        <>
+          <Separator className="my-8" />
+          <MorimePagination
+            currentPage={currentPage}
+            totalPages={animeListData.totalPages || 1}
+            basePath="/anime"
+            queryParams={{
+              ...(searchQuery && { q: searchQuery }),
+            }}
+          />
+        </>
+      )}
     </>
   );
 }

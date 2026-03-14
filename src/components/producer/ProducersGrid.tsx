@@ -14,24 +14,15 @@ interface ProducersGridProps {
   queryParams?: Record<string, string>;
 }
 
-export function ProducersGrid({
-  producersData,
-  currentPage,
-  basePath,
-  queryParams,
-}: ProducersGridProps) {
-  if (
-    !producersData ||
-    !producersData.data ||
-    producersData.data.length === 0
-  ) {
+export function ProducersGrid({ producersData, currentPage, basePath, queryParams }: ProducersGridProps) {
+  if (!producersData || !producersData.data || producersData.data.length === 0) {
     return <EmptyState message="No producers found" />;
   }
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {producersData.data.map((producer) => (
+        {producersData.data.map(producer => (
           <ProducerCard key={producer.mal_id} producers={producer} />
         ))}
       </div>

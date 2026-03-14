@@ -39,10 +39,7 @@ function HomeCarouselSkeleton() {
 
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
         {[...Array(5)].map((_, i) => (
-          <Skeleton
-            key={i}
-            className={`h-2 rounded-full ${i === 0 ? "w-6" : "w-2"}`}
-          />
+          <Skeleton key={i} className={`h-2 rounded-full ${i === 0 ? "w-6" : "w-2"}`} />
         ))}
       </div>
     </div>
@@ -99,10 +96,7 @@ function AnimeCarouselSkeleton() {
         <div className="flex-1 relative overflow-hidden">
           <div className="flex gap-4">
             {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/6 shrink-0"
-              >
+              <div key={i} className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/6 shrink-0">
                 <div className="w-full h-auto aspect-2/3 flex flex-col">
                   <div className="w-full h-full overflow-hidden rounded-lg shadow-lg relative">
                     <Skeleton className="w-full h-full" />

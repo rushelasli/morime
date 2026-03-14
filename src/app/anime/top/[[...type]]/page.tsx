@@ -15,9 +15,7 @@ export default async function TopAnimePage({ params, searchParams }: TopAnimePag
 
   if (["tv", "movie", "ova", "ona", "special"].includes(type)) {
     apiConfig.type = type;
-  } else if (
-    ["airing", "upcoming", "bypopularity", "favorite"].includes(type)
-  ) {
+  } else if (["airing", "upcoming", "bypopularity", "favorite"].includes(type)) {
     apiConfig.filter = type;
   }
 

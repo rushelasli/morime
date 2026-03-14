@@ -1,10 +1,10 @@
-import { JikanClient } from '@rushelasli/jikants';
+import { JikanClient } from "@rushelasli/jikants";
 
 const jikanClient = new JikanClient({
   cacheOptions: {
     ttl: 1000 * 60 * 60 * 24, // 24 hours cache
   },
-  enableLogging: process.env.NODE_ENV === 'development',
+  enableLogging: process.env.NODE_ENV === "development",
 });
 
 export { jikanClient };

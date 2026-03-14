@@ -1,10 +1,4 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/Carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/Carousel";
 import { Link } from "@/components/ui/Link";
 import { Button } from "@/components/ui/Button";
 import { toSnakeCase } from "@/lib/utils/Formatter";
@@ -21,16 +15,10 @@ export function GenreList({ genres }: GenreListProps) {
 
           <div className="flex-1 relative overflow-hidden">
             <CarouselContent>
-              {genres.map((genre) => (
+              {genres.map(genre => (
                 <CarouselItem key={genre.mal_id} className="basis-auto pl-2">
-                  <Link
-                    href={`/anime/genre/${genre.mal_id}/${toSnakeCase(genre.name)}`}
-                  >
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="text-xs cursor-pointer uppercase whitespace-nowrap"
-                    >
+                  <Link href={`/anime/genre/${genre.mal_id}/${toSnakeCase(genre.name)}`}>
+                    <Button variant="secondary" size="sm" className="text-xs cursor-pointer uppercase whitespace-nowrap">
                       {genre.name}
                     </Button>
                   </Link>

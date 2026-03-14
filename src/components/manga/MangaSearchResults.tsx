@@ -20,11 +20,7 @@ interface MangaSearchResultsProps {
   searchQuery: string;
 }
 
-export function MangaSearchResults({
-  mangaListData,
-  currentPage,
-  searchQuery,
-}: MangaSearchResultsProps) {
+export function MangaSearchResults({ mangaListData, currentPage, searchQuery }: MangaSearchResultsProps) {
   return (
     <>
       <MangaList
@@ -36,21 +32,19 @@ export function MangaSearchResults({
         }}
       />
 
-      {mangaListData &&
-        mangaListData.data &&
-        mangaListData.data.length > 0 && (
-          <>
-            <Separator className="my-8" />
-            <MorimePagination
-              currentPage={currentPage}
-              totalPages={mangaListData.totalPages || 1}
-              basePath="/manga"
-              queryParams={{
-                ...(searchQuery && { q: searchQuery }),
-              }}
-            />
-          </>
-        )}
+      {mangaListData && mangaListData.data && mangaListData.data.length > 0 && (
+        <>
+          <Separator className="my-8" />
+          <MorimePagination
+            currentPage={currentPage}
+            totalPages={mangaListData.totalPages || 1}
+            basePath="/manga"
+            queryParams={{
+              ...(searchQuery && { q: searchQuery }),
+            }}
+          />
+        </>
+      )}
     </>
   );
 }

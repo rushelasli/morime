@@ -1,9 +1,6 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Separator } from "@/components/ui/Separator";
-import {
-  PageContainer,
-  ContentSection,
-} from "@/components/layout/PageContainer";
+import { PageContainer, ContentSection } from "@/components/layout/PageContainer";
 
 /**
  * Skeleton loader for manga search results

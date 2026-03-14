@@ -12,7 +12,7 @@ export default async function SeasonListContent() {
 
   try {
     const response = await seasonsClient.getSeasonsList();
-    
+
     if (response.data) {
       seasons = response.data.map((item: SeasonListItem) => ({
         year: item.year,
@@ -20,7 +20,7 @@ export default async function SeasonListContent() {
       }));
     }
   } catch (error) {
-    console.error('Error fetching seasons list:', error);
+    console.error("Error fetching seasons list:", error);
   }
 
   return (
@@ -35,9 +35,7 @@ export default async function SeasonListContent() {
       ) : (
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold mb-4">No Seasons Available</h2>
-          <p className="text-muted-foreground">
-            Unable to load season data. Please try again later.
-          </p>
+          <p className="text-muted-foreground">Unable to load season data. Please try again later.</p>
         </div>
       )}
     </PageContainer>

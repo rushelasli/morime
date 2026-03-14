@@ -7,11 +7,7 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/Pagination";
-import {
-  getVisiblePages,
-  getPageUrl,
-  getAnimeTopPageUrl,
-} from "@/lib/navigation/PaginationUtils";
+import { getVisiblePages, getPageUrl, getAnimeTopPageUrl } from "@/lib/navigation/PaginationUtils";
 
 export interface MorimePaginationProps {
   currentPage: number;
@@ -21,18 +17,12 @@ export interface MorimePaginationProps {
   queryParams?: Record<string, string>;
 }
 
-export function MorimePagination({
-  currentPage,
-  totalPages,
-  type,
-  basePath,
-  queryParams = {},
-}: MorimePaginationProps) {
+export function MorimePagination({ currentPage, totalPages, type, basePath, queryParams = {} }: MorimePaginationProps) {
   const visiblePages = getVisiblePages(currentPage, totalPages);
 
   const mobileVisiblePages = getVisiblePages(currentPage, totalPages, 3);
 
-  const generatePageUrl = (page) => {
+  const generatePageUrl = page => {
     if (type) {
       return getAnimeTopPageUrl(type, page);
     } else if (basePath) {
@@ -60,10 +50,7 @@ export function MorimePagination({
               {page === "ellipsis" ? (
                 <PaginationEllipsis />
               ) : (
-                <PaginationLink
-                  href={generatePageUrl(page)}
-                  isActive={page === currentPage}
-                >
+                <PaginationLink href={generatePageUrl(page)} isActive={page === currentPage}>
                   {page}
                 </PaginationLink>
               )}
@@ -92,10 +79,7 @@ export function MorimePagination({
 
             {!mobileVisiblePages.includes(1) && currentPage > 3 && (
               <>
-                <PaginationLink
-                  href={generatePageUrl(1)}
-                  className="w-8 h-8 p-0 text-xs flex items-center justify-center"
-                >
+                <PaginationLink href={generatePageUrl(1)} className="w-8 h-8 p-0 text-xs flex items-center justify-center">
                   1
                 </PaginationLink>
                 <PaginationEllipsis className="w-8 h-8 p-0 text-xs flex items-center justify-center" />
@@ -120,18 +104,17 @@ export function MorimePagination({
               </div>
             ))}
 
-            {!mobileVisiblePages.includes(totalPages) &&
-              currentPage < totalPages - 2 && (
-                <>
-                  <PaginationEllipsis className="w-8 h-8 p-0 text-xs flex items-center justify-center" />
-                  <PaginationLink
-                    href={generatePageUrl(totalPages)}
-                    className="w-8 h-8 p-0 text-xs flex items-center justify-center"
-                  >
-                    {totalPages}
-                  </PaginationLink>
-                </>
-              )}
+            {!mobileVisiblePages.includes(totalPages) && currentPage < totalPages - 2 && (
+              <>
+                <PaginationEllipsis className="w-8 h-8 p-0 text-xs flex items-center justify-center" />
+                <PaginationLink
+                  href={generatePageUrl(totalPages)}
+                  className="w-8 h-8 p-0 text-xs flex items-center justify-center"
+                >
+                  {totalPages}
+                </PaginationLink>
+              </>
+            )}
 
             {currentPage < totalPages && (
               <PaginationLink

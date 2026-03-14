@@ -8,9 +8,7 @@ import { AnimeContentSections } from "@/components/anime/detail/sections/Content
 import { getTitle, getEnglishTitle, getJapaneseTitle, getTitleSynonyms } from "@/lib/utils/TitleExtractor";
 import type { DetailPageProps } from "@/types/pages";
 
-export async function generateMetadata({
-  params,
-}: DetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: DetailPageProps): Promise<Metadata> {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {
@@ -23,17 +21,14 @@ export async function generateMetadata({
     const animeData = await getDetailAnime(Number(malId));
 
     const title = getTitle(animeData.titles);
-    
+
     return {
       title: title,
-      description:
-        animeData.synopsis?.slice(0, 160) || "View anime details on Morime",
+      description: animeData.synopsis?.slice(0, 160) || "View anime details on Morime",
       openGraph: {
         title: title,
         description: animeData.synopsis?.slice(0, 160),
-        images: animeData.images?.webp?.image_url
-          ? [animeData.images.webp.image_url]
-          : [],
+        images: animeData.images?.webp?.image_url ? [animeData.images.webp.image_url] : [],
       },
     };
   } catch (error) {

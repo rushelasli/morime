@@ -42,10 +42,7 @@ export default async function CompletedAnimePage({ searchParams }: ListPageProps
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Completed Anime"
-        description="Browse anime that have finished airing"
-      />
+      <PageHeader title="Completed Anime" description="Browse anime that have finished airing" />
       <AnimeGrid
         animeData={animeListData}
         currentPage={currentPage}

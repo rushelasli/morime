@@ -8,10 +8,7 @@ import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { SeasonPageProps } from "@/types/pages";
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: SeasonPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: SeasonPageProps): Promise<Metadata> {
   const { year, season } = await params;
   const currentPage = parseInt((await searchParams)?.page || "1");
   const title =
@@ -25,10 +22,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function SeasonalAnimePage({
-  params,
-  searchParams,
-}: SeasonPageProps) {
+export default async function SeasonalAnimePage({ params, searchParams }: SeasonPageProps) {
   const { year, season } = await params;
   const typeFilter = (await searchParams)?.type || "";
   const currentPage = parseInt((await searchParams)?.page || "1");
@@ -62,10 +56,7 @@ export default async function SeasonalAnimePage({
 
   return (
     <>
-      <TypeFilterTabs
-        typeFilter={typeFilter}
-        basePath={`/anime/season/${year}/${season}`}
-      />
+      <TypeFilterTabs typeFilter={typeFilter} basePath={`/anime/season/${year}/${season}`} />
 
       <AnimeGrid
         animeData={animeData}

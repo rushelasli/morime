@@ -9,17 +9,13 @@ import { getSfwCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 
-export async function generateMetadata({
-  searchParams,
-}: SchedulePageProps): Promise<Metadata> {
+export async function generateMetadata({ searchParams }: SchedulePageProps): Promise<Metadata> {
   const currentPage = parseInt((await searchParams)?.page) || 1;
-  const title =
-    currentPage > 1 ? `Anime Schedule - Page ${currentPage}` : "Anime Schedule";
+  const title = currentPage > 1 ? `Anime Schedule - Page ${currentPage}` : "Anime Schedule";
 
   return {
     title,
-    description:
-      "Weekly anime schedule - Find out when your favorite anime episodes air",
+    description: "Weekly anime schedule - Find out when your favorite anime episodes air",
   };
 }
 
@@ -27,17 +23,9 @@ export default async function Page({ searchParams }: SchedulePageProps) {
   const dayFilter = (await searchParams)?.day || "monday";
 
   if (
-    ![
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-      "sunday",
-      "other",
-      "unknown",
-    ].includes(dayFilter.toLowerCase())
+    !["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "other", "unknown"].includes(
+      dayFilter.toLowerCase()
+    )
   ) {
     notFound();
   }

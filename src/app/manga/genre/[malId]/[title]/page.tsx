@@ -16,7 +16,7 @@ export default async function GenreMangaPage({ params, searchParams }: PageProps
   const { malId, title } = await params;
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
-  const genreName = title.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const genreName = title.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
   const isSfw = await getSfwCookie();
 
   const mangaData = await getManga(currentPage, {
@@ -47,10 +47,7 @@ export default async function GenreMangaPage({ params, searchParams }: PageProps
 
   return (
     <PageContainer>
-      <PageHeader
-        title={`${genreName} Manga`}
-        description={`Browse manga in the ${genreName} genre`}
-      />
+      <PageHeader title={`${genreName} Manga`} description={`Browse manga in the ${genreName} genre`} />
       <MangaGrid
         mangaData={mangaListData}
         currentPage={currentPage}

@@ -22,9 +22,7 @@ function ProducerCardSkeleton() {
   );
 }
 
-export default function ProducersPageSkeleton({ 
-  showSearch = true
-}: ProducersPageSkeletonProps) {
+export default function ProducersPageSkeleton({ showSearch = true }: ProducersPageSkeletonProps) {
   return (
     <PageContainer as="section">
       <div className="text-center space-y-2 mb-8">

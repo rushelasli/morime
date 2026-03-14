@@ -17,11 +17,7 @@ const SynopsisSection = ({ synopsis }: SynopsisSectionProps) => {
     return <EmptyState message="No synopsis available." />;
   }
 
-  return (
-    <p className="text-sm sm:text-base text-muted-foreground/90 whitespace-pre-line leading-relaxed">
-      {synopsis}
-    </p>
-  );
+  return <p className="text-sm sm:text-base text-muted-foreground/90 whitespace-pre-line leading-relaxed">{synopsis}</p>;
 };
 
 interface MangaContentSectionsProps {
@@ -32,9 +28,7 @@ interface MangaContentSectionsProps {
   };
 }
 
-export function MangaContentSections({
-  contentData,
-}: MangaContentSectionsProps) {
+export function MangaContentSections({ contentData }: MangaContentSectionsProps) {
   const { synopsis, charactersData, relationsData } = contentData;
 
   const [showCharactersOnly, setShowCharactersOnly] = useState(false);
@@ -43,12 +37,11 @@ export function MangaContentSections({
 
   const characterGroups = useMemo(
     () => ({
-      main: charactersData?.filter((char) => char.role === "Main") || [],
-      supporting:
-        charactersData?.filter((char) => char.role === "Supporting") || [],
+      main: charactersData?.filter(char => char.role === "Main") || [],
+      supporting: charactersData?.filter(char => char.role === "Supporting") || [],
       limited: charactersData?.slice(0, 8) || [],
     }),
-    [charactersData],
+    [charactersData]
   );
 
   const handleViewAllCharacters = useCallback(() => {
@@ -91,12 +84,7 @@ export function MangaContentSections({
         headerActions={
           charactersData &&
           charactersData.length > 8 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleViewAllCharacters}
-              className="text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={handleViewAllCharacters} className="text-xs">
               View All ({charactersData.length})
             </Button>
           )

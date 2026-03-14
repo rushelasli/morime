@@ -24,18 +24,14 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
   const hasMoreCharacters = visibleCharacters < characters.length;
 
   const loadMore = () => {
-    setVisibleCharacters((prev) =>
-      Math.min(prev + INCREMENT, characters.length),
-    );
+    setVisibleCharacters(prev => Math.min(prev + INCREMENT, characters.length));
   };
 
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {displayCharacters.map((character, i) => {
-          const japaneseVA = character.voice_actors?.find(
-            (va) => va.language === "Japanese",
-          );
+          const japaneseVA = character.voice_actors?.find(va => va.language === "Japanese");
 
           return (
             <div
@@ -44,10 +40,7 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
             >
               <div className="shrink-0">
                 <Image
-                  src={
-                    character.character?.images?.webp?.image_url ||
-                    "/placeholder-character.png"
-                  }
+                  src={character.character?.images?.webp?.image_url || "/placeholder-character.png"}
                   alt={character.character?.name || "Character"}
                   width={64}
                   height={64}
@@ -61,9 +54,7 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
                 <h4 className="font-semibold text-sm text-foreground truncate">
                   {character.character?.name || "Unknown Character"}
                 </h4>
-                <p className="text-xs text-muted-foreground font-medium">
-                  {character.role || "Unknown Role"}
-                </p>
+                <p className="text-xs text-muted-foreground font-medium">{character.role || "Unknown Role"}</p>
 
                 <div className="space-y-0.5">
                   <p className="text-xs text-muted-foreground truncate">

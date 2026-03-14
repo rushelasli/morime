@@ -1,8 +1,5 @@
 import { Skeleton } from "@/components/ui/Skeleton";
-import {
-  PageContainer,
-  ContentSection,
-} from "@/components/layout/PageContainer";
+import { PageContainer, ContentSection } from "@/components/layout/PageContainer";
 
 export default function DetailAnimeSkeleton() {
   return (
@@ -40,7 +37,7 @@ export default function DetailAnimeSkeleton() {
                 <Skeleton className="h-4 sm:h-5 w-3/5 mx-auto sm:mx-0 mb-2" />
 
                 <div className="flex flex-wrap justify-center sm:justify-start gap-y-2 gap-x-3 mt-3 mb-4">
-                  {[1, 2, 3].map((i) => (
+                  {[1, 2, 3].map(i => (
                     <div
                       key={i}
                       className="flex items-center bg-card/60 backdrop-blur-md border border-white/5 rounded-full px-3 py-1"
@@ -51,7 +48,7 @@ export default function DetailAnimeSkeleton() {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-                  {[1, 2, 3, 4].map((i) => (
+                  {[1, 2, 3, 4].map(i => (
                     <div
                       key={i}
                       className="bg-card/40 backdrop-blur-sm rounded-lg p-3 border border-border/20 flex flex-col items-center justify-center"
@@ -93,7 +90,7 @@ export default function DetailAnimeSkeleton() {
                 <div className="py-3">
                   <Skeleton className="h-4 w-20 mb-1.5" />
                   <div className="space-y-2">
-                    {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    {[1, 2, 3, 4, 5, 6, 7].map(i => (
                       <div key={i} className="flex justify-between text-sm">
                         <Skeleton className="h-3 w-16" />
                         <Skeleton className="h-3 w-20" />
@@ -105,7 +102,7 @@ export default function DetailAnimeSkeleton() {
                 <div className="py-3">
                   <Skeleton className="h-4 w-16 mb-1.5" />
                   <div className="space-y-2">
-                    {[1, 2, 3].map((i) => (
+                    {[1, 2, 3].map(i => (
                       <div key={i} className="flex justify-between text-sm">
                         <Skeleton className="h-3 w-12" />
                         <div className="flex flex-wrap gap-1.5 justify-end">
@@ -120,11 +117,11 @@ export default function DetailAnimeSkeleton() {
                 <div className="py-3">
                   <Skeleton className="h-4 w-16 mb-1.5" />
                   <div className="space-y-2">
-                    {[1, 2, 3, 4].map((i) => (
+                    {[1, 2, 3, 4].map(i => (
                       <div key={i} className="flex justify-between text-sm">
                         <Skeleton className="h-3 w-14" />
                         <div className="flex flex-wrap gap-1.5 justify-end">
-                          {[1, 2].map((j) => (
+                          {[1, 2].map(j => (
                             <Skeleton key={j} className="h-5 w-12" />
                           ))}
                         </div>
@@ -136,7 +133,7 @@ export default function DetailAnimeSkeleton() {
                 <div className="py-3">
                   <Skeleton className="h-4 w-20 mb-1.5" />
                   <div className="space-y-2">
-                    {[1, 2, 3, 4].map((i) => (
+                    {[1, 2, 3, 4].map(i => (
                       <div key={i} className="flex justify-between text-sm">
                         <Skeleton className="h-3 w-16" />
                         <Skeleton className="h-3 w-16" />
@@ -196,10 +193,7 @@ export default function DetailAnimeSkeleton() {
                     {Array(8)
                       .fill(0)
                       .map((_, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center gap-4 p-4 rounded-lg bg-card border border-border/50"
-                        >
+                        <div key={i} className="flex items-center gap-4 p-4 rounded-lg bg-card border border-border/50">
                           <Skeleton className="w-16 h-16 rounded-lg shrink-0" />
                           <div className="flex-1 min-w-0 space-y-1">
                             <Skeleton className="h-4 w-full" />
@@ -224,11 +218,8 @@ export default function DetailAnimeSkeleton() {
                     <div>
                       <Skeleton className="h-4 w-32 mb-1" />
                       <div className="space-y-1">
-                        {[1, 2].map((i) => (
-                          <div
-                            key={i}
-                            className="pl-2 border-l-2 border-primary/30"
-                          >
+                        {[1, 2].map(i => (
+                          <div key={i} className="pl-2 border-l-2 border-primary/30">
                             <Skeleton className="h-3 w-full" />
                           </div>
                         ))}
@@ -238,11 +229,8 @@ export default function DetailAnimeSkeleton() {
                     <div>
                       <Skeleton className="h-4 w-28 mb-1" />
                       <div className="space-y-1">
-                        {[1, 2].map((i) => (
-                          <div
-                            key={i}
-                            className="pl-2 border-l-2 border-primary/30"
-                          >
+                        {[1, 2].map(i => (
+                          <div key={i} className="pl-2 border-l-2 border-primary/30">
                             <Skeleton className="h-3 w-full" />
                           </div>
                         ))}
@@ -280,11 +268,8 @@ export default function DetailAnimeSkeleton() {
                 </div>
                 <div className="p-5 pt-4">
                   <div className="space-y-1.5 sm:space-y-2">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="bg-muted/50 rounded-md p-2 sm:p-3"
-                      >
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="bg-muted/50 rounded-md p-2 sm:p-3">
                         <Skeleton className="h-4 w-32 mb-1" />
                         <Skeleton className="h-3 w-full" />
                       </div>

@@ -4,11 +4,7 @@ import { SearchInput } from "@/components/forms/SearchInput";
 import { GenreGrid } from "@/components/display/manga/GenreGrid";
 import { GenreCategories } from "@/components/display/manga/GenreCategories";
 import { MangaSearchResults } from "@/components/manga/MangaSearchResults";
-import {
-  PageContainer,
-  PageHeader,
-  ContentSection,
-} from "@/components/layout/PageContainer";
+import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
 import { getSfwCookie } from "@/actions/CookieActions";
 import type { Manga as JikanManga } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
@@ -68,25 +64,14 @@ export default async function MangaPageContent({ searchParams }: MangaPageConten
         <PageHeader
           title={searchQuery ? `Search: ${searchQuery}` : "Manga List"}
           description={
-            searchQuery
-              ? `Search results for "${searchQuery}"`
-              : "Browse all manga series from extensive collection"
+            searchQuery ? `Search results for "${searchQuery}"` : "Browse all manga series from extensive collection"
           }
         />
 
-        <SearchInput
-          defaultValue={searchQuery}
-          basePath="/manga"
-          placeholder="Search manga titles..."
-          autoFocus={true}
-        />
+        <SearchInput defaultValue={searchQuery} basePath="/manga" placeholder="Search manga titles..." autoFocus={true} />
 
         {searchQuery ? (
-          <MangaSearchResults
-            mangaListData={mangaListData}
-            currentPage={currentPage}
-            searchQuery={searchQuery}
-          />
+          <MangaSearchResults mangaListData={mangaListData} currentPage={currentPage} searchQuery={searchQuery} />
         ) : (
           <GenreCategories genres={genresList} />
         )}

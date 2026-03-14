@@ -18,15 +18,10 @@ interface ProducerDetailsProps {
   currentPage: number;
 }
 
-export function ProducerDetails({
-  producer,
-  animes,
-  currentPage,
-}: ProducerDetailsProps) {
+export function ProducerDetails({ producer, animes, currentPage }: ProducerDetailsProps) {
   const [imageError, setImageError] = useState(false);
 
-  const producerName =
-    producer.titles?.[0]?.title || producer.name || "Unknown Producer";
+  const producerName = producer.titles?.[0]?.title || producer.name || "Unknown Producer";
   const imageUrl = producer.imageUrl;
 
   return (
@@ -52,31 +47,20 @@ export function ProducerDetails({
             </div>
 
             <div className="flex-1 min-w-0 text-center sm:text-left">
-              <CardTitle className="text-xl sm:text-2xl lg:text-3xl mb-2 sm:mb-3 wrap-break-words">
-                {producerName}
-              </CardTitle>
+              <CardTitle className="text-xl sm:text-2xl lg:text-3xl mb-2 sm:mb-3 wrap-break-words">{producerName}</CardTitle>
 
               <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-3 sm:mb-4">
                 {producer.established && (
-                  <Badge
-                    variant="secondary"
-                    className="flex items-center gap-1.5 text-xs sm:text-sm"
-                  >
+                  <Badge variant="secondary" className="flex items-center gap-1.5 text-xs sm:text-sm">
                     <Calendar className="w-3 h-3" />
-                    <span className="hidden xs:inline">
-                      {formatEstablishedDate(producer.established)}
-                    </span>
-                    <span className="xs:hidden">
-                      {new Date(producer.established).getFullYear()}
-                    </span>
+                    <span className="hidden xs:inline">{formatEstablishedDate(producer.established)}</span>
+                    <span className="xs:hidden">{new Date(producer.established).getFullYear()}</span>
                   </Badge>
                 )}
               </div>
 
               {producer.about && (
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed text-left">
-                  {producer.about}
-                </p>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed text-left">{producer.about}</p>
               )}
             </div>
           </div>
@@ -90,33 +74,22 @@ export function ProducerDetails({
         <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <div className="text-center p-3 sm:p-4 border rounded-lg">
-              <div className="text-xl sm:text-2xl font-bold text-primary">
-                {producer.count || 0}
-              </div>
-              <div className="text-xs sm:text-sm text-muted-foreground">
-                Anime Produced
-              </div>
+              <div className="text-xl sm:text-2xl font-bold text-primary">{producer.count || 0}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Anime Produced</div>
             </div>
 
             <div className="text-center p-3 sm:p-4 border rounded-lg">
               <div className="text-xl sm:text-2xl font-bold text-primary">
                 {producer.favorites ? producer.favorites.toLocaleString() : 0}
               </div>
-              <div className="text-xs sm:text-sm text-muted-foreground">
-                Favorites
-              </div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Favorites</div>
             </div>
 
             <div className="text-center p-3 sm:p-4 border rounded-lg sm:col-span-1 col-span-1">
               <div className="text-xl sm:text-2xl font-bold text-primary">
-                {producer.established
-                  ? new Date().getFullYear() -
-                    new Date(producer.established).getFullYear()
-                  : "N/A"}
+                {producer.established ? new Date().getFullYear() - new Date(producer.established).getFullYear() : "N/A"}
               </div>
-              <div className="text-xs sm:text-sm text-muted-foreground">
-                Years Active
-              </div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Years Active</div>
             </div>
           </div>
         </CardContent>

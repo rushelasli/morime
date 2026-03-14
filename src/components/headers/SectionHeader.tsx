@@ -7,11 +7,7 @@ interface SectionHeaderProps {
   viewAllLink?: string;
 }
 
-export function SectionHeader({
-  title,
-  subtitle,
-  viewAllLink,
-}: SectionHeaderProps) {
+export function SectionHeader({ title, subtitle, viewAllLink }: SectionHeaderProps) {
   return (
     <div className="flex items-center justify-between mb-6">
       <div>

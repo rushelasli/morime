@@ -26,29 +26,19 @@ interface AnimeContentSectionsProps {
   };
 }
 
-export function AnimeContentSections({
-  contentData,
-}: AnimeContentSectionsProps) {
-  const {
-    synopsis,
-    trailersData,
-    themesData,
-    charactersData,
-    episodesData,
-    relationsData,
-  } = contentData;
+export function AnimeContentSections({ contentData }: AnimeContentSectionsProps) {
+  const { synopsis, trailersData, themesData, charactersData, episodesData, relationsData } = contentData;
   const [showCharactersOnly, setShowCharactersOnly] = useState(false);
   const synopsisRef = useRef<HTMLDivElement>(null);
   const charactersRef = useRef<HTMLDivElement>(null);
 
   const characterGroups = useMemo(
     () => ({
-      main: charactersData?.filter((char) => char.role === "Main") || [],
-      supporting:
-        charactersData?.filter((char) => char.role === "Supporting") || [],
+      main: charactersData?.filter(char => char.role === "Main") || [],
+      supporting: charactersData?.filter(char => char.role === "Supporting") || [],
       limited: charactersData?.slice(0, 8) || [],
     }),
-    [charactersData],
+    [charactersData]
   );
 
   const handleViewAllCharacters = useCallback(() => {
@@ -87,11 +77,7 @@ export function AnimeContentSections({
         </p>
       </SectionCard>
 
-      <SectionCard
-        title="Trailer"
-        titleColor="bg-red-500"
-        className="border-border/30 bg-card/80 backdrop-blur-sm"
-      >
+      <SectionCard title="Trailer" titleColor="bg-red-500" className="border-border/30 bg-card/80 backdrop-blur-sm">
         <TrailerSection trailersData={trailersData} />
       </SectionCard>
 
@@ -101,12 +87,7 @@ export function AnimeContentSections({
         headerActions={
           charactersData &&
           charactersData.length > 8 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleViewAllCharacters}
-              className="text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={handleViewAllCharacters} className="text-xs">
               View All ({charactersData.length})
             </Button>
           )

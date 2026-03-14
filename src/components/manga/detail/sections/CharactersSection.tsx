@@ -11,9 +11,7 @@ interface MangaCharactersSectionProps {
   characters?: Character[] | null;
 }
 
-export function MangaCharactersSection({
-  characters,
-}: MangaCharactersSectionProps) {
+export function MangaCharactersSection({ characters }: MangaCharactersSectionProps) {
   const initialLimit = 16;
   const [visibleCharacters, setVisibleCharacters] = useState(initialLimit);
   const INCREMENT = 6;
@@ -26,9 +24,7 @@ export function MangaCharactersSection({
   const hasMoreCharacters = visibleCharacters < characters.length;
 
   const loadMore = () => {
-    setVisibleCharacters((prev) =>
-      Math.min(prev + INCREMENT, characters.length),
-    );
+    setVisibleCharacters(prev => Math.min(prev + INCREMENT, characters.length));
   };
 
   return (
@@ -42,10 +38,7 @@ export function MangaCharactersSection({
             >
               <div className="shrink-0">
                 <Image
-                  src={
-                    character.character?.images?.webp?.image_url ||
-                    "/placeholder-character.png"
-                  }
+                  src={character.character?.images?.webp?.image_url || "/placeholder-character.png"}
                   alt={character.character?.name || "Character"}
                   width={64}
                   height={64}
@@ -61,9 +54,7 @@ export function MangaCharactersSection({
                 <h4 className="font-semibold text-sm text-foreground truncate">
                   {character.character?.name || "Unknown Character"}
                 </h4>
-                <p className="text-xs text-muted-foreground font-medium">
-                  {character.role || "Unknown Role"}
-                </p>
+                <p className="text-xs text-muted-foreground font-medium">{character.role || "Unknown Role"}</p>
               </div>
             </div>
           );

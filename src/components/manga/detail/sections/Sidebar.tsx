@@ -21,36 +21,27 @@ const InfoRow = ({ label, children }) => (
   </div>
 );
 
-const BadgeList = ({
-  items,
-  renderBadge,
-  className = "flex flex-wrap gap-1.5 justify-end",
-}) => <div className={className}>{items?.map(renderBadge)}</div>;
-
-const InfoValue = ({ children }) => (
-  <span className="font-medium text-right">{children}</span>
+const BadgeList = ({ items, renderBadge, className = "flex flex-wrap gap-1.5 justify-end" }) => (
+  <div className={className}>{items?.map(renderBadge)}</div>
 );
 
+const InfoValue = ({ children }) => <span className="font-medium text-right">{children}</span>;
+
 const AlternativeTitlesSection = ({ titleJapanese, titleSynonyms }) => {
-  const hasAlternativeTitles =
-    titleJapanese || (titleSynonyms && titleSynonyms.length > 0);
+  const hasAlternativeTitles = titleJapanese || (titleSynonyms && titleSynonyms.length > 0);
 
   return (
     <SidebarSection title="Alternative Titles" condition={hasAlternativeTitles}>
       {titleJapanese && (
         <div className="space-y-1">
-          <span className="text-xs text-muted-foreground/80 font-medium block">
-            Japanese
-          </span>
+          <span className="text-xs text-muted-foreground/80 font-medium block">Japanese</span>
           <div className="font-japanese text-sm">{titleJapanese}</div>
         </div>
       )}
 
       {titleSynonyms?.length > 0 && (
         <div className="space-y-1">
-          <span className="text-xs text-muted-foreground/80 font-medium block">
-            Synonyms
-          </span>
+          <span className="text-xs text-muted-foreground/80 font-medium block">Synonyms</span>
           <div className="space-y-0.5">
             {titleSynonyms.map((title, i) => (
               <div key={i} className="text-sm">
@@ -65,15 +56,11 @@ const AlternativeTitlesSection = ({ titleJapanese, titleSynonyms }) => {
 };
 
 const BasicInfoSection = ({ status, chapters, volumes, published, type }) => {
-  const formatPublished = (published) => {
+  const formatPublished = published => {
     if (!published) return "N/A";
 
-    const from = published.from
-      ? new Date(published.from).toLocaleDateString()
-      : null;
-    const to = published.to
-      ? new Date(published.to).toLocaleDateString()
-      : null;
+    const from = published.from ? new Date(published.from).toLocaleDateString() : null;
+    const to = published.to ? new Date(published.to).toLocaleDateString() : null;
 
     if (from && to) {
       return `${from} to ${to}`;
@@ -114,12 +101,8 @@ const CreditsSection = ({ authors, serializations }) => (
       <InfoRow label="Authors">
         <BadgeList
           items={authors}
-          renderBadge={(author) => (
-            <Badge
-              key={author.mal_id}
-              variant="outline"
-              className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6"
-            >
+          renderBadge={author => (
+            <Badge key={author.mal_id} variant="outline" className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6">
               {author.name}
             </Badge>
           )}
@@ -131,12 +114,8 @@ const CreditsSection = ({ authors, serializations }) => (
       <InfoRow label="Serialization">
         <BadgeList
           items={serializations}
-          renderBadge={(serialization) => (
-            <Badge
-              key={serialization.mal_id}
-              variant="outline"
-              className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6"
-            >
+          renderBadge={serialization => (
+            <Badge key={serialization.mal_id} variant="outline" className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6">
               {serialization.name}
             </Badge>
           )}
@@ -152,15 +131,9 @@ const DetailsSection = ({ genres, themes, demographics }) => (
       <InfoRow label="Genres">
         <BadgeList
           items={genres}
-          renderBadge={(genre) => (
-            <Link
-              key={genre.mal_id}
-              href={`/manga/genre/${genre.mal_id}/${toSnakeCase(genre.name)}`}
-            >
-              <Badge
-                variant="outline"
-                className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6"
-              >
+          renderBadge={genre => (
+            <Link key={genre.mal_id} href={`/manga/genre/${genre.mal_id}/${toSnakeCase(genre.name)}`}>
+              <Badge variant="outline" className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6">
                 {genre.name}
               </Badge>
             </Link>
@@ -173,15 +146,9 @@ const DetailsSection = ({ genres, themes, demographics }) => (
       <InfoRow label="Themes">
         <BadgeList
           items={themes}
-          renderBadge={(theme) => (
-            <Link
-              key={theme.mal_id}
-              href={`/manga/theme/${theme.mal_id}/${toSnakeCase(theme.name)}`}
-            >
-              <Badge
-                variant="outline"
-                className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6"
-              >
+          renderBadge={theme => (
+            <Link key={theme.mal_id} href={`/manga/theme/${theme.mal_id}/${toSnakeCase(theme.name)}`}>
+              <Badge variant="outline" className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6">
                 {theme.name}
               </Badge>
             </Link>
@@ -194,12 +161,8 @@ const DetailsSection = ({ genres, themes, demographics }) => (
       <InfoRow label="Demographics">
         <BadgeList
           items={demographics}
-          renderBadge={(demographic) => (
-            <Badge
-              key={demographic.mal_id}
-              variant="outline"
-              className="text-xs py-0 h-5 sm:h-6"
-            >
+          renderBadge={demographic => (
+            <Badge key={demographic.mal_id} variant="outline" className="text-xs py-0 h-5 sm:h-6">
               {demographic.name}
             </Badge>
           )}
@@ -210,11 +173,11 @@ const DetailsSection = ({ genres, themes, demographics }) => (
 );
 
 const StatisticsSection = ({ rank, popularity, members, favorites }) => {
-  const formatNumber = (num) => {
+  const formatNumber = num => {
     return num ? num.toLocaleString() : "N/A";
   };
 
-  const formatRank = (rank) => {
+  const formatRank = rank => {
     return rank ? `#${rank}` : "N/A";
   };
 
@@ -262,29 +225,11 @@ export function MangaSidebar({ sidebarData }) {
   return (
     <Card className="py-0 shadow-lg border-border/40">
       <CardContent className="p-4 space-y-0 divide-y divide-border/60">
-        <AlternativeTitlesSection
-          titleJapanese={titleJapanese}
-          titleSynonyms={titleSynonyms}
-        />
-        <BasicInfoSection
-          status={status}
-          chapters={chapters}
-          volumes={volumes}
-          published={published}
-          type={type}
-        />
+        <AlternativeTitlesSection titleJapanese={titleJapanese} titleSynonyms={titleSynonyms} />
+        <BasicInfoSection status={status} chapters={chapters} volumes={volumes} published={published} type={type} />
         <CreditsSection authors={authors} serializations={serializations} />
-        <DetailsSection
-          genres={genres}
-          themes={themes}
-          demographics={demographics}
-        />
-        <StatisticsSection
-          rank={rank}
-          popularity={popularity}
-          members={members}
-          favorites={favorites}
-        />
+        <DetailsSection genres={genres} themes={themes} demographics={demographics} />
+        <StatisticsSection rank={rank} popularity={popularity} members={members} favorites={favorites} />
       </CardContent>
     </Card>
   );

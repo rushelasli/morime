@@ -37,17 +37,14 @@ export const getRecentSeasons = (numberOfSeasons: number = 3): SeasonInfo[] => {
   return recentSeasons;
 };
 
-export const generateSeasonNavigation = (
-  routeParams: string[],
-): SeasonNavigationItem[] => {
+export const generateSeasonNavigation = (routeParams: string[]): SeasonNavigationItem[] => {
   const currentYear = new Date().getFullYear();
   const seasons: Season[] = ["winter", "spring", "summer", "fall"];
   const items: SeasonNavigationItem[] = [];
 
   for (let year = currentYear - 3; year <= currentYear + 1; year++) {
-    seasons.forEach((season) => {
-      const isActive =
-        routeParams[0] === year.toString() && routeParams[1] === season;
+    seasons.forEach(season => {
+      const isActive = routeParams[0] === year.toString() && routeParams[1] === season;
 
       items.push({
         season,

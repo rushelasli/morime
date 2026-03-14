@@ -25,7 +25,7 @@ const getCachedGenres = cache(async () => {
 
 export default async function Home() {
   const isSfw = await getSfwCookie();
-  
+
   const upcomings = await getCachedUpcoming(isSfw);
   const topAnimes = await getCachedTopAnime(isSfw);
   const animes = await getCachedCurrentSeason(isSfw);
@@ -66,12 +66,7 @@ export default async function Home() {
 
   return (
     <Suspense fallback={<HomePageSkeleton />}>
-      <HomePage
-        upcomings={upcomingData}
-        topAnimes={topAnimeData}
-        animes={currentAnimeData}
-        genresList={genresList}
-      />
+      <HomePage upcomings={upcomingData} topAnimes={topAnimeData} animes={currentAnimeData} genresList={genresList} />
     </Suspense>
   );
 }
