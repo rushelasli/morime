@@ -4,9 +4,8 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   images: {
-    unoptimized: process.env.VERCEL_ENV === "production" ? false : true,
-    formats: ["image/webp"],
-    qualities: [75],
+    formats: ["image/webp", "image/avif"],
+    qualities: [75, 80, 85],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
