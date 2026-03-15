@@ -1,5 +1,6 @@
 import { schedulesClient } from "@/lib/api/jikan";
 import type { Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
+import { retryWithBackoff } from "@/lib/api/retry";
 
 interface ScheduleResponse {
   data: JikanAnime[];
@@ -38,7 +39,10 @@ export async function getSchedules(
       params.unapproved = options.unapproved;
     }
 
-    const response = await schedulesClient.getSchedules(params);
+    const response = await retryWithBackoff(
+      () => schedulesClient.getSchedules(params),
+      { maxRetries: 2, delayMs: 500 }
+    );
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -48,7 +52,7 @@ export async function getSchedules(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error("Error fetching schedule data:", error);
+    console.error("Error fetching schedule data after retries:", error);
     return {
       data: [],
       totalPages: 0,

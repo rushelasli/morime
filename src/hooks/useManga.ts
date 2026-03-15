@@ -1,6 +1,12 @@
 import { mangaClient, topClient, genresClient } from "@/lib/api/jikan";
-import type { JikanResponseWithPagination, MangaSearchParams, Manga as JikanManga, Pagination } from "@rushelasli/jikants";
+import type {
+  JikanResponseWithPagination,
+  MangaSearchParams,
+  Manga as JikanManga,
+  Pagination,
+} from "@rushelasli/jikants";
 import { adaptAnimeCharacters } from "@/lib/api/adapters";
+import { retryWithBackoff } from "@/lib/api/retry";
 
 interface MangaResponse {
   data: JikanManga[];
@@ -45,9 +51,11 @@ export async function getManga(
     if (options.order_by) params.order_by = options.order_by;
     if (options.sort) params.sort = options.sort;
 
-    const response: JikanResponseWithPagination<JikanManga[]> = await mangaClient.searchManga(
-      params as Partial<MangaSearchParams>
-    );
+    const response: JikanResponseWithPagination<JikanManga[]> =
+      await retryWithBackoff(
+        () => mangaClient.searchManga(params as Partial<MangaSearchParams>),
+        { maxRetries: 2, delayMs: 500 }
+      );
 
     return {
       data: response.data || [],
@@ -56,7 +64,7 @@ export async function getManga(
       totalItems: response.pagination?.items?.total || 0,
     };
   } catch (error: unknown) {
-    console.error("Error fetching manga list:", error);
+    console.error("Error fetching manga list after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -86,7 +94,10 @@ export async function getTopManga(
     if (options.type) params.type = options.type;
     if (options.filter) params.filter = options.filter;
 
-    const response = await topClient.getTopManga(params);
+    const response = await retryWithBackoff(
+      () => topClient.getTopManga(params),
+      { maxRetries: 2, delayMs: 500 }
+    );
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -96,7 +107,7 @@ export async function getTopManga(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error("Error fetching top manga:", error);
+    console.error("Error fetching top manga after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -109,30 +120,43 @@ export async function getTopManga(
 
 export async function getDetailManga(malId: number) {
   try {
-    const response = await mangaClient.getMangaFullById(malId);
+    const response = await retryWithBackoff(
+      () => mangaClient.getMangaFullById(malId),
+      { maxRetries: 2, delayMs: 500 }
+    );
     return response.data;
   } catch (error) {
-    console.error(`Error fetching manga details for ID ${malId}:`, error);
+    console.error(`Error fetching manga details for ID ${malId} after retries:`, error);
     throw error;
   }
 }
 
 export async function getMangaCharacters(malId: number) {
   try {
-    const response = await mangaClient.getMangaCharacters(malId);
+    const response = await retryWithBackoff(
+      () => mangaClient.getMangaCharacters(malId),
+      { maxRetries: 2, delayMs: 500 }
+    );
     return adaptAnimeCharacters(response.data || []);
   } catch (error) {
-    console.error(`Error fetching characters for manga ID ${malId}:`, error);
+    console.error(`Error fetching characters for manga ID ${malId} after retries:`, error);
     return [];
   }
 }
 
 export async function getMangaGenresList() {
   try {
-    const response = await genresClient.getMangaGenres();
-    return response.data || [];
+    const response = await retryWithBackoff(
+      () => genresClient.getMangaGenres(),
+      { maxRetries: 3, delayMs: 500 }
+    );
+    const data = response.data || [];
+    if (data.length === 0) {
+      console.warn("[getMangaGenresList] Received empty genres list from API");
+    }
+    return data;
   } catch (error) {
-    console.error("Error fetching manga genres list:", error);
+    console.error("Error fetching manga genres list after retries:", error);
     return [];
   }
 }
@@ -148,12 +172,17 @@ export async function searchManga(
   }
 
   try {
-    const response: JikanResponseWithPagination<JikanManga[]> = await mangaClient.searchManga({
-      q: query.trim(),
-      page,
-      limit,
-      sfw: sfw ?? true,
-    });
+    const response: JikanResponseWithPagination<JikanManga[]> =
+      await retryWithBackoff(
+        () =>
+          mangaClient.searchManga({
+            q: query.trim(),
+            page,
+            limit,
+            sfw: sfw ?? true,
+          }),
+        { maxRetries: 2, delayMs: 500 }
+      );
 
     return {
       data: response.data || [],
@@ -162,7 +191,7 @@ export async function searchManga(
       currentPage: page,
     };
   } catch (error: unknown) {
-    console.error("Error searching manga:", error);
+    console.error("Error searching manga after retries:", error);
     return {
       data: [],
       total: 0,

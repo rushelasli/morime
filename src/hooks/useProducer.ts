@@ -1,5 +1,6 @@
 import { producersClient, animeClient } from "@/lib/api/jikan";
 import type { Producer as JikanProducer, Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
+import { retryWithBackoff } from "@/lib/api/retry";
 
 interface ProducerResponse {
   data: JikanProducer[];
@@ -47,7 +48,10 @@ export async function getProducers(
     if (options.q) params.q = options.q;
     if (options.letter) params.letter = options.letter;
 
-    const response = await producersClient.getProducersSearch(params);
+    const response = await retryWithBackoff(
+      () => producersClient.getProducersSearch(params),
+      { maxRetries: 2, delayMs: 500 }
+    );
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -58,7 +62,7 @@ export async function getProducers(
       pagination: pagination,
     };
   } catch (error: unknown) {
-    console.error("Error fetching producers:", error);
+    console.error('Error fetching producers after retries:', error);
     return {
       data: [],
       totalPages: 0,
@@ -76,7 +80,10 @@ export async function getProducerById(id: number) {
     }
 
     // Try to get full producer details
-    const response = await producersClient.getProducerFullById(id);
+    const response = await retryWithBackoff(
+      () => producersClient.getProducerFullById(id),
+      { maxRetries: 2, delayMs: 500 }
+    );
 
     if (response.data) {
       const producer = response.data;
@@ -100,7 +107,10 @@ export async function getProducerById(id: number) {
 
     // Fallback: Try basic producer info
     try {
-      const basicResponse = await producersClient.getProducerById(id);
+      const basicResponse = await retryWithBackoff(
+        () => producersClient.getProducerById(id),
+        { maxRetries: 2, delayMs: 500 }
+      );
 
       if (basicResponse.data) {
         const producer = basicResponse.data;
@@ -123,10 +133,13 @@ export async function getProducerById(id: number) {
 
     // Last resort: Get producer info from anime search
     try {
-      const animeResponse = await animeClient.searchAnime({
-        producers: id.toString(),
-        limit: 1,
-      });
+      const animeResponse = await retryWithBackoff(
+        () => animeClient.searchAnime({
+          producers: id.toString(),
+          limit: 1,
+        }),
+        { maxRetries: 2, delayMs: 500 }
+      );
 
       if (animeResponse.data && animeResponse.data.length > 0) {
         const producer = animeResponse.data[0].producers?.find(p => p.mal_id === id);
@@ -168,12 +181,16 @@ export async function searchProducers(
   }
 
   try {
-    const data = await getProducers(page, {
+    const response = await retryWithBackoff(
+      async () => await getProducers(page, {
       q: query.trim(),
       limit: options.limit || 24,
       order_by: options.order_by,
       sort: options.sort,
-    });
+      }),
+      { maxRetries: 2, delayMs: 500 }
+    );
+    const data = response;
 
     return {
       data: data.data || [],
@@ -200,14 +217,17 @@ export async function getProducerAnime(
   sfw: boolean = true
 ): Promise<AnimeResponse> {
   try {
-    const response = await animeClient.searchAnime({
-      producers: producerId.toString(),
-      page,
-      limit,
-      order_by: "favorites",
-      sort: "desc",
-      sfw,
-    });
+    const response = await retryWithBackoff(
+      () => animeClient.searchAnime({
+        producers: producerId.toString(),
+        page,
+        limit,
+        order_by: 'favorites',
+        sort: 'desc',
+        sfw,
+      }),
+      { maxRetries: 2, delayMs: 500 }
+    );
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -217,7 +237,7 @@ export async function getProducerAnime(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error(`Error fetching anime for producer ${producerId}:`, error);
+    console.error(`Error fetching anime for producer ${producerId} after retries:`, error);
     return {
       data: [],
       totalPages: 0,

@@ -1,6 +1,7 @@
 import { animeClient, topClient, genresClient } from "@/lib/api/jikan";
 import type { JikanResponseWithPagination, AnimeSearchParams, Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
 import { adaptAnimeCharacters, adaptAnimeEpisodes } from "@/lib/api/adapters";
+import { retryWithBackoff } from "@/lib/api/retry";
 
 interface AnimeResponse {
   data: JikanAnime[];
@@ -47,8 +48,9 @@ export async function getAnime(
     if (options.order_by) params.order_by = options.order_by;
     if (options.sort) params.sort = options.sort;
 
-    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime(
-      params as Partial<AnimeSearchParams>
+    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(
+      () => animeClient.searchAnime(params as Partial<AnimeSearchParams>),
+      { maxRetries: 2, delayMs: 500 }
     );
 
     return {
@@ -58,7 +60,7 @@ export async function getAnime(
       totalItems: response.pagination?.items?.total || 0,
     };
   } catch (error: unknown) {
-    console.error("Error fetching anime list:", error);
+    console.error("Error fetching anime list after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -90,7 +92,10 @@ export async function getTopAnime(
     if (options.filter) params.filter = options.filter;
     if (options.rating) params.rating = options.rating;
 
-    const response = await topClient.getTopAnime(params);
+    const response = await retryWithBackoff(
+      () => topClient.getTopAnime(params),
+      { maxRetries: 2, delayMs: 500 }
+    );
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -100,7 +105,7 @@ export async function getTopAnime(
       totalItems: pagination?.items?.total ?? 0,
     };
   } catch (error: unknown) {
-    console.error("Error fetching top anime:", error);
+    console.error("Error fetching top anime after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -113,40 +118,56 @@ export async function getTopAnime(
 
 export async function getDetailAnime(malId: number) {
   try {
-    const response = await animeClient.getAnimeFullById(malId);
+    const response = await retryWithBackoff(
+      () => animeClient.getAnimeFullById(malId),
+      { maxRetries: 2, delayMs: 500 }
+    );
     return response.data;
   } catch (error) {
-    console.error(`Error fetching anime details for ID ${malId}:`, error);
+    console.error(`Error fetching anime details for ID ${malId} after retries:`, error);
     throw error;
   }
 }
 
 export async function getAnimeCharacters(malId: number) {
   try {
-    const response = await animeClient.getAnimeCharacters(malId);
+    const response = await retryWithBackoff(
+      () => animeClient.getAnimeCharacters(malId),
+      { maxRetries: 2, delayMs: 500 }
+    );
     return adaptAnimeCharacters(response.data || []);
   } catch (error) {
-    console.error(`Error fetching characters for anime ID ${malId}:`, error);
+    console.error(`Error fetching characters for anime ID ${malId} after retries:`, error);
     return [];
   }
 }
 
 export async function getEpisodeAnime(malId: number) {
   try {
-    const response = await animeClient.getAnimeEpisodes(malId, 1);
+    const response = await retryWithBackoff(
+      () => animeClient.getAnimeEpisodes(malId, 1),
+      { maxRetries: 2, delayMs: 500 }
+    );
     return adaptAnimeEpisodes(response.data || []);
   } catch (error) {
-    console.error(`Error fetching episodes for ID ${malId}:`, error);
+    console.error(`Error fetching episodes for ID ${malId} after retries:`, error);
     return [];
   }
 }
 
 export async function getAnimeGenresList() {
   try {
-    const response = await genresClient.getAnimeGenres();
-    return response.data || [];
+    const response = await retryWithBackoff(
+      () => genresClient.getAnimeGenres(),
+      { maxRetries: 3, delayMs: 500 }
+    );
+    const data = response.data || [];
+    if (data.length === 0) {
+      console.warn("[getAnimeGenresList] Received empty genres list from API");
+    }
+    return data;
   } catch (error) {
-    console.error("Error fetching anime genres list:", error);
+    console.error("Error fetching anime genres list after retries:", error);
     return [];
   }
 }
@@ -162,12 +183,15 @@ export async function searchAnime(
   }
 
   try {
-    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime({
-      q: query.trim(),
-      page,
-      limit,
-      sfw: sfw ?? true,
-    });
+    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(
+      () => animeClient.searchAnime({
+        q: query.trim(),
+        page,
+        limit,
+        sfw: sfw ?? true,
+      }),
+      { maxRetries: 2, delayMs: 500 }
+    );
 
     return {
       data: response.data || [],
@@ -176,7 +200,7 @@ export async function searchAnime(
       currentPage: page,
     };
   } catch (error: unknown) {
-    console.error("Error searching anime:", error);
+    console.error("Error searching anime after retries:", error);
     return {
       data: [],
       total: 0,
@@ -206,8 +230,9 @@ export async function getRecentlyCompletedAnime(
       params.type = options.type;
     }
 
-    const response: JikanResponseWithPagination<JikanAnime[]> = await animeClient.searchAnime(
-      params as Partial<AnimeSearchParams>
+    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(
+      () => animeClient.searchAnime(params as Partial<AnimeSearchParams>),
+      { maxRetries: 2, delayMs: 500 }
     );
 
     return {
@@ -219,7 +244,7 @@ export async function getRecentlyCompletedAnime(
       hasNextPage: response.pagination?.has_next_page || false,
     };
   } catch (error: unknown) {
-    console.error("Error fetching recently completed anime:", error);
+    console.error("Error fetching recently completed anime after retries:", error);
     return {
       data: [],
       totalPages: 1,
