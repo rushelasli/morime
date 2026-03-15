@@ -12,7 +12,7 @@
         "@radix-ui/react-separator": "^1.1.8",
         "@radix-ui/react-slot": "^1.2.4",
         "@radix-ui/react-tabs": "^1.1.13",
-        "@rushelasli/jikants": "^0.1.1",
+        "@rushelasli/jikants": "^1.1.1",
         "@vercel/analytics": "^1.6.1",
         "@vercel/speed-insights": "^1.3.1",
         "axios": "^1.13.6",
@@ -32,7 +32,7 @@
         "@biomejs/biome": "^2.4.7",
         "@eslint/eslintrc": "^3.3.5",
         "@tailwindcss/postcss": "^4.2.1",
-        "@types/node": "^25.4.0",
+        "@types/node": "^25.5.0",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
         "eslint": "^9.39.4",
@@ -296,7 +296,7 @@
 
     "@rtsao/scc": ["@rtsao/scc@1.1.0", "", {}, "sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g=="],
 
-    "@rushelasli/jikants": ["@rushelasli/jikants@0.1.1", "", { "peerDependencies": { "axios": "^1.7.9", "axios-cache-interceptor": "^1.6.2" } }, "sha512-0QefUc/5Bq9hiXDqz0yktZv7H3o/2RZ7fVjQDU8WAruOUHNq/VjVzievVrtqTdSZMvPRyCJMzNX5U8uPL9uRYg=="],
+    "@rushelasli/jikants": ["@rushelasli/jikants@1.1.1", "", { "peerDependencies": { "axios": "^1.7.9", "axios-cache-interceptor": "^1.6.2" } }, "sha512-MOxdALDzFMjTB8VXDucGJ4fAEgGxZKdtD3eUbCLnjBV4AlgcKG0NBkDXjeYO5ijf+as+3aFYK0XHzv2WNAdwKg=="],
 
     "@swc/helpers": ["@swc/helpers@0.5.15", "", { "dependencies": { "tslib": "^2.8.0" } }, "sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g=="],
 
@@ -338,7 +338,7 @@
 
     "@types/json5": ["@types/json5@0.0.29", "", {}, "sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ=="],
 
-    "@types/node": ["@types/node@25.4.0", "", { "dependencies": { "undici-types": "~7.18.0" } }, "sha512-9wLpoeWuBlcbBpOY3XmzSTG3oscB6xjBEEtn+pYXTfhyXhIxC5FsBer2KTopBlvKEiW9l13po9fq+SJY/5lkhw=="],
+    "@types/node": ["@types/node@25.5.0", "", { "dependencies": { "undici-types": "~7.18.0" } }, "sha512-jp2P3tQMSxWugkCUKLRPVUpGaL5MVFwF8RDuSRztfwgN1wmqJeMSbKlnEtQqU8UrhTmzEmZdu2I6v2dpp7XIxw=="],
 
     "@types/react": ["@types/react@19.2.14", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w=="],
 
