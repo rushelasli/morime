@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Fade from "embla-carousel-fade";
+import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/Carousel";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -33,7 +34,13 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
   const [api, setApi] = useState<EmblaCarouselType | null>(null);
   const [current, setCurrent] = useState(0);
 
-  const plugin = useRef(Fade());
+  const fadePlugin = useRef(Fade());
+  const autoplayPlugin = useRef(
+    Autoplay({
+      delay: 5000,
+      stopOnInteraction: false,
+    })
+  );
 
   useEffect(() => {
     if (!api) {
@@ -45,10 +52,21 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap());
     });
+
+    // Restart autoplay after user interaction
+    api.on("pointerDown", () => {
+      if (autoplayPlugin.current) {
+        autoplayPlugin.current.reset();
+      }
+    });
   }, [api]);
 
   const goToSlide = (i: number) => {
     api?.scrollTo(i);
+    // Restart autoplay when manually selecting a slide
+    if (autoplayPlugin.current) {
+      autoplayPlugin.current.reset();
+    }
   };
 
   if (!items.length) return null;
@@ -57,7 +75,7 @@ export function HomeCarousel({ items }: HomeCarouselProps) {
     <div className="relative overflow-hidden rounded-lg">
       <Carousel
         setApi={setApi}
-        plugins={[plugin.current]}
+        plugins={[fadePlugin.current, autoplayPlugin.current]}
         className="w-full"
         opts={{
           loop: true,
