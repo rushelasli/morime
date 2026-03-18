@@ -1,31 +1,7 @@
 import { producersClient, animeClient } from "@/lib/api/jikan";
-import type { Producer as JikanProducer, Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
+import type { Producer as JikanProducer, Pagination } from "@rushelasli/jikants";
 import { retryWithBackoff } from "@/lib/api/retry";
-
-interface ProducerResponse {
-  data: JikanProducer[];
-  totalPages: number;
-  currentPage: number;
-  totalItems: number;
-  pagination?: Pagination;
-  error?: string;
-}
-
-interface AnimeResponse {
-  data: JikanAnime[];
-  totalPages: number;
-  currentPage: number;
-  totalItems: number;
-  error?: string;
-}
-
-interface SearchProducerResponse {
-  data: JikanProducer[];
-  total: number;
-  hasNextPage: boolean;
-  currentPage: number;
-  error?: string;
-}
+import type { ProducerResponse, SearchResponse, AnimeResponse } from "@/types/api";
 
 export async function getProducers(
   page: number = 1,
@@ -79,7 +55,6 @@ export async function getProducerById(id: number) {
       throw new Error("Producer ID is required");
     }
 
-    // Try to get full producer details
     const response = await retryWithBackoff(
       () => producersClient.getProducerFullById(id),
       { maxRetries: 2, delayMs: 500 }
@@ -105,7 +80,6 @@ export async function getProducerById(id: number) {
   } catch (error: unknown) {
     console.error(`Error fetching producer details for ID ${id}:`, error);
 
-    // Fallback: Try basic producer info
     try {
       const basicResponse = await retryWithBackoff(
         () => producersClient.getProducerById(id),
@@ -131,7 +105,6 @@ export async function getProducerById(id: number) {
       console.error("Basic producer fetch also failed:", fallbackError);
     }
 
-    // Last resort: Get producer info from anime search
     try {
       const animeResponse = await retryWithBackoff(
         () => animeClient.searchAnime({
@@ -175,7 +148,7 @@ export async function searchProducers(
     order_by?: string;
     sort?: string;
   } = {}
-): Promise<SearchProducerResponse> {
+): Promise<SearchResponse<JikanProducer>> {
   if (!query?.trim()) {
     return { data: [], total: 0, hasNextPage: false, currentPage: page };
   }

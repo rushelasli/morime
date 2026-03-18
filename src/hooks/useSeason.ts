@@ -1,15 +1,7 @@
 import { seasonsClient } from "@/lib/api/jikan";
-import type { Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
+import type { Pagination } from "@rushelasli/jikants";
 import { retryWithBackoff } from "@/lib/api/retry";
-
-interface SeasonResponse {
-  data: JikanAnime[];
-  totalPages: number;
-  currentPage: number;
-  totalItems: number;
-  pagination?: Pagination;
-  error?: string;
-}
+import type { SeasonResponse } from "@/types/api";
 
 interface SeasonListItem {
   year: number;
@@ -35,7 +27,6 @@ export async function getSeason(
       sfw: options.sfw ?? true,
     };
 
-    // Add filter parameter if provided (for type filtering like TV, Movie, etc.)
     if (options.filter) {
       params.filter = options.filter.toLowerCase();
     }
@@ -61,7 +52,6 @@ export async function getSeason(
         { maxRetries: 2, delayMs: 500 }
       );
     } else if (options.type?.startsWith('seasons/')) {
-      // Handle specific year/season like "seasons/2024/winter"
       const parts = options.type.split('/');
       if (parts.length === 3) {
         const year = parseInt(parts[1]);

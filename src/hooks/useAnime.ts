@@ -2,22 +2,7 @@ import { animeClient, topClient, genresClient } from "@/lib/api/jikan";
 import type { JikanResponseWithPagination, AnimeSearchParams, Anime as JikanAnime, Pagination } from "@rushelasli/jikants";
 import { adaptAnimeCharacters, adaptAnimeEpisodes } from "@/lib/api/adapters";
 import { retryWithBackoff } from "@/lib/api/retry";
-
-interface AnimeResponse {
-  data: JikanAnime[];
-  totalPages: number;
-  currentPage: number;
-  totalItems: number;
-  error?: string;
-}
-
-interface SearchResponse {
-  data: JikanAnime[];
-  total: number;
-  hasNextPage: boolean;
-  currentPage: number;
-  error?: string;
-}
+import type { AnimeResponse, SearchResponse } from "@/types/api";
 
 export async function getAnime(
   page: number = 1,
@@ -177,7 +162,7 @@ export async function searchAnime(
   page: number = 1,
   limit: number = 20,
   sfw?: boolean
-): Promise<SearchResponse> {
+): Promise<SearchResponse<JikanAnime>> {
   if (!query?.trim()) {
     return { data: [], total: 0, hasNextPage: false, currentPage: page };
   }

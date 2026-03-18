@@ -7,22 +7,7 @@ import type {
 } from "@rushelasli/jikants";
 import { adaptAnimeCharacters } from "@/lib/api/adapters";
 import { retryWithBackoff } from "@/lib/api/retry";
-
-interface MangaResponse {
-  data: JikanManga[];
-  totalPages: number;
-  currentPage: number;
-  totalItems: number;
-  error?: string;
-}
-
-interface SearchResponse {
-  data: JikanManga[];
-  total: number;
-  hasNextPage: boolean;
-  currentPage: number;
-  error?: string;
-}
+import type { MangaResponse, SearchResponse } from "@/types/api";
 
 export async function getManga(
   page: number = 1,
@@ -166,7 +151,7 @@ export async function searchManga(
   page: number = 1,
   limit: number = 20,
   sfw?: boolean
-): Promise<SearchResponse> {
+): Promise<SearchResponse<JikanManga>> {
   if (!query?.trim()) {
     return { data: [], total: 0, hasNextPage: false, currentPage: page };
   }
