@@ -26,6 +26,7 @@ export function Header() {
   const navItems = [
     { label: "ANIME LIST", link: "anime" },
     { label: "MANGA LIST", link: "manga" },
+    { label: "PEOPLE LIST", link: "people" },
     { label: "PRODUCER LIST", link: "producer" },
     { label: "DAILY SCHEDULE", link: "anime/schedule" },
     { label: "SEASONAL SCHEDULE", link: "anime/season" },
