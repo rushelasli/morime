@@ -1,22 +1,16 @@
-import { getAnime, getAnimeGenresList } from "@/hooks/useAnime";
-import { searchAnime } from "@/hooks/useAnime";
-import { SearchInput } from "@/components/forms/SearchInput";
-import { GenreGrid } from "@/components/display/anime/GenreGrid";
-import { GenreCategories } from "@/components/display/anime/GenreCategories";
-import { AnimeSearchResults } from "@/components/anime/AnimeSearchResults";
-import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { PageContentProps } from "@/types";
+import { getAnimeGenresList, getAnime } from "@/hooks/useAnime";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
+import { getSfwCookie } from "@/actions/CookieActions";
+import { searchAnime } from "@/hooks/useAnime";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
+import { SearchInput } from "@/components/forms/SearchInput";
+import { AnimeSearchResults } from "@/components/anime/AnimeSearchResults";
+import { GenreCategories } from "@/components/display/anime/GenreCategories";
+import { GenreGrid } from "@/components/display/anime/GenreGrid";
 
-interface AnimePageContentProps {
-  searchParams: Promise<{
-    page?: string;
-    q?: string;
-  }>;
-}
-
-export default async function AnimePageContent({ searchParams }: AnimePageContentProps) {
+export default async function AnimePageContent({ searchParams }: PageContentProps) {
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";

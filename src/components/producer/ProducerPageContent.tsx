@@ -1,21 +1,12 @@
-import { getProducers } from "@/hooks/useProducer";
-import { searchProducers } from "@/hooks/useProducer";
-import { ProducersGrid } from "@/components/producer/ProducersGrid";
-import { SearchInput } from "@/components/forms/SearchInput";
-import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
+import { ProducerPageProps } from "@/types";
 import type { Producer as JikanProducer } from "@rushelasli/jikants";
+import { searchProducers } from "@/hooks/useProducer";
+import { getProducers } from "@/hooks/useProducer";
+import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
+import { SearchInput } from "@/components/forms/SearchInput";
+import { ProducersGrid } from "@/components/producer/ProducersGrid";
 
-interface ProducerPageContentProps {
-  searchParams: Promise<{
-    page?: string;
-    q?: string;
-    order_by?: string;
-    sort?: string;
-    letter?: string;
-  }>;
-}
-
-export default async function ProducerPageContent({ searchParams }: ProducerPageContentProps) {
+export default async function ProducerPageContent({ searchParams }: ProducerPageProps) {
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";

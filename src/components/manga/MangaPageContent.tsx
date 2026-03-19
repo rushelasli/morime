@@ -1,22 +1,16 @@
+import { PageContentProps } from "@/types";
 import { getManga, getMangaGenresList } from "@/hooks/useManga";
-import { searchManga } from "@/hooks/useManga";
-import { SearchInput } from "@/components/forms/SearchInput";
-import { GenreGrid } from "@/components/display/manga/GenreGrid";
-import { GenreCategories } from "@/components/display/manga/GenreCategories";
-import { MangaSearchResults } from "@/components/manga/MangaSearchResults";
-import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
-import { getSfwCookie } from "@/actions/CookieActions";
 import type { Manga as JikanManga } from "@rushelasli/jikants";
+import { getSfwCookie } from "@/actions/CookieActions";
+import { searchManga } from "@/hooks/useManga";
 import { getTitle } from "@/lib/utils/TitleExtractor";
+import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
+import { SearchInput } from "@/components/forms/SearchInput";
+import { MangaSearchResults } from "@/components/manga/MangaSearchResults";
+import { GenreCategories } from "@/components/display/manga/GenreCategories";
+import { GenreGrid } from "@/components/display/manga/GenreGrid";
 
-interface MangaPageContentProps {
-  searchParams: Promise<{
-    page?: string;
-    q?: string;
-  }>;
-}
-
-export default async function MangaPageContent({ searchParams }: MangaPageContentProps) {
+export default async function MangaPageContent({ searchParams }: PageContentProps) {
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";

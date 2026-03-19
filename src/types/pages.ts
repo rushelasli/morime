@@ -1,5 +1,6 @@
 export interface BaseSearchParams {
   page?: string;
+  q?: string;
 }
 
 export interface FilterSearchParams extends BaseSearchParams {
@@ -7,7 +8,6 @@ export interface FilterSearchParams extends BaseSearchParams {
 }
 
 export interface FullSearchParams extends FilterSearchParams {
-  q?: string;
   status?: string;
   order_by?: string;
   sort?: string;
@@ -18,7 +18,6 @@ export interface ScheduleSearchParams extends BaseSearchParams {
 }
 
 export interface ProducerSearchParams extends BaseSearchParams {
-  q?: string;
   order_by?: string;
   sort?: string;
   letter?: string;
@@ -34,6 +33,10 @@ export interface SeasonParams {
   season: string;
 }
 
+export interface TopAnimeParams {
+  type?: string[];
+}
+
 export interface PagePropsWithSearch<T = BaseSearchParams> {
   searchParams: Promise<T>;
 }
@@ -47,16 +50,12 @@ export interface PagePropsWithBoth<P = MalIdParams, S = BaseSearchParams> {
   searchParams: Promise<S>;
 }
 
+export type PageContentProps = PagePropsWithSearch;
 export type ListPageProps = PagePropsWithSearch<FilterSearchParams>;
 export type SearchPageProps = PagePropsWithSearch<FullSearchParams>;
-export type DetailPageProps = PagePropsWithParams<MalIdParams>;
-export type DetailWithPaginationProps = PagePropsWithBoth<MalIdParams, BaseSearchParams>;
+export type DetailPageProps = PagePropsWithParams;
+export type DetailWithPaginationProps = PagePropsWithBoth;
 export type SeasonPageProps = PagePropsWithBoth<SeasonParams, FilterSearchParams>;
 export type SchedulePageProps = PagePropsWithSearch<ScheduleSearchParams>;
 export type ProducerPageProps = PagePropsWithSearch<ProducerSearchParams>;
-
-export interface TopAnimeParams {
-  type?: string[];
-}
-
-export type TopAnimePageProps = PagePropsWithBoth<TopAnimeParams, BaseSearchParams>;
+export type TopAnimePageProps = PagePropsWithBoth<TopAnimeParams>;
