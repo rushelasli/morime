@@ -43,8 +43,10 @@ export type ProducerResponse = ModelResponse<any>;
 export type SeasonResponse = ModelResponse<any>;
 export type ScheduleResponse = ModelResponse<any>;
 export type PeopleRespone = ModelResponse<any>;
+export type CharacterResponse = ModelResponse<any>;
 
 export type AnimeSearchResponse = SearchResponse<any>;
 export type MangaSearchResponse = SearchResponse<any>;
 export type ProducerSearchResponse = SearchResponse<any>;
 export type PeopleSearchResponse = SearchResponse<any>;
+export type CharacterSearchResponse = SearchResponse<any>;
