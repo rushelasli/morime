@@ -5,7 +5,6 @@ import { PersonHeroSection } from "@/components/people/detail/sections/HeroSecti
 import { PersonSidebar } from "@/components/people/detail/sections/Sidebar";
 import { PersonContentSections } from "@/components/people/detail/sections/ContentSections";
 import { getPersonById } from "@/hooks/usePeople";
-import { toSnakeCase } from "@/lib/utils/Formatter";
 import type { PagePropsWithBoth, MalIdParams, BaseSearchParams } from "@/types/pages";
 
 export async function generateMetadata({ params }: { params: Promise<MalIdParams> }): Promise<Metadata> {
@@ -80,7 +79,7 @@ export default async function PersonDetailPage({
       favorites: personData.favorites,
       animeCount: personData.anime?.length || 0,
       voiceCount: personData.voices?.length || 0,
-      age,
+      mangaCount: personData.manga?.length || 0,
     };
 
     const sidebarData = {

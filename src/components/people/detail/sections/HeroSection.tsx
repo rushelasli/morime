@@ -205,11 +205,7 @@ export function PersonHeroSection({ heroData }: PersonHeroSectionProps) {
           <div className="flex flex-col sm:flex-row w-full gap-5 sm:gap-8 items-center sm:items-start md:items-end">
             <PersonPoster imageUrl={imageUrl} name={name} />
 
-            <div className="flex-1 text-center sm:text-left max-w-full">
-              <div className="flex items-center justify-center sm:justify-start flex-wrap gap-2 mb-2 sm:mb-3">
-                <Badge variant="secondary" className="text-xs sm:text-sm px-2.5 py-0.5" />
-              </div>
-
+            <div className="flex-1 mt-10 text-center sm:text-left max-w-full">
               <PersonTitle
                 name={name}
                 givenName={givenName}
