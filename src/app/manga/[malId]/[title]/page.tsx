@@ -7,6 +7,7 @@ import { MangaContentSections } from "@/components/manga/detail/sections/Content
 import { getDetailManga, getMangaCharacters } from "@/hooks/useManga";
 import { getTitle, getEnglishTitle, getJapaneseTitle, getTitleSynonyms } from "@/lib/utils/TitleExtractor";
 import type { DetailPageProps } from "@/types/pages";
+import type { Published } from "@/types/anime";
 
 export async function generateMetadata({ params }: DetailPageProps): Promise<Metadata> {
   const { malId } = await params;
@@ -63,7 +64,7 @@ export default async function MangaDetailPage({ params }: DetailPageProps) {
       status: manga.status || "Unknown",
       chapters: manga.chapters,
       volumes: manga.volumes,
-      published: manga.published || { from: null, to: null, prop: { from: {}, to: {} }, string: "" },
+      published: (manga.published as unknown as Published) || null,
       authors: manga.authors || [],
       serializations: manga.serializations || [],
       genres: manga.genres || [],

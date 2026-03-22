@@ -2,8 +2,16 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Link } from "@/components/ui/Link";
 import { toSnakeCase } from "@/lib/utils/Formatter";
+import type { ReactNode } from "react";
+import type { Published, Genre, ThemeCategory, Demographic } from "@/types/anime";
 
-const SidebarSection = ({ title, children, condition = true }) => {
+interface SidebarSectionProps {
+  title: string;
+  children: ReactNode;
+  condition?: boolean | string | number | null | unknown[];
+}
+
+const SidebarSection = ({ title, children, condition = true }: SidebarSectionProps) => {
   if (!condition) return null;
 
   return (
@@ -14,20 +22,36 @@ const SidebarSection = ({ title, children, condition = true }) => {
   );
 };
 
-const InfoRow = ({ label, children }) => (
+interface InfoRowProps {
+  label: string;
+  children: ReactNode;
+}
+
+const InfoRow = ({ label, children }: InfoRowProps) => (
   <div className="flex justify-between text-sm">
     <span className="text-muted-foreground">{label}</span>
     {children}
   </div>
 );
 
-const BadgeList = ({ items, renderBadge, className = "flex flex-wrap gap-1.5 justify-end" }) => (
+interface BadgeListProps<T> {
+  items?: T[] | null;
+  renderBadge: (item: T) => ReactNode;
+  className?: string;
+}
+
+const BadgeList = <T,>({ items, renderBadge, className = "flex flex-wrap gap-1.5 justify-end" }: BadgeListProps<T>) => (
   <div className={className}>{items?.map(renderBadge)}</div>
 );
 
-const InfoValue = ({ children }) => <span className="font-medium text-right">{children}</span>;
+const InfoValue = ({ children }: { children: ReactNode }) => <span className="font-medium text-right">{children}</span>;
 
-const AlternativeTitlesSection = ({ titleJapanese, titleSynonyms }) => {
+interface AlternativeTitlesSectionProps {
+  titleJapanese?: string | null;
+  titleSynonyms?: string[] | null;
+}
+
+const AlternativeTitlesSection = ({ titleJapanese, titleSynonyms }: AlternativeTitlesSectionProps) => {
   const hasAlternativeTitles = titleJapanese || (titleSynonyms && titleSynonyms.length > 0);
 
   return (
@@ -39,7 +63,7 @@ const AlternativeTitlesSection = ({ titleJapanese, titleSynonyms }) => {
         </div>
       )}
 
-      {titleSynonyms?.length > 0 && (
+      {titleSynonyms && titleSynonyms.length > 0 && (
         <div className="space-y-1">
           <span className="text-xs text-muted-foreground/80 font-medium block">Synonyms</span>
           <div className="space-y-0.5">
@@ -55,12 +79,20 @@ const AlternativeTitlesSection = ({ titleJapanese, titleSynonyms }) => {
   );
 };
 
-const BasicInfoSection = ({ status, chapters, volumes, published, type }) => {
-  const formatPublished = published => {
-    if (!published) return "N/A";
+interface BasicInfoSectionProps {
+  status?: string | null;
+  chapters?: number | null;
+  volumes?: number | null;
+  published?: Published | null;
+  type?: string | null;
+}
 
-    const from = published.from ? new Date(published.from).toLocaleDateString() : null;
-    const to = published.to ? new Date(published.to).toLocaleDateString() : null;
+const BasicInfoSection = ({ status, chapters, volumes, published, type }: BasicInfoSectionProps) => {
+  const formatPublished = (pub: Published | null | undefined) => {
+    if (!pub) return "N/A";
+
+    const from = pub.from ? new Date(pub.from).toLocaleDateString() : null;
+    const to = pub.to ? new Date(pub.to).toLocaleDateString() : null;
 
     if (from && to) {
       return `${from} to ${to}`;
@@ -95,22 +127,36 @@ const BasicInfoSection = ({ status, chapters, volumes, published, type }) => {
   );
 };
 
-const CreditsSection = ({ authors, serializations }) => (
+interface AuthorSerialization {
+  mal_id: number;
+  name: string;
+  type: string;
+  url: string;
+}
+
+interface CreditsSectionProps {
+  authors?: AuthorSerialization[] | null;
+  serializations?: AuthorSerialization[] | null;
+}
+
+const CreditsSection = ({ authors, serializations }: CreditsSectionProps) => (
   <SidebarSection title="Credits">
-    {authors?.length > 0 && (
+    {authors && authors.length > 0 && (
       <InfoRow label="Authors">
         <BadgeList
           items={authors}
           renderBadge={author => (
-            <Badge key={author.mal_id} variant="outline" className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6">
-              {author.name}
-            </Badge>
+            <Link key={author.mal_id} href={`/people/${author.mal_id}/${toSnakeCase(author.name)}`}>
+              <Badge variant="outline" className="text-xs hover:bg-primary/10 py-0 h-5 sm:h-6">
+                {author.name}
+              </Badge>
+            </Link>
           )}
         />
       </InfoRow>
     )}
 
-    {serializations?.length > 0 && (
+    {serializations && serializations.length > 0 && (
       <InfoRow label="Serialization">
         <BadgeList
           items={serializations}
@@ -125,9 +171,15 @@ const CreditsSection = ({ authors, serializations }) => (
   </SidebarSection>
 );
 
-const DetailsSection = ({ genres, themes, demographics }) => (
+interface DetailsSectionProps {
+  genres?: Genre[] | null;
+  themes?: ThemeCategory[] | null;
+  demographics?: Demographic[] | null;
+}
+
+const DetailsSection = ({ genres, themes, demographics }: DetailsSectionProps) => (
   <SidebarSection title="Details">
-    {genres?.length > 0 && (
+    {genres && genres.length > 0 && (
       <InfoRow label="Genres">
         <BadgeList
           items={genres}
@@ -142,7 +194,7 @@ const DetailsSection = ({ genres, themes, demographics }) => (
       </InfoRow>
     )}
 
-    {themes?.length > 0 && (
+    {themes && themes.length > 0 && (
       <InfoRow label="Themes">
         <BadgeList
           items={themes}
@@ -157,7 +209,7 @@ const DetailsSection = ({ genres, themes, demographics }) => (
       </InfoRow>
     )}
 
-    {demographics?.length > 0 && (
+    {demographics && demographics.length > 0 && (
       <InfoRow label="Demographics">
         <BadgeList
           items={demographics}
@@ -172,13 +224,20 @@ const DetailsSection = ({ genres, themes, demographics }) => (
   </SidebarSection>
 );
 
-const StatisticsSection = ({ rank, popularity, members, favorites }) => {
-  const formatNumber = num => {
+interface StatisticsSectionProps {
+  rank?: number | null;
+  popularity?: number | null;
+  members?: number | null;
+  favorites?: number | null;
+}
+
+const StatisticsSection = ({ rank, popularity, members, favorites }: StatisticsSectionProps) => {
+  const formatNumber = (num: number | null | undefined) => {
     return num ? num.toLocaleString() : "N/A";
   };
 
-  const formatRank = rank => {
-    return rank ? `#${rank}` : "N/A";
+  const formatRank = (r: number | null | undefined) => {
+    return r ? `#${r}` : "N/A";
   };
 
   return (
@@ -202,7 +261,28 @@ const StatisticsSection = ({ rank, popularity, members, favorites }) => {
   );
 };
 
-export function MangaSidebar({ sidebarData }) {
+export interface MangaSidebarProps {
+  sidebarData: {
+    titleJapanese?: string | null;
+    titleSynonyms?: string[] | null;
+    status?: string | null;
+    chapters?: number | null;
+    volumes?: number | null;
+    published?: Published | null;
+    type?: string | null;
+    authors?: AuthorSerialization[] | null;
+    serializations?: AuthorSerialization[] | null;
+    genres?: Genre[] | null;
+    themes?: ThemeCategory[] | null;
+    demographics?: Demographic[] | null;
+    rank?: number | null;
+    popularity?: number | null;
+    members?: number | null;
+    favorites?: number | null;
+  };
+}
+
+export function MangaSidebar({ sidebarData }: MangaSidebarProps) {
   const {
     titleJapanese,
     titleSynonyms,

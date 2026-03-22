@@ -5,7 +5,7 @@ import { CharacterHeroSection } from "@/components/character/detail/sections/Her
 import { CharacterSidebar } from "@/components/character/detail/sections/Sidebar";
 import { CharacterContentSections } from "@/components/character/detail/sections/ContentSections";
 import { getCharacterById } from "@/hooks/useCharacter";
-import type { PagePropsWithBoth, MalIdParams, BaseSearchParams } from "@/types/pages";
+import type { DetailPageProps, MalIdParams } from "@/types/pages";
 
 export async function generateMetadata({ params }: { params: Promise<MalIdParams> }): Promise<Metadata> {
   const { malId } = await params;
@@ -38,11 +38,8 @@ export async function generateMetadata({ params }: { params: Promise<MalIdParams
 
 export default async function CharacterDetailPage({
   params,
-  searchParams,
-}: PagePropsWithBoth<MalIdParams, BaseSearchParams>) {
+}: DetailPageProps) {
   const { malId } = await params;
-  const { page } = await searchParams;
-  const currentPage = parseInt(page || "1");
 
   if (isNaN(Number(malId))) {
     notFound();
@@ -90,12 +87,7 @@ export default async function CharacterDetailPage({
               <CharacterSidebar sidebarData={sidebarData} />
             </div>
             <div className="lg:col-span-3">
-              <CharacterContentSections
-                contentData={contentData}
-                characterId={characterData.mal_id}
-                characterName={characterData.name}
-                currentPage={currentPage}
-              />
+              <CharacterContentSections contentData={contentData} />
             </div>
           </div>
         </ContentSection>

@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/Button";
 import { ChevronDownIcon } from "lucide-react";
 import { SectionCard } from "@/components/anime/detail/SectionCard";
 import Image from "next/image";
+import Link from "next/link";
+import { toSnakeCase } from "@/lib/utils/Formatter";
+import type { CharacterAnimeRole, CharacterMangaRole, CharacterVoiceActorRole } from "@/types/character";
 
 const TabSeparator = () => (
   <div className="-mx-1 md:hidden">
@@ -15,15 +18,15 @@ const TabSeparator = () => (
 
 interface ContentSectionsData {
   animeData?: {
-    data: any[];
+    data: CharacterAnimeRole[];
     totalPages?: number;
   } | null;
   mangaData?: {
-    data: any[];
+    data: CharacterMangaRole[];
     totalPages?: number;
   } | null;
   voicesData?: {
-    data: any[];
+    data: CharacterVoiceActorRole[];
     totalPages?: number;
   } | null;
   about?: string | null;
@@ -31,16 +34,10 @@ interface ContentSectionsData {
 
 interface CharacterContentSectionsProps {
   contentData: ContentSectionsData;
-  characterId: number;
-  characterName: string;
-  currentPage: number;
 }
 
 export function CharacterContentSections({
   contentData,
-  characterId,
-  characterName,
-  currentPage,
 }: CharacterContentSectionsProps) {
   const { animeData, mangaData, voicesData, about } = contentData;
 
@@ -58,7 +55,6 @@ export function CharacterContentSections({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* About Section */}
       {about && (
         <SectionCard title="Biography">
           <p className="text-sm sm:text-base text-muted-foreground/90 leading-relaxed whitespace-pre-wrap">
@@ -67,7 +63,6 @@ export function CharacterContentSections({
         </SectionCard>
       )}
 
-      {/* Credits/Appearances */}
       <SectionCard title="Appearances & Voice Actors">
         <Tabs defaultValue="anime" className="w-full">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto md:h-10 gap-1 md:gap-0 p-1 md:p-0 mb-6 bg-muted/30 md:bg-muted">
@@ -88,9 +83,9 @@ export function CharacterContentSections({
             {animeData && animeData.data && animeData.data.length > 0 ? (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  {displayAnime.map((animeItem: any, i: number) => (
+                  {displayAnime.map((animeItem: CharacterAnimeRole, i: number) => (
                     <div key={`anime-${animeItem?.anime?.mal_id}-${i}`} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group">
-                      <div className="shrink-0 overflow-hidden rounded-md">
+                      <Link href={`/anime/${animeItem?.anime?.mal_id}/${toSnakeCase(animeItem?.anime?.title || "unknown")}`} className="shrink-0 overflow-hidden rounded-md">
                         <Image
                           src={animeItem?.anime?.images?.webp?.image_url || animeItem?.anime?.images?.jpg?.image_url || "/placeholder-anime.png"}
                           alt={animeItem?.anime?.title || "Anime"}
@@ -100,11 +95,13 @@ export function CharacterContentSections({
                           placeholder="empty"
                           loading="lazy"
                         />
-                      </div>
+                      </Link>
                       <div className="flex-1 min-w-0 space-y-0.5">
-                        <h4 className="font-semibold text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {animeItem?.anime?.title || "Unknown Anime"}
-                        </h4>
+                        <Link href={`/anime/${animeItem?.anime?.mal_id}/${toSnakeCase(animeItem?.anime?.title || "unknown")}`}>
+                          <h4 className="font-semibold text-sm text-foreground line-clamp-2 hover:text-primary transition-colors">
+                            {animeItem?.anime?.title || "Unknown Anime"}
+                          </h4>
+                        </Link>
                         <p className="text-xs text-muted-foreground font-medium">{animeItem?.role || "Character"}</p>
                       </div>
                     </div>
@@ -126,9 +123,9 @@ export function CharacterContentSections({
             {mangaData && mangaData.data && mangaData.data.length > 0 ? (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  {displayManga.map((mangaItem: any, i: number) => (
+                  {displayManga.map((mangaItem: CharacterMangaRole, i: number) => (
                     <div key={`manga-${mangaItem?.manga?.mal_id}-${i}`} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group">
-                      <div className="shrink-0 overflow-hidden rounded-md">
+                      <Link href={`/manga/${mangaItem?.manga?.mal_id}/${toSnakeCase(mangaItem?.manga?.title || "unknown")}`} className="shrink-0 overflow-hidden rounded-md">
                         <Image
                           src={mangaItem?.manga?.images?.webp?.image_url || mangaItem?.manga?.images?.jpg?.image_url || "/placeholder-manga.png"}
                           alt={mangaItem?.manga?.title || "Manga"}
@@ -138,11 +135,13 @@ export function CharacterContentSections({
                           placeholder="empty"
                           loading="lazy"
                         />
-                      </div>
+                      </Link>
                       <div className="flex-1 min-w-0 space-y-0.5">
-                        <h4 className="font-semibold text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {mangaItem?.manga?.title || "Unknown Manga"}
-                        </h4>
+                        <Link href={`/manga/${mangaItem?.manga?.mal_id}/${toSnakeCase(mangaItem?.manga?.title || "unknown")}`}>
+                          <h4 className="font-semibold text-sm text-foreground line-clamp-2 hover:text-primary transition-colors">
+                            {mangaItem?.manga?.title || "Unknown Manga"}
+                          </h4>
+                        </Link>
                         <p className="text-xs text-muted-foreground font-medium">{mangaItem?.role || "Character"}</p>
                       </div>
                     </div>
@@ -164,12 +163,12 @@ export function CharacterContentSections({
             {voicesData && voicesData.data && voicesData.data.length > 0 ? (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  {displayVoices.map((voice: any, i: number) => (
+                  {displayVoices.map((voice: CharacterVoiceActorRole, i: number) => (
                     <div
                       key={`voice-${voice?.person?.mal_id}-${i}`}
                       className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group"
                     >
-                      <div className="shrink-0 overflow-hidden rounded-md">
+                      <Link href={`/people/${voice?.person?.mal_id}/${toSnakeCase(voice?.person?.name || "unknown")}`} className="shrink-0 overflow-hidden rounded-md">
                         <Image
                           src={voice?.person?.images?.jpg?.image_url || "/placeholder-character.png"}
                           alt={voice?.person?.name || "Person"}
@@ -179,11 +178,13 @@ export function CharacterContentSections({
                           placeholder="empty"
                           loading="lazy"
                         />
-                      </div>
+                      </Link>
                       <div className="flex-1 min-w-0 space-y-0.5">
-                        <h4 className="font-semibold text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {voice?.person?.name || "Unknown Voice Actor"}
-                        </h4>
+                        <Link href={`/people/${voice?.person?.mal_id}/${toSnakeCase(voice?.person?.name || "unknown")}`}>
+                          <h4 className="font-semibold text-sm text-foreground line-clamp-2 hover:text-primary transition-colors">
+                            {voice?.person?.name || "Unknown Voice Actor"}
+                          </h4>
+                        </Link>
                         <p className="text-xs text-muted-foreground font-medium">{voice?.language || "Language"}</p>
                       </div>
                     </div>

@@ -5,7 +5,7 @@ import { PersonHeroSection } from "@/components/people/detail/sections/HeroSecti
 import { PersonSidebar } from "@/components/people/detail/sections/Sidebar";
 import { PersonContentSections } from "@/components/people/detail/sections/ContentSections";
 import { getPersonById } from "@/hooks/usePeople";
-import type { PagePropsWithBoth, MalIdParams, BaseSearchParams } from "@/types/pages";
+import type { DetailPageProps, MalIdParams } from "@/types/pages";
 
 export async function generateMetadata({ params }: { params: Promise<MalIdParams> }): Promise<Metadata> {
   const { malId } = await params;
@@ -38,11 +38,8 @@ export async function generateMetadata({ params }: { params: Promise<MalIdParams
 
 export default async function PersonDetailPage({
   params,
-  searchParams,
-}: PagePropsWithBoth<MalIdParams, BaseSearchParams>) {
+}: DetailPageProps) {
   const { malId } = await params;
-  const { page } = await searchParams;
-  const currentPage = parseInt(page || "1");
 
   if (isNaN(Number(malId))) {
     notFound();
@@ -54,20 +51,6 @@ export default async function PersonDetailPage({
     if (!personData) {
       notFound();
     }
-
-    const calculateAge = (birthday: string | null) => {
-      if (!birthday) return null;
-      const today = new Date();
-      const birthDate = new Date(birthday);
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age >= 0 ? age : null;
-    };
-
-    const age = calculateAge(personData.birthday);
 
     const heroData = {
       imageUrl: personData.imageUrl,
@@ -109,12 +92,7 @@ export default async function PersonDetailPage({
               <PersonSidebar sidebarData={sidebarData} />
             </div>
             <div className="lg:col-span-3">
-              <PersonContentSections
-                contentData={contentData}
-                personId={personData.mal_id}
-                personName={personData.name}
-                currentPage={currentPage}
-              />
+              <PersonContentSections contentData={contentData} />
             </div>
           </div>
         </ContentSection>

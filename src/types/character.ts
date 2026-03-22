@@ -21,7 +21,7 @@ export interface CharacterAnimeRole {
   anime: {
     mal_id: number;
     url: string;
-    images: any;
+    images: CharacterImages;
     title: string;
   };
 }
@@ -31,7 +31,7 @@ export interface CharacterMangaRole {
   manga: {
     mal_id: number;
     url: string;
-    images: any;
+    images: CharacterImages;
     title: string;
   };
 }
@@ -41,7 +41,7 @@ export interface CharacterVoiceActorRole {
   person: {
     mal_id: number;
     url: string;
-    images: any;
+    images: CharacterImages;
     name: string;
   };
 }

@@ -4,6 +4,7 @@ export interface PersonImage {
 
 export interface PersonImages {
   jpg?: PersonImage;
+  webp?: PersonImage;
 }
 
 export interface PersonMeta {
@@ -18,7 +19,7 @@ export interface PersonAnimeStaff {
   anime: {
     mal_id: number;
     url: string;
-    images: any;
+    images: PersonImages;
     title: string;
   };
 }
@@ -28,7 +29,7 @@ export interface PersonMangaStaff {
   manga: {
     mal_id: number;
     url: string;
-    images: any;
+    images: PersonImages;
     title: string;
   };
 }
@@ -38,13 +39,13 @@ export interface PersonVoiceRole {
   anime: {
     mal_id: number;
     url: string;
-    images: any;
+    images: PersonImages;
     title: string;
   };
   character: {
     mal_id: number;
     url: string;
-    images: any;
+    images: PersonImages;
     name: string;
   };
 }
