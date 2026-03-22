@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 import { getAnime } from "@/hooks/useAnime";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { PagePropsWithBoth, MalIdParams, FilterSearchParams } from "@/types/pages";
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GenreAnimePage({ params, searchParams }: PagePropsWithBoth<MalIdParams, FilterSearchParams>) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const { malId, title } = await params;
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
@@ -40,6 +41,7 @@ export default async function GenreAnimePage({ params, searchParams }: PageProps
             year: anime.year,
             type: anime.type,
             members: anime.members,
+            favorites: anime.favorites,
           })) || [],
         totalPages: animeData.totalPages,
       }
@@ -48,7 +50,7 @@ export default async function GenreAnimePage({ params, searchParams }: PageProps
   return (
     <PageContainer>
       <PageHeader title={`${genreName} Anime`} description={`Browse anime in the ${genreName} genre`} />
-      <AnimeGrid
+      <AnimeGrid initialView={viewPref ?? "grid"}
         animeData={animeListData}
         currentPage={currentPage}
         basePath={`/anime/genre/${malId}/${title}`}

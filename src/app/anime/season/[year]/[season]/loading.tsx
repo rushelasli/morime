@@ -1,5 +1,7 @@
-import AnimeGridSkeleton from "@/components/loading/AnimeGridSkeleton";
+import { AnimeGridSkeleton } from "@/components/loading/AnimeGridSkeleton";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
-export default function Loading() {
-  return <AnimeGridSkeleton showSeasonNavigation={true} />;
+export default async function Loading() {
+  const viewPref = await getViewPreferenceCookie("anime-display");
+  return <AnimeGridSkeleton showSeasonNavigation={true} viewPref={viewPref} />;
 }

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 import { TypeFilterTabs } from "@/components/forms/TypeFilterTabs";
 import { getSeason } from "@/hooks/useSeason";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { SeasonPageProps } from "@/types/pages";
@@ -23,6 +23,7 @@ export async function generateMetadata({ params, searchParams }: SeasonPageProps
 }
 
 export default async function SeasonalAnimePage({ params, searchParams }: SeasonPageProps) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const { year, season } = await params;
   const typeFilter = (await searchParams)?.type || "";
   const currentPage = parseInt((await searchParams)?.page || "1");
@@ -49,6 +50,7 @@ export default async function SeasonalAnimePage({ params, searchParams }: Season
             year: anime.year,
             type: anime.type,
             members: anime.members,
+            favorites: anime.favorites,
           })) || [],
         totalPages: animeSeasonalData.totalPages,
       }
@@ -58,7 +60,7 @@ export default async function SeasonalAnimePage({ params, searchParams }: Season
     <>
       <TypeFilterTabs typeFilter={typeFilter} basePath={`/anime/season/${year}/${season}`} />
 
-      <AnimeGrid
+      <AnimeGrid initialView={viewPref ?? "grid"}
         animeData={animeData}
         currentPage={currentPage}
         basePath={`/anime/season/${year}/${season}`}

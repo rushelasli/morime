@@ -3,10 +3,9 @@ import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { PeoplePageSkeleton } from "@/components/loading/PeoplePageSkeleton";
 import type { ProducerPageProps } from "@/types/pages";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
-const CharacterPageContent = dynamic(() => import("@/components/character/CharacterPageContent"), {
-  loading: () => <PeoplePageSkeleton showSearch={true} />,
-});
+const CharacterPageContent = dynamic(() => import("@/components/character/CharacterPageContent"));
 
 export const metadata: Metadata = {
   title: "Characters",
@@ -14,8 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function CharacterPage(props: ProducerPageProps) {
+  const viewPref = await getViewPreferenceCookie("character-display");
+
   return (
-    <Suspense fallback={<PeoplePageSkeleton showSearch={true} />}>
+    <Suspense fallback={<PeoplePageSkeleton showSearch={true} viewPref={viewPref ?? "list"} />}>
       <CharacterPageContent {...props} />
     </Suspense>
   );

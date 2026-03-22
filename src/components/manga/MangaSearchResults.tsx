@@ -1,6 +1,4 @@
-import { MangaList } from "@/components/display/manga/MangaList";
-import { Separator } from "@/components/ui/Separator";
-import { MorimePagination } from "@/components/navigation/Pagination";
+import { MangaGrid } from "@/components/display/manga/MangaGrid";
 
 interface MangaSearchResultsProps {
   mangaListData: {
@@ -18,33 +16,21 @@ interface MangaSearchResultsProps {
   } | null;
   currentPage: number;
   searchQuery: string;
+  initialView?: "grid" | "list";
 }
 
-export function MangaSearchResults({ mangaListData, currentPage, searchQuery }: MangaSearchResultsProps) {
-  return (
-    <>
-      <MangaList
-        mangaData={mangaListData}
-        currentPage={currentPage}
-        basePath="/manga"
-        queryParams={{
-          ...(searchQuery && { q: searchQuery }),
-        }}
-      />
 
-      {mangaListData && mangaListData.data && mangaListData.data.length > 0 && (
-        <>
-          <Separator className="my-8" />
-          <MorimePagination
-            currentPage={currentPage}
-            totalPages={mangaListData.totalPages || 1}
-            basePath="/manga"
-            queryParams={{
-              ...(searchQuery && { q: searchQuery }),
-            }}
-          />
-        </>
-      )}
-    </>
+
+export function MangaSearchResults({ mangaListData, currentPage, searchQuery, initialView = "grid" }: MangaSearchResultsProps) {
+  return (
+    <MangaGrid
+      mangaData={mangaListData}
+      currentPage={currentPage}
+      basePath="/manga"
+      queryParams={{
+        ...(searchQuery && { q: searchQuery }),
+      }}
+      initialView={initialView}
+    />
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Link } from "@/components/ui/Link";
-import { Star, Play } from "lucide-react";
+import { Star, Play, Heart } from "lucide-react";
 import { toSnakeCase } from "@/lib/utils/Formatter";
 import { getImageWithFallback } from "@/lib/utils/ImageFallback";
 import { useState } from "react";
@@ -53,6 +53,13 @@ function AnimeListCard({ anime }: AnimeListCardProps) {
             </div>
 
             {anime.members && <div className="text-xs text-muted-foreground">{anime.members.toLocaleString()} members</div>}
+
+            {anime.favorites !== undefined && anime.favorites > 0 && (
+              <div className="flex items-center text-xs text-muted-foreground">
+                <Heart className="w-3 h-3 mr-1" />
+                <span>{anime.favorites.toLocaleString()} favorites</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

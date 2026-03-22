@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import AnimeSearchSkeleton from "@/components/loading/AnimeSearchSkeleton";
 import AnimeBrowseSkeleton from "@/components/loading/AnimeBrowseSkeleton";
 import type { SearchPageProps } from "@/types/pages";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
 const AnimePageContent = dynamic(() => import("@/components/anime/AnimePageContent"));
 
@@ -12,16 +13,17 @@ export const metadata: Metadata = {
   description: "Browse and discover anime. Search, filter by type and status, and explore thousands of anime titles.",
 };
 
-function AnimePageSkeleton({ searchParams }: { searchParams: { q?: string } }) {
+function AnimePageSkeleton({ searchParams, viewPref }: { searchParams: { q?: string }, viewPref: "grid" | "list" | null }) {
   const hasSearchQuery = searchParams?.q && searchParams.q.trim() !== "";
-  return hasSearchQuery ? <AnimeSearchSkeleton /> : <AnimeBrowseSkeleton />;
+  return hasSearchQuery ? <AnimeSearchSkeleton viewPref={viewPref} /> : <AnimeBrowseSkeleton />;
 }
 
 export default async function Page(props: SearchPageProps) {
   const searchParams = await props.searchParams;
+  const viewPref = await getViewPreferenceCookie("anime-display");
 
   return (
-    <Suspense fallback={<AnimePageSkeleton searchParams={searchParams} />}>
+    <Suspense fallback={<AnimePageSkeleton searchParams={searchParams} viewPref={viewPref} />}>
       <AnimePageContent {...props} />
     </Suspense>
   );

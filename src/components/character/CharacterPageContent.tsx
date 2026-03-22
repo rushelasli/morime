@@ -3,8 +3,10 @@ import { searchCharacters, getCharacters } from "@/hooks/useCharacter";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { SearchInput } from "@/components/forms/SearchInput";
 import { CharacterGrid } from "@/components/character/CharacterGrid";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
 export default async function CharacterPageContent({ searchParams }: ProducerPageProps) {
+  const viewPref = await getViewPreferenceCookie("character-display");
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";
@@ -43,7 +45,7 @@ export default async function CharacterPageContent({ searchParams }: ProducerPag
         autoFocus={true}
       />
 
-      <CharacterGrid
+      <CharacterGrid initialView={viewPref ?? "list"}
         charactersData={charactersData}
         currentPage={currentPage}
         basePath="/character"

@@ -18,7 +18,7 @@ interface ProducerDetailsProps {
   currentPage: number;
 }
 
-export function ProducerDetails({ producer, animes, currentPage }: ProducerDetailsProps) {
+export function ProducerDetails({ producer, animes, currentPage, initialView }: ProducerDetailsProps & { initialView?: "grid" | "list" }) {
   const [imageError, setImageError] = useState(false);
 
   const producerName = producer.titles?.[0]?.title || producer.name || "Unknown Producer";
@@ -100,7 +100,7 @@ export function ProducerDetails({ producer, animes, currentPage }: ProducerDetai
           <CardTitle className="text-lg sm:text-xl">Produced Anime</CardTitle>
         </CardHeader>
         <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
-          <AnimeGrid
+          <AnimeGrid initialView={initialView ?? "grid"}
             animeData={animes}
             currentPage={currentPage}
             basePath={`/producer/${producer.mal_id}/${toSnakeCase(producerName)}`}

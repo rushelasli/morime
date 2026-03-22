@@ -9,6 +9,7 @@ export interface AnimeCardData {
   year?: number;
   type?: string;
   members?: number;
+  favorites?: number;
 }
 
 export interface MangaCardData {
@@ -24,6 +25,7 @@ export interface MangaCardData {
   type?: string;
   status?: string;
   members?: number;
+  favorites?: number;
 }
 
 export interface ProducerDetailsData {

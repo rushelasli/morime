@@ -5,7 +5,7 @@ import { DayFilterTabs } from "@/components/forms/DayFilterTabs";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { notFound } from "next/navigation";
 import type { SchedulePageProps } from "@/types/pages";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 
@@ -20,6 +20,7 @@ export async function generateMetadata({ searchParams }: SchedulePageProps): Pro
 }
 
 export default async function Page({ searchParams }: SchedulePageProps) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const dayFilter = (await searchParams)?.day || "monday";
 
   if (
@@ -53,6 +54,7 @@ export default async function Page({ searchParams }: SchedulePageProps) {
             year: anime.year,
             type: anime.type,
             members: anime.members,
+            favorites: anime.favorites,
           })) || [],
         totalPages: animeScheduleData.totalPages,
       }
@@ -67,7 +69,7 @@ export default async function Page({ searchParams }: SchedulePageProps) {
 
       <DayFilterTabs dayFilter={dayFilter} />
 
-      <AnimeGrid
+      <AnimeGrid initialView={viewPref ?? "grid"}
         animeData={animeData}
         currentPage={currentPage}
         basePath="/anime/schedule"

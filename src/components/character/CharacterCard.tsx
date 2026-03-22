@@ -9,9 +9,10 @@ import type { CharacterData } from "@/types/character";
 
 interface CharacterCardProps {
   character: CharacterData;
+  view?: "grid" | "list";
 }
 
-export function CharacterCard({ character }: CharacterCardProps) {
+export function CharacterCard({ character, view = "grid" }: CharacterCardProps) {
   const [imageError, setImageError] = useState(false);
 
   const characterName = character.name || "Unknown Character";
@@ -20,16 +21,28 @@ export function CharacterCard({ character }: CharacterCardProps) {
   return (
     <Link
       href={`/character/${character.mal_id}/${toSnakeCase(characterName)}`}
-      className="group block p-4 border border-border rounded-lg hover:border-primary transition-all duration-300 hover:shadow-md"
+      className={`group block transition-all duration-300 ${
+        view === "list"
+          ? "p-4 border border-border rounded-lg hover:border-primary hover:shadow-md"
+          : "hover:-translate-y-1"
+      }`}
     >
-      <div className="flex items-start space-x-4">
-        <div className="shrink-0 w-16 h-16 overflow-hidden rounded-lg bg-muted relative">
+      <div className={view === "list" ? "flex items-start space-x-4" : "w-full h-auto flex flex-col"}>
+        <div 
+          className={`shrink-0 overflow-hidden bg-muted relative ${
+            view === "list" 
+              ? "w-16 h-16 rounded-lg" 
+              : "w-full aspect-2/3 rounded-lg shadow-lg group-hover:shadow-xl"
+          }`}
+        >
           {imageUrl && !imageError ? (
             <Image
               src={getImageWithFallback(imageUrl)}
               alt={characterName}
               fill
-              className="object-cover"
+              className={`object-cover ${
+                view === "grid" ? "transition-all duration-500 group-hover:scale-110" : ""
+              }`}
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               onError={() => setImageError(true)}
             />
@@ -40,7 +53,7 @@ export function CharacterCard({ character }: CharacterCardProps) {
           )}
         </div>
 
-        <div className="flex-1 min-w-0">
+        <div className={`min-w-0 ${view === "list" ? "flex-1" : "pt-2"}`}>
           <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">
             {characterName}
           </h3>
@@ -51,11 +64,11 @@ export function CharacterCard({ character }: CharacterCardProps) {
              </p>
           )}
 
-          <div className="mt-2 space-y-1">
+          <div className={`space-y-1 ${view === "list" ? "mt-2" : "mt-1 flex flex-col"}`}>
             {(character.favorites ?? 0) > 0 && (
               <div className="flex items-center text-xs text-muted-foreground">
                 <Heart className="w-3 h-3 mr-1" />
-                <span>{character.favorites.toLocaleString()} favorites</span>
+                <span>{character.favorites.toLocaleString()}{view === "list" ? " favorites" : ""}</span>
               </div>
             )}
             

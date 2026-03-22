@@ -1,5 +1,7 @@
 import GenrePageSkeleton from "@/components/loading/GenrePageSkeleton";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
-export default function loading() {
-  return <GenrePageSkeleton />;
+export default async function loading() {
+  const viewPref = await getViewPreferenceCookie("manga-display");
+  return <GenrePageSkeleton viewPref={viewPref} />;
 }

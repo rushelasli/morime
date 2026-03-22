@@ -4,8 +4,10 @@ import type { Person } from "@/types/people";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { SearchInput } from "@/components/forms/SearchInput";
 import { PeopleGrid } from "@/components/people/PeopleGrid";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
 export default async function PeoplePageContent({ searchParams }: PageContentProps) {
+  const viewPref = await getViewPreferenceCookie("people-display");
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt((resolvedSearchParams?.page as string) || "1");
   const searchQuery = (resolvedSearchParams?.q as string) || "";
@@ -57,7 +59,7 @@ export default async function PeoplePageContent({ searchParams }: PageContentPro
         autoFocus={true}
       />
 
-      <PeopleGrid
+      <PeopleGrid initialView={viewPref ?? "list"}
         peopleData={peopleListData}
         currentPage={currentPage}
         basePath="/people"

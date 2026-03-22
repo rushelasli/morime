@@ -9,9 +9,10 @@ import type { ProducerData } from "@/types/anime";
 
 interface ProducerCardProps {
   producers: ProducerData;
+  view?: "grid" | "list";
 }
 
-export function ProducerCard({ producers }: ProducerCardProps) {
+export function ProducerCard({ producers, view = "grid" }: ProducerCardProps) {
   const [imageError, setImageError] = useState(false);
 
   const producerName = producers.titles?.[0]?.title || producers.name || "Unknown Producer";
@@ -20,16 +21,28 @@ export function ProducerCard({ producers }: ProducerCardProps) {
   return (
     <Link
       href={`/producer/${producers.mal_id}/${toSnakeCase(producerName)}`}
-      className="group block p-4 border border-border rounded-lg hover:border-primary transition-all duration-300 hover:shadow-md"
+      className={`group block transition-all duration-300 ${
+        view === "list"
+          ? "p-4 border border-border rounded-lg hover:border-primary hover:shadow-md"
+          : "hover:-translate-y-1"
+      }`}
     >
-      <div className="flex items-start space-x-4">
-        <div className="shrink-0 w-16 h-16 overflow-hidden rounded-lg bg-muted relative">
+      <div className={view === "list" ? "flex items-start space-x-4" : "w-full h-auto flex flex-col"}>
+        <div
+          className={`shrink-0 overflow-hidden bg-muted relative ${
+            view === "list"
+              ? "w-16 h-16 rounded-lg"
+              : "w-full aspect-square rounded-lg shadow-lg group-hover:shadow-xl"
+          }`}
+        >
           {imageUrl && !imageError ? (
             <Image
               src={getImageWithFallback(imageUrl)}
               alt={producerName}
               fill
-              className="object-cover"
+              className={`object-cover ${
+                view === "grid" ? "transition-all duration-500 group-hover:scale-110" : ""
+              }`}
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               onError={() => setImageError(true)}
             />
@@ -40,10 +53,10 @@ export function ProducerCard({ producers }: ProducerCardProps) {
           )}
         </div>
 
-        <div className="flex-1 min-w-0">
+        <div className={`min-w-0 ${view === "list" ? "flex-1" : "pt-2"}`}>
           <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-2">{producerName}</h3>
 
-          <div className="mt-2 space-y-1">
+          <div className={`space-y-1 ${view === "list" ? "mt-2" : "mt-1 flex flex-col"}`}>
             <div className="flex items-center text-xs text-muted-foreground">
               <TrendingUp className="w-3 h-3 mr-1" />
               <span>{producers.count || 0} anime</span>
@@ -52,7 +65,7 @@ export function ProducerCard({ producers }: ProducerCardProps) {
             {producers.favorites > 0 && (
               <div className="flex items-center text-xs text-muted-foreground">
                 <Heart className="w-3 h-3 mr-1" />
-                <span>{producers.favorites.toLocaleString()} favorites</span>
+                <span>{producers.favorites.toLocaleString()}{view === "list" ? " favorites" : ""}</span>
               </div>
             )}
 

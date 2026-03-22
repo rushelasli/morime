@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import MangaSearchSkeleton from "@/components/loading/MangaSearchSkeleton";
 import MangaBrowseSkeleton from "@/components/loading/MangaBrowseSkeleton";
 import type { SearchPageProps } from "@/types/pages";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
 const MangaPageContent = dynamic(() => import("@/components/manga/MangaPageContent"));
 
@@ -12,16 +13,17 @@ export const metadata: Metadata = {
   description: "Browse and discover manga. Search, filter by type and status, and explore thousands of manga titles.",
 };
 
-function MangaPageSkeleton({ searchParams }: { searchParams: { q?: string } }) {
+function MangaPageSkeleton({ searchParams, viewPref }: { searchParams: { q?: string }, viewPref: "grid" | "list" | null }) {
   const hasSearchQuery = searchParams?.q && searchParams.q.trim() !== "";
-  return hasSearchQuery ? <MangaSearchSkeleton /> : <MangaBrowseSkeleton />;
+  return hasSearchQuery ? <MangaSearchSkeleton viewPref={viewPref} /> : <MangaBrowseSkeleton />;
 }
 
 export default async function Page(props: SearchPageProps) {
   const searchParams = await props.searchParams;
+  const viewPref = await getViewPreferenceCookie("manga-display");
 
   return (
-    <Suspense fallback={<MangaPageSkeleton searchParams={searchParams} />}>
+    <Suspense fallback={<MangaPageSkeleton searchParams={searchParams} viewPref={viewPref} />}>
       <MangaPageContent {...props} />
     </Suspense>
   );

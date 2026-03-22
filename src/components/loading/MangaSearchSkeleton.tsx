@@ -1,12 +1,12 @@
 import { Skeleton } from "@/components/ui/Skeleton";
-import { Separator } from "@/components/ui/Separator";
 import { PageContainer, ContentSection } from "@/components/layout/PageContainer";
+import { ItemGridSkeleton } from "@/components/loading/ItemGridSkeleton";
 
-/**
- * Skeleton loader for manga search results
- * Matches the MangaList card design exactly
- */
-export default function MangaSearchSkeleton() {
+interface MangaSearchSkeletonProps {
+  viewPref?: "grid" | "list" | null;
+}
+
+export default function MangaSearchSkeleton({ viewPref = "grid" }: MangaSearchSkeletonProps) {
   return (
     <>
       <PageContainer as="section">
@@ -23,46 +23,7 @@ export default function MangaSearchSkeleton() {
           </div>
         </div>
 
-        {/* Search results list */}
-        <div className="space-y-3">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="p-4 border border-border rounded-lg">
-              <div className="flex items-start space-x-4">
-                {/* Image - 16x24 */}
-                <Skeleton className="shrink-0 w-16 h-24 rounded-lg" />
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  {/* Title */}
-                  <Skeleton className="h-4 w-3/4" />
-
-                  {/* Info section with proper spacing */}
-                  <div className="mt-2 space-y-1">
-                    {/* Type and chapters */}
-                    <Skeleton className="h-3 w-36" />
-
-                    {/* Score with star icon */}
-                    <Skeleton className="h-3 w-16" />
-
-                    {/* Status */}
-                    <Skeleton className="h-3 w-24" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <Separator className="my-8" />
-
-        {/* Pagination */}
-        <div className="flex justify-center items-center gap-2">
-          <Skeleton className="h-10 w-20" />
-          <Skeleton className="h-10 w-10" />
-          <Skeleton className="h-10 w-10" />
-          <Skeleton className="h-10 w-10" />
-          <Skeleton className="h-10 w-20" />
-        </div>
+        <ItemGridSkeleton viewPref={viewPref} count={12} />
       </PageContainer>
 
       {/* Genre filters */}

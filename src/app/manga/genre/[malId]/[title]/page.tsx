@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { MangaGrid } from "@/components/display/manga/MangaGrid";
 import { getManga } from "@/hooks/useManga";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Manga as JikanManga } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { PagePropsWithBoth, MalIdParams, FilterSearchParams } from "@/types/pages";
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GenreMangaPage({ params, searchParams }: PagePropsWithBoth<MalIdParams, FilterSearchParams>) {
+  const viewPref = await getViewPreferenceCookie("manga-display");
   const { malId, title } = await params;
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
@@ -40,6 +41,7 @@ export default async function GenreMangaPage({ params, searchParams }: PageProps
             volumes: manga.volumes,
             type: manga.type,
             members: manga.members,
+            favorites: manga.favorites,
           })) || [],
         totalPages: mangaData.totalPages,
       }
@@ -48,7 +50,7 @@ export default async function GenreMangaPage({ params, searchParams }: PageProps
   return (
     <PageContainer>
       <PageHeader title={`${genreName} Manga`} description={`Browse manga in the ${genreName} genre`} />
-      <MangaGrid
+      <MangaGrid initialView={viewPref ?? "grid"}
         mangaData={mangaListData}
         currentPage={currentPage}
         basePath={`/manga/genre/${malId}/${title}`}

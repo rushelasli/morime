@@ -1,7 +1,7 @@
 import { PageContentProps } from "@/types";
 import { getAnimeGenresList, getAnime } from "@/hooks/useAnime";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import { searchAnime } from "@/hooks/useAnime";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
@@ -11,6 +11,7 @@ import { GenreCategories } from "@/components/display/anime/GenreCategories";
 import { GenreGrid } from "@/components/display/anime/GenreGrid";
 
 export default async function AnimePageContent({ searchParams }: PageContentProps) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";
@@ -47,6 +48,7 @@ export default async function AnimePageContent({ searchParams }: PageContentProp
             year: anime.year,
             type: anime.type,
             members: anime.members,
+            favorites: anime.favorites,
           })) || [],
         totalPages: animeData.totalPages || Math.ceil((animeData.total || 0) / 24),
       }
@@ -67,7 +69,7 @@ export default async function AnimePageContent({ searchParams }: PageContentProp
         <SearchInput defaultValue={searchQuery} basePath="/anime" placeholder="Search anime titles..." autoFocus={true} />
 
         {searchQuery ? (
-          <AnimeSearchResults animeListData={animeListData} currentPage={currentPage} searchQuery={searchQuery} />
+          <AnimeSearchResults animeListData={animeListData} currentPage={currentPage} searchQuery={searchQuery} initialView={viewPref ?? "grid"} />
         ) : (
           <GenreCategories genres={genresList} />
         )}

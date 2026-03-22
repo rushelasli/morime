@@ -1,7 +1,7 @@
 import { PageContentProps } from "@/types";
 import { getManga, getMangaGenresList } from "@/hooks/useManga";
 import type { Manga as JikanManga } from "@rushelasli/jikants";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import { searchManga } from "@/hooks/useManga";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import { PageContainer, PageHeader, ContentSection } from "@/components/layout/PageContainer";
@@ -11,6 +11,7 @@ import { GenreCategories } from "@/components/display/manga/GenreCategories";
 import { GenreGrid } from "@/components/display/manga/GenreGrid";
 
 export default async function MangaPageContent({ searchParams }: PageContentProps) {
+  const viewPref = await getViewPreferenceCookie("manga-display");
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";
@@ -47,6 +48,7 @@ export default async function MangaPageContent({ searchParams }: PageContentProp
             volumes: manga.volumes,
             type: manga.type,
             members: manga.members,
+            favorites: manga.favorites,
           })) || [],
         totalPages: mangaData.totalPages || Math.ceil((mangaData.total || 0) / 24),
       }
@@ -65,7 +67,7 @@ export default async function MangaPageContent({ searchParams }: PageContentProp
         <SearchInput defaultValue={searchQuery} basePath="/manga" placeholder="Search manga titles..." autoFocus={true} />
 
         {searchQuery ? (
-          <MangaSearchResults mangaListData={mangaListData} currentPage={currentPage} searchQuery={searchQuery} />
+          <MangaSearchResults mangaListData={mangaListData} currentPage={currentPage} searchQuery={searchQuery} initialView={viewPref ?? "grid"} />
         ) : (
           <GenreCategories genres={genresList} />
         )}

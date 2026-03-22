@@ -5,8 +5,10 @@ import { getProducers } from "@/hooks/useProducer";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { SearchInput } from "@/components/forms/SearchInput";
 import { ProducersGrid } from "@/components/producer/ProducersGrid";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
 export default async function ProducerPageContent({ searchParams }: ProducerPageProps) {
+  const viewPref = await getViewPreferenceCookie("producer-display");
   const resolvedSearchParams = await searchParams;
   const currentPage = parseInt(resolvedSearchParams?.page) || 1;
   const searchQuery = resolvedSearchParams?.q || "";
@@ -68,7 +70,7 @@ export default async function ProducerPageContent({ searchParams }: ProducerPage
         autoFocus={true}
       />
 
-      <ProducersGrid
+      <ProducersGrid initialView={viewPref ?? "list"}
         producersData={producerListData}
         currentPage={currentPage}
         basePath="/producer"

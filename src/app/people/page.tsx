@@ -3,10 +3,9 @@ import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { PeoplePageSkeleton } from "@/components/loading/PeoplePageSkeleton";
 import type { SearchPageProps } from "@/types/pages";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
-const PeoplePageContent = dynamic(() => import("@/components/people/PeoplePageContent"), {
-  loading: () => <PeoplePageSkeleton showSearch={true} />,
-});
+const PeoplePageContent = dynamic(() => import("@/components/people/PeoplePageContent"));
 
 export const metadata: Metadata = {
   title: "People & Voice Actors",
@@ -14,8 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function Page(props: SearchPageProps) {
+  const viewPref = await getViewPreferenceCookie("people-display");
+
   return (
-    <Suspense fallback={<PeoplePageSkeleton showSearch={true} />}>
+    <Suspense fallback={<PeoplePageSkeleton showSearch={true} viewPref={viewPref ?? "list"} />}>
       <PeoplePageContent {...props} />
     </Suspense>
   );

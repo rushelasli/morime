@@ -1,11 +1,12 @@
 import { getTopAnime } from "@/hooks/useAnime";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { TopAnimePageProps } from "@/types/pages";
 
 export default async function TopAnimePage({ params, searchParams }: TopAnimePageProps) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const type = resolvedParams?.type?.[0] || "all";
@@ -32,13 +33,15 @@ export default async function TopAnimePage({ params, searchParams }: TopAnimePag
             episodes: anime.episodes,
             year: anime.year,
             type: anime.type,
+            members: anime.members,
+            favorites: anime.favorites,
           })) || [],
         totalPages: animeData.totalPages,
       }
     : null;
 
   return (
-    <AnimeGrid
+    <AnimeGrid initialView={viewPref ?? "grid"}
       animeData={topAnimeData}
       currentPage={currentPage}
       basePath={type === "all" ? "/anime/top" : `/anime/top/${type}`}

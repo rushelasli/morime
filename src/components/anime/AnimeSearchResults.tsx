@@ -1,6 +1,4 @@
-import { AnimeList } from "@/components/display/anime/AnimeList";
-import { Separator } from "@/components/ui/Separator";
-import { MorimePagination } from "@/components/navigation/Pagination";
+import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 
 interface AnimeSearchResultsProps {
   animeListData: {
@@ -18,33 +16,21 @@ interface AnimeSearchResultsProps {
   } | null;
   currentPage: number;
   searchQuery: string;
+  initialView?: "grid" | "list";
 }
 
-export function AnimeSearchResults({ animeListData, currentPage, searchQuery }: AnimeSearchResultsProps) {
-  return (
-    <>
-      <AnimeList
-        animeData={animeListData}
-        currentPage={currentPage}
-        basePath="/anime"
-        queryParams={{
-          ...(searchQuery && { q: searchQuery }),
-        }}
-      />
 
-      {animeListData && animeListData.data && animeListData.data.length > 0 && (
-        <>
-          <Separator className="my-8" />
-          <MorimePagination
-            currentPage={currentPage}
-            totalPages={animeListData.totalPages || 1}
-            basePath="/anime"
-            queryParams={{
-              ...(searchQuery && { q: searchQuery }),
-            }}
-          />
-        </>
-      )}
-    </>
+
+export function AnimeSearchResults({ animeListData, currentPage, searchQuery, initialView = "grid" }: AnimeSearchResultsProps) {
+  return (
+    <AnimeGrid
+      animeData={animeListData}
+      currentPage={currentPage}
+      basePath="/anime"
+      queryParams={{
+        ...(searchQuery && { q: searchQuery }),
+      }}
+      initialView={initialView}
+    />
   );
 }

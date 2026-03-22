@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Link } from "@/components/ui/Link";
-import { Star, Play } from "lucide-react";
+import { Star, Play, Heart } from "lucide-react";
 import { toSnakeCase } from "@/lib/utils/Formatter";
 import { getImageWithFallback } from "@/lib/utils/ImageFallback";
 import { useState } from "react";
@@ -51,6 +51,13 @@ function MangaListCard({ manga }: MangaListCardProps) {
               <Star className="w-3 h-3 mr-1 text-yellow-500" />
               <span>{manga.score || "N/A"}</span>
             </div>
+
+            {manga.favorites !== undefined && manga.favorites > 0 && (
+              <div className="flex items-center text-xs text-muted-foreground">
+                <Heart className="w-3 h-3 mr-1" />
+                <span>{manga.favorites.toLocaleString()} favorites</span>
+              </div>
+            )}
 
             {manga.status && <div className="text-xs text-muted-foreground">{manga.status}</div>}
           </div>

@@ -1,8 +1,11 @@
 import { AnimeGridSkeleton } from "@/components/loading/AnimeGridSkeleton";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { getViewPreferenceCookie } from "@/actions/CookieActions";
 
-export default function RecentlyCompletedAnimeLoading() {
+export default async function RecentlyCompletedAnimeLoading() {
+  const viewPref = await getViewPreferenceCookie("anime-display");
+
   return (
     <PageContainer>
       <div className="text-center space-y-2 mb-8">
@@ -18,7 +21,7 @@ export default function RecentlyCompletedAnimeLoading() {
         </div>
       </div>
 
-      <AnimeGridSkeleton />
+      <AnimeGridSkeleton viewPref={viewPref} />
     </PageContainer>
   );
 }

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { ProducerDetails } from "@/components/producer/ProducerDetails";
 import { getProducerById, getProducerAnime } from "@/hooks/useProducer";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { PagePropsWithBoth, MalIdParams, BaseSearchParams } from "@/types/pages";
@@ -17,6 +17,7 @@ export default async function ProducerDetailsPage({
   params,
   searchParams,
 }: PagePropsWithBoth<MalIdParams, BaseSearchParams>) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const { malId } = await params;
   const { page } = await searchParams;
   const currentPage = parseInt(page || "1");
@@ -44,7 +45,8 @@ export default async function ProducerDetailsPage({
               episodes: anime.episodes,
               year: anime.year,
               type: anime.type,
-              members: anime.members,
+            members: anime.members,
+            favorites: anime.favorites,
             })) || [],
           totalPages: animeData.totalPages,
         }
@@ -53,7 +55,7 @@ export default async function ProducerDetailsPage({
     return (
       <PageContainer>
         <PageHeader title={producerData.name} description="Producer and studio information" />
-        <ProducerDetails producer={producerData} animes={animeListData} currentPage={currentPage} />
+        <ProducerDetails producer={producerData} animes={animeListData} currentPage={currentPage} initialView={viewPref ?? "grid"} />
       </PageContainer>
     );
   } catch (error) {

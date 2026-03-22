@@ -1,7 +1,13 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Separator } from "@/components/ui/Separator";
+import { ItemGridSkeleton } from "@/components/loading/ItemGridSkeleton";
 
-export default function AnimeGridSkeleton({ showSeasonNavigation = false }) {
+interface AnimeGridSkeletonProps {
+  showSeasonNavigation?: boolean;
+  viewPref?: "grid" | "list" | null;
+}
+
+export default function AnimeGridSkeleton({ showSeasonNavigation = false, viewPref = "grid" }: AnimeGridSkeletonProps) {
   return (
     <>
       {showSeasonNavigation && (
@@ -28,25 +34,7 @@ export default function AnimeGridSkeleton({ showSeasonNavigation = false }) {
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {Array.from({ length: 24 }).map((_, i) => (
-          <div key={i} className="space-y-2">
-            <Skeleton className="aspect-3/4 w-full rounded-md" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-3 w-3/4" />
-          </div>
-        ))}
-      </div>
-
-      <Separator className="my-8" />
-
-      <div className="flex justify-center items-center gap-2">
-        <Skeleton className="h-10 w-20" />
-        <Skeleton className="h-10 w-10" />
-        <Skeleton className="h-10 w-10" />
-        <Skeleton className="h-10 w-10" />
-        <Skeleton className="h-10 w-20" />
-      </div>
+      <ItemGridSkeleton viewPref={viewPref} count={24} />
     </>
   );
 }

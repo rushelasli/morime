@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageContainer, PageHeader } from "@/components/layout/PageContainer";
 import { AnimeGrid } from "@/components/display/anime/AnimeGrid";
 import { getAnime } from "@/hooks/useAnime";
-import { getSfwCookie } from "@/actions/CookieActions";
+import { getSfwCookie, getViewPreferenceCookie } from "@/actions/CookieActions";
 import type { Anime as JikanAnime } from "@rushelasli/jikants";
 import { getTitle } from "@/lib/utils/TitleExtractor";
 import type { ListPageProps } from "@/types/pages";
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function UpcomingAnimePage({ searchParams }: ListPageProps) {
+  const viewPref = await getViewPreferenceCookie("anime-display");
   const { page, type } = await searchParams;
   const currentPage = parseInt(page || "1");
   const isSfw = await getSfwCookie();
@@ -38,6 +39,7 @@ export default async function UpcomingAnimePage({ searchParams }: ListPageProps)
             year: anime.year,
             type: anime.type,
             members: anime.members,
+            favorites: anime.favorites,
           })) || [],
         totalPages: animeData.totalPages,
       }
@@ -46,7 +48,7 @@ export default async function UpcomingAnimePage({ searchParams }: ListPageProps)
   return (
     <PageContainer>
       <PageHeader title="Upcoming Anime" description="Discover anime that will be released soon" />
-      <AnimeGrid
+      <AnimeGrid initialView={viewPref ?? "grid"}
         animeData={animeListData}
         currentPage={currentPage}
         basePath="/anime/upcoming"
