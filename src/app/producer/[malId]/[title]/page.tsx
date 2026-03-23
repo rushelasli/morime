@@ -45,8 +45,8 @@ export default async function ProducerDetailsPage({
               episodes: anime.episodes,
               year: anime.year,
               type: anime.type,
-            members: anime.members,
-            favorites: anime.favorites,
+              members: anime.members,
+              favorites: anime.favorites,
             })) || [],
           totalPages: animeData.totalPages,
         }
@@ -55,7 +55,12 @@ export default async function ProducerDetailsPage({
     return (
       <PageContainer>
         <PageHeader title={producerData.name} description="Producer and studio information" />
-        <ProducerDetails producer={producerData} animes={animeListData} currentPage={currentPage} initialView={viewPref ?? "grid"} />
+        <ProducerDetails
+          producer={producerData}
+          animes={animeListData}
+          currentPage={currentPage}
+          initialView={viewPref ?? "grid"}
+        />
       </PageContainer>
     );
   } catch (error) {

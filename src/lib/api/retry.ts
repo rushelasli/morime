@@ -32,10 +32,7 @@ export class RetryError extends Error {
  * @returns Promise that resolves with the function result
  * @throws RetryError if all retries are exhausted
  */
-export async function retryWithBackoff<T>(
-  fn: () => Promise<T>,
-  options?: RetryOptions
-): Promise<T> {
+export async function retryWithBackoff<T>(fn: () => Promise<T>, options?: RetryOptions): Promise<T> {
   const config = { ...DEFAULT_OPTIONS, ...options };
   let lastError: Error | null = null;
   let delay = config.delayMs;
@@ -63,18 +60,12 @@ export async function retryWithBackoff<T>(
 
       // On last attempt, throw the error
       if (attempt > config.maxRetries) {
-        throw new RetryError(
-          `Failed after ${attempt} attempts: ${lastError.message}`,
-          lastError,
-          attempt
-        );
+        throw new RetryError(`Failed after ${attempt} attempts: ${lastError.message}`, lastError, attempt);
       }
 
       // Log retry attempt
       if (process.env.NODE_ENV === "development") {
-        console.warn(
-          `[Retry ${attempt}/${config.maxRetries}] Retrying in ${delay}ms due to: ${lastError.message}`
-        );
+        console.warn(`[Retry ${attempt}/${config.maxRetries}] Retrying in ${delay}ms due to: ${lastError.message}`);
       }
 
       // Wait before retrying

@@ -9,7 +9,7 @@ export function useViewToggle(storageKey: string, defaultView: ViewMode = "grid"
   const toggleView = async (newView: ViewMode) => {
     // Optimistic UI update
     setView(newView);
-    
+
     // Persist to cookie for SSR
     try {
       await setViewPreferenceCookie(storageKey, newView);

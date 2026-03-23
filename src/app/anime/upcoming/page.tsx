@@ -48,7 +48,8 @@ export default async function UpcomingAnimePage({ searchParams }: ListPageProps)
   return (
     <PageContainer>
       <PageHeader title="Upcoming Anime" description="Discover anime that will be released soon" />
-      <AnimeGrid initialView={viewPref ?? "grid"}
+      <AnimeGrid
+        initialView={viewPref ?? "grid"}
         animeData={animeListData}
         currentPage={currentPage}
         basePath="/anime/upcoming"

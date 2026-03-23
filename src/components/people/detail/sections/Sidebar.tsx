@@ -122,15 +122,7 @@ const StatisticsSection = ({ favorites }) => {
 };
 
 export function PersonSidebar({ sidebarData }) {
-  const {
-    givenName,
-    familyName,
-    alternateNames,
-    birthday,
-    website_url,
-    favorites,
-    url,
-  } = sidebarData;
+  const { givenName, familyName, alternateNames, birthday, website_url, favorites, url } = sidebarData;
 
   return (
     <Card className="py-0 shadow-lg border-border/40">

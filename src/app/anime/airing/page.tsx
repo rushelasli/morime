@@ -48,7 +48,8 @@ export default async function AiringAnimePage({ searchParams }: ListPageProps) {
   return (
     <PageContainer>
       <PageHeader title="Airing Anime" description="Currently airing anime series" />
-      <AnimeGrid initialView={viewPref ?? "grid"}
+      <AnimeGrid
+        initialView={viewPref ?? "grid"}
         animeData={animeListData}
         currentPage={currentPage}
         basePath="/anime/airing"

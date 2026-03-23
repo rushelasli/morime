@@ -135,7 +135,9 @@ interface StatCardProps {
 }
 
 const StatCard = ({ label, value, icon, className = "" }: StatCardProps) => (
-  <div className={`bg-card/40 backdrop-blur-sm rounded-lg p-3 border border-border/20 flex flex-col items-center justify-center ${className}`}>
+  <div
+    className={`bg-card/40 backdrop-blur-sm rounded-lg p-3 border border-border/20 flex flex-col items-center justify-center ${className}`}
+  >
     <div className="text-xs uppercase tracking-wider text-muted-foreground/80 mb-1 text-center">{label}</div>
     <div className="font-bold text-lg sm:text-xl flex items-center gap-1">
       {value}
@@ -183,18 +185,8 @@ interface PersonHeroSectionProps {
 }
 
 export function PersonHeroSection({ heroData }: PersonHeroSectionProps) {
-  const {
-    imageUrl,
-    name,
-    givenName,
-    familyName,
-    alternateNames,
-    birthday,
-    favorites,
-    animeCount,
-    voiceCount,
-    mangaCount,
-  } = heroData;
+  const { imageUrl, name, givenName, familyName, alternateNames, birthday, favorites, animeCount, voiceCount, mangaCount } =
+    heroData;
 
   return (
     <section className="w-full min-h-100 md:min-h-125 lg:min-h-150 relative overflow-hidden bg-linear-to-b from-background/60 via-background/80 to-background">
@@ -206,12 +198,7 @@ export function PersonHeroSection({ heroData }: PersonHeroSectionProps) {
             <PersonPoster imageUrl={imageUrl} name={name} />
 
             <div className="flex-1 mt-0 md:mt-10 text-center sm:text-left max-w-full">
-              <PersonTitle
-                name={name}
-                givenName={givenName}
-                familyName={familyName}
-                alternateNames={alternateNames}
-              />
+              <PersonTitle name={name} givenName={givenName} familyName={familyName} alternateNames={alternateNames} />
               <InfoTags birthday={birthday} favorites={favorites} />
               <StatsGrid animeCount={animeCount} voiceCount={voiceCount} mangaCount={mangaCount} />
 

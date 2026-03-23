@@ -25,10 +25,7 @@ export async function getPeople(
     if (options.q) params.q = options.q;
     if (options.letter) params.letter = options.letter;
 
-    const response = await retryWithBackoff(
-      () => peopleClient.getPeopleSearch(params),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => peopleClient.getPeopleSearch(params), { maxRetries: 2, delayMs: 500 });
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -39,7 +36,7 @@ export async function getPeople(
       pagination: pagination,
     };
   } catch (error: unknown) {
-    console.error('Error fetching people after retries:', error);
+    console.error("Error fetching people after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -56,10 +53,7 @@ export async function getPersonById(id: number) {
       throw new Error("Person ID is required");
     }
 
-    const response = await retryWithBackoff(
-      () => peopleClient.getPersonFullById(id),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => peopleClient.getPersonFullById(id), { maxRetries: 2, delayMs: 500 });
 
     if (response.data) {
       const person = response.data as PersonFull;
@@ -86,10 +80,7 @@ export async function getPersonById(id: number) {
     console.error(`Error fetching person details for ID ${id}:`, error);
 
     try {
-      const basicResponse = await retryWithBackoff(
-        () => peopleClient.getPersonById(id),
-        { maxRetries: 2, delayMs: 500 }
-      );
+      const basicResponse = await retryWithBackoff(() => peopleClient.getPersonById(id), { maxRetries: 2, delayMs: 500 });
 
       if (basicResponse.data) {
         const person = basicResponse.data as Person;
@@ -133,12 +124,13 @@ export async function searchPeople(
 
   try {
     const response = await retryWithBackoff(
-      async () => await getPeople(page, {
-        q: query.trim(),
-        limit: options.limit || 24,
-        order_by: options.order_by,
-        sort: options.sort,
-      }),
+      async () =>
+        await getPeople(page, {
+          q: query.trim(),
+          limit: options.limit || 24,
+          order_by: options.order_by,
+          sort: options.sort,
+        }),
       { maxRetries: 2, delayMs: 500 }
     );
 
@@ -166,10 +158,7 @@ export async function getPersonAnime(
   limit: number = 24
 ): Promise<ModelResponse<PersonAnimeStaff>> {
   try {
-    const response = await retryWithBackoff(
-      () => peopleClient.getPersonAnime(personId),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => peopleClient.getPersonAnime(personId), { maxRetries: 2, delayMs: 500 });
 
     const animeList = response.data || [];
     const totalPages = Math.ceil(animeList.length / limit) || 1;
@@ -195,16 +184,9 @@ export async function getPersonAnime(
   }
 }
 
-export async function getPersonManga(
-  personId: number,
-  page: number = 1,
-  limit: number = 24
-): Promise<ModelResponse<any>> {
+export async function getPersonManga(personId: number, page: number = 1, limit: number = 24): Promise<ModelResponse<any>> {
   try {
-    const response = await retryWithBackoff(
-      () => peopleClient.getPersonManga(personId),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => peopleClient.getPersonManga(personId), { maxRetries: 2, delayMs: 500 });
 
     const mangaList = response.data || [];
     const totalPages = Math.ceil(mangaList.length / limit) || 1;
@@ -236,10 +218,7 @@ export async function getPersonVoiceRoles(
   limit: number = 24
 ): Promise<ModelResponse<PersonVoiceRole>> {
   try {
-    const response = await retryWithBackoff(
-      () => peopleClient.getPersonVoices(personId),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => peopleClient.getPersonVoices(personId), { maxRetries: 2, delayMs: 500 });
 
     const voiceRoles = response.data || [];
     const totalPages = Math.ceil(voiceRoles.length / limit) || 1;

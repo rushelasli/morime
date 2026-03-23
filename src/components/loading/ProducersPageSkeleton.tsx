@@ -47,17 +47,19 @@ export default function ProducersPageSkeleton({ showSearch = true, viewPref = "l
       )}
 
       <div className="flex justify-end mb-4">
-         <Skeleton className="h-9 w-20 rounded-md" />
+        <Skeleton className="h-9 w-20 rounded-md" />
       </div>
 
-      <div className={
-        viewPref === "grid"
-          ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
-          : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-      }>
-        {[...Array(24)].map((_, i) => (
+      <div
+        className={
+          viewPref === "grid"
+            ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+            : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        }
+      >
+        {[...Array(24)].map((_, i) =>
           viewPref === "grid" ? <ProducerGridCardSkeleton key={i} /> : <ProducerListCardSkeleton key={i} />
-        ))}
+        )}
       </div>
 
       <Separator className="my-8" />

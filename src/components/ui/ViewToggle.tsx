@@ -13,8 +13,8 @@ export function ViewToggle({ view, onToggle }: ViewToggleProps) {
       <button
         onClick={() => onToggle("grid")}
         className={`p-1.5 rounded-md transition-colors ${
-          view === "grid" 
-            ? "bg-background text-foreground shadow-sm" 
+          view === "grid"
+            ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground hover:bg-muted"
         }`}
         aria-label="Grid view"
@@ -25,8 +25,8 @@ export function ViewToggle({ view, onToggle }: ViewToggleProps) {
       <button
         onClick={() => onToggle("list")}
         className={`p-1.5 rounded-md transition-colors ${
-          view === "list" 
-            ? "bg-background text-foreground shadow-sm" 
+          view === "list"
+            ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground hover:bg-muted"
         }`}
         aria-label="List view"

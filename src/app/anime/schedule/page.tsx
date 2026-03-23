@@ -69,7 +69,8 @@ export default async function Page({ searchParams }: SchedulePageProps) {
 
       <DayFilterTabs dayFilter={dayFilter} />
 
-      <AnimeGrid initialView={viewPref ?? "grid"}
+      <AnimeGrid
+        initialView={viewPref ?? "grid"}
         animeData={animeData}
         currentPage={currentPage}
         basePath="/anime/schedule"

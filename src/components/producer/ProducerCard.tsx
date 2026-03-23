@@ -22,17 +22,13 @@ export function ProducerCard({ producers, view = "grid" }: ProducerCardProps) {
     <Link
       href={`/producer/${producers.mal_id}/${toSnakeCase(producerName)}`}
       className={`group block transition-all duration-300 ${
-        view === "list"
-          ? "p-4 border border-border rounded-lg hover:border-primary hover:shadow-md"
-          : "hover:-translate-y-1"
+        view === "list" ? "p-4 border border-border rounded-lg hover:border-primary hover:shadow-md" : "hover:-translate-y-1"
       }`}
     >
       <div className={view === "list" ? "flex items-start space-x-4" : "w-full h-auto flex flex-col"}>
         <div
           className={`shrink-0 overflow-hidden bg-muted relative ${
-            view === "list"
-              ? "w-16 h-16 rounded-lg"
-              : "w-full aspect-square rounded-lg shadow-lg group-hover:shadow-xl"
+            view === "list" ? "w-16 h-16 rounded-lg" : "w-full aspect-square rounded-lg shadow-lg group-hover:shadow-xl"
           }`}
         >
           {imageUrl && !imageError ? (
@@ -40,9 +36,7 @@ export function ProducerCard({ producers, view = "grid" }: ProducerCardProps) {
               src={getImageWithFallback(imageUrl)}
               alt={producerName}
               fill
-              className={`object-cover ${
-                view === "grid" ? "transition-all duration-500 group-hover:scale-110" : ""
-              }`}
+              className={`object-cover ${view === "grid" ? "transition-all duration-500 group-hover:scale-110" : ""}`}
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               onError={() => setImageError(true)}
             />
@@ -65,7 +59,10 @@ export function ProducerCard({ producers, view = "grid" }: ProducerCardProps) {
             {producers.favorites > 0 && (
               <div className="flex items-center text-xs text-muted-foreground">
                 <Heart className="w-3 h-3 mr-1" />
-                <span>{producers.favorites.toLocaleString()}{view === "list" ? " favorites" : ""}</span>
+                <span>
+                  {producers.favorites.toLocaleString()}
+                  {view === "list" ? " favorites" : ""}
+                </span>
               </div>
             )}
 

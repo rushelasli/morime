@@ -70,7 +70,8 @@ export default async function ProducerPageContent({ searchParams }: ProducerPage
         autoFocus={true}
       />
 
-      <ProducersGrid initialView={viewPref ?? "list"}
+      <ProducersGrid
+        initialView={viewPref ?? "list"}
         producersData={producerListData}
         currentPage={currentPage}
         basePath="/producer"

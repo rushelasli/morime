@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Browse and discover manga. Search, filter by type and status, and explore thousands of manga titles.",
 };
 
-function MangaPageSkeleton({ searchParams, viewPref }: { searchParams: { q?: string }, viewPref: "grid" | "list" | null }) {
+function MangaPageSkeleton({ searchParams, viewPref }: { searchParams: { q?: string }; viewPref: "grid" | "list" | null }) {
   const hasSearchQuery = searchParams?.q && searchParams.q.trim() !== "";
   return hasSearchQuery ? <MangaSearchSkeleton viewPref={viewPref} /> : <MangaBrowseSkeleton />;
 }

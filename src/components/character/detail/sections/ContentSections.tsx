@@ -36,9 +36,7 @@ interface CharacterContentSectionsProps {
   contentData: ContentSectionsData;
 }
 
-export function CharacterContentSections({
-  contentData,
-}: CharacterContentSectionsProps) {
+export function CharacterContentSections({ contentData }: CharacterContentSectionsProps) {
   const { animeData, mangaData, voicesData, about } = contentData;
 
   const [visibleAnime, setVisibleAnime] = useState(16);
@@ -57,9 +55,7 @@ export function CharacterContentSections({
     <div className="space-y-6 sm:space-y-8">
       {about && (
         <SectionCard title="Biography">
-          <p className="text-sm sm:text-base text-muted-foreground/90 leading-relaxed whitespace-pre-wrap">
-            {about}
-          </p>
+          <p className="text-sm sm:text-base text-muted-foreground/90 leading-relaxed whitespace-pre-wrap">{about}</p>
         </SectionCard>
       )}
 
@@ -84,10 +80,20 @@ export function CharacterContentSections({
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {displayAnime.map((animeItem: CharacterAnimeRole, i: number) => (
-                    <div key={`anime-${animeItem?.anime?.mal_id}-${i}`} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group">
-                      <Link href={`/anime/${animeItem?.anime?.mal_id}/${toSnakeCase(animeItem?.anime?.title || "unknown")}`} className="shrink-0 overflow-hidden rounded-md">
+                    <div
+                      key={`anime-${animeItem?.anime?.mal_id}-${i}`}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group"
+                    >
+                      <Link
+                        href={`/anime/${animeItem?.anime?.mal_id}/${toSnakeCase(animeItem?.anime?.title || "unknown")}`}
+                        className="shrink-0 overflow-hidden rounded-md"
+                      >
                         <Image
-                          src={animeItem?.anime?.images?.webp?.image_url || animeItem?.anime?.images?.jpg?.image_url || "/placeholder-anime.png"}
+                          src={
+                            animeItem?.anime?.images?.webp?.image_url ||
+                            animeItem?.anime?.images?.jpg?.image_url ||
+                            "/placeholder-anime.png"
+                          }
                           alt={animeItem?.anime?.title || "Anime"}
                           width={48}
                           height={64}
@@ -97,7 +103,9 @@ export function CharacterContentSections({
                         />
                       </Link>
                       <div className="flex-1 min-w-0 space-y-0.5">
-                        <Link href={`/anime/${animeItem?.anime?.mal_id}/${toSnakeCase(animeItem?.anime?.title || "unknown")}`}>
+                        <Link
+                          href={`/anime/${animeItem?.anime?.mal_id}/${toSnakeCase(animeItem?.anime?.title || "unknown")}`}
+                        >
                           <h4 className="font-semibold text-sm text-foreground line-clamp-2 hover:text-primary transition-colors">
                             {animeItem?.anime?.title || "Unknown Anime"}
                           </h4>
@@ -124,10 +132,20 @@ export function CharacterContentSections({
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {displayManga.map((mangaItem: CharacterMangaRole, i: number) => (
-                    <div key={`manga-${mangaItem?.manga?.mal_id}-${i}`} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group">
-                      <Link href={`/manga/${mangaItem?.manga?.mal_id}/${toSnakeCase(mangaItem?.manga?.title || "unknown")}`} className="shrink-0 overflow-hidden rounded-md">
+                    <div
+                      key={`manga-${mangaItem?.manga?.mal_id}-${i}`}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group"
+                    >
+                      <Link
+                        href={`/manga/${mangaItem?.manga?.mal_id}/${toSnakeCase(mangaItem?.manga?.title || "unknown")}`}
+                        className="shrink-0 overflow-hidden rounded-md"
+                      >
                         <Image
-                          src={mangaItem?.manga?.images?.webp?.image_url || mangaItem?.manga?.images?.jpg?.image_url || "/placeholder-manga.png"}
+                          src={
+                            mangaItem?.manga?.images?.webp?.image_url ||
+                            mangaItem?.manga?.images?.jpg?.image_url ||
+                            "/placeholder-manga.png"
+                          }
                           alt={mangaItem?.manga?.title || "Manga"}
                           width={48}
                           height={64}
@@ -137,7 +155,9 @@ export function CharacterContentSections({
                         />
                       </Link>
                       <div className="flex-1 min-w-0 space-y-0.5">
-                        <Link href={`/manga/${mangaItem?.manga?.mal_id}/${toSnakeCase(mangaItem?.manga?.title || "unknown")}`}>
+                        <Link
+                          href={`/manga/${mangaItem?.manga?.mal_id}/${toSnakeCase(mangaItem?.manga?.title || "unknown")}`}
+                        >
                           <h4 className="font-semibold text-sm text-foreground line-clamp-2 hover:text-primary transition-colors">
                             {mangaItem?.manga?.title || "Unknown Manga"}
                           </h4>
@@ -168,7 +188,10 @@ export function CharacterContentSections({
                       key={`voice-${voice?.person?.mal_id}-${i}`}
                       className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-md group"
                     >
-                      <Link href={`/people/${voice?.person?.mal_id}/${toSnakeCase(voice?.person?.name || "unknown")}`} className="shrink-0 overflow-hidden rounded-md">
+                      <Link
+                        href={`/people/${voice?.person?.mal_id}/${toSnakeCase(voice?.person?.name || "unknown")}`}
+                        className="shrink-0 overflow-hidden rounded-md"
+                      >
                         <Image
                           src={voice?.person?.images?.jpg?.image_url || "/placeholder-character.png"}
                           alt={voice?.person?.name || "Person"}

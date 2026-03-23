@@ -19,9 +19,12 @@ interface MangaSearchResultsProps {
   initialView?: "grid" | "list";
 }
 
-
-
-export function MangaSearchResults({ mangaListData, currentPage, searchQuery, initialView = "grid" }: MangaSearchResultsProps) {
+export function MangaSearchResults({
+  mangaListData,
+  currentPage,
+  searchQuery,
+  initialView = "grid",
+}: MangaSearchResultsProps) {
   return (
     <MangaGrid
       mangaData={mangaListData}

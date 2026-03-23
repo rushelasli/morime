@@ -24,10 +24,10 @@ export async function getProducers(
     if (options.q) params.q = options.q;
     if (options.letter) params.letter = options.letter;
 
-    const response = await retryWithBackoff(
-      () => producersClient.getProducersSearch(params),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => producersClient.getProducersSearch(params), {
+      maxRetries: 2,
+      delayMs: 500,
+    });
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -38,7 +38,7 @@ export async function getProducers(
       pagination: pagination,
     };
   } catch (error: unknown) {
-    console.error('Error fetching producers after retries:', error);
+    console.error("Error fetching producers after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -55,10 +55,7 @@ export async function getProducerById(id: number) {
       throw new Error("Producer ID is required");
     }
 
-    const response = await retryWithBackoff(
-      () => producersClient.getProducerFullById(id),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => producersClient.getProducerFullById(id), { maxRetries: 2, delayMs: 500 });
 
     if (response.data) {
       const producer = response.data;
@@ -81,10 +78,10 @@ export async function getProducerById(id: number) {
     console.error(`Error fetching producer details for ID ${id}:`, error);
 
     try {
-      const basicResponse = await retryWithBackoff(
-        () => producersClient.getProducerById(id),
-        { maxRetries: 2, delayMs: 500 }
-      );
+      const basicResponse = await retryWithBackoff(() => producersClient.getProducerById(id), {
+        maxRetries: 2,
+        delayMs: 500,
+      });
 
       if (basicResponse.data) {
         const producer = basicResponse.data;
@@ -107,10 +104,11 @@ export async function getProducerById(id: number) {
 
     try {
       const animeResponse = await retryWithBackoff(
-        () => animeClient.searchAnime({
-          producers: id.toString(),
-          limit: 1,
-        }),
+        () =>
+          animeClient.searchAnime({
+            producers: id.toString(),
+            limit: 1,
+          }),
         { maxRetries: 2, delayMs: 500 }
       );
 
@@ -155,12 +153,13 @@ export async function searchProducers(
 
   try {
     const response = await retryWithBackoff(
-      async () => await getProducers(page, {
-      q: query.trim(),
-      limit: options.limit || 24,
-      order_by: options.order_by,
-      sort: options.sort,
-      }),
+      async () =>
+        await getProducers(page, {
+          q: query.trim(),
+          limit: options.limit || 24,
+          order_by: options.order_by,
+          sort: options.sort,
+        }),
       { maxRetries: 2, delayMs: 500 }
     );
     const data = response;
@@ -191,14 +190,15 @@ export async function getProducerAnime(
 ): Promise<AnimeResponse> {
   try {
     const response = await retryWithBackoff(
-      () => animeClient.searchAnime({
-        producers: producerId.toString(),
-        page,
-        limit,
-        order_by: 'favorites',
-        sort: 'desc',
-        sfw,
-      }),
+      () =>
+        animeClient.searchAnime({
+          producers: producerId.toString(),
+          page,
+          limit,
+          order_by: "favorites",
+          sort: "desc",
+          sfw,
+        }),
       { maxRetries: 2, delayMs: 500 }
     );
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;

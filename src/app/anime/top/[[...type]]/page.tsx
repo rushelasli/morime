@@ -41,7 +41,8 @@ export default async function TopAnimePage({ params, searchParams }: TopAnimePag
     : null;
 
   return (
-    <AnimeGrid initialView={viewPref ?? "grid"}
+    <AnimeGrid
+      initialView={viewPref ?? "grid"}
       animeData={topAnimeData}
       currentPage={currentPage}
       basePath={type === "all" ? "/anime/top" : `/anime/top/${type}`}

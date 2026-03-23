@@ -73,9 +73,7 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
                       {japaneseVA.person?.name || "Unknown Voice Actor"}
                     </Link>
                   ) : (
-                    <p className="text-xs text-muted-foreground truncate">
-                      Unknown Voice Actor
-                    </p>
+                    <p className="text-xs text-muted-foreground truncate">Unknown Voice Actor</p>
                   )}
                 </div>
               </div>

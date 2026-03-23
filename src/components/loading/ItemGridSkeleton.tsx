@@ -34,7 +34,7 @@ export function ItemGridSkeleton({ viewPref = "grid", count = 24, showPagination
   return (
     <div className="space-y-4">
       <div className="flex justify-end mb-4">
-         <Skeleton className="h-9 w-20 rounded-md" />
+        <Skeleton className="h-9 w-20 rounded-md" />
       </div>
 
       {viewPref === "grid" ? (

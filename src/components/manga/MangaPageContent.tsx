@@ -67,7 +67,12 @@ export default async function MangaPageContent({ searchParams }: PageContentProp
         <SearchInput defaultValue={searchQuery} basePath="/manga" placeholder="Search manga titles..." autoFocus={true} />
 
         {searchQuery ? (
-          <MangaSearchResults mangaListData={mangaListData} currentPage={currentPage} searchQuery={searchQuery} initialView={viewPref ?? "grid"} />
+          <MangaSearchResults
+            mangaListData={mangaListData}
+            currentPage={currentPage}
+            searchQuery={searchQuery}
+            initialView={viewPref ?? "grid"}
+          />
         ) : (
           <GenreCategories genres={genresList} />
         )}

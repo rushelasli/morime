@@ -32,10 +32,7 @@ export async function getSchedules(
       params.unapproved = options.unapproved;
     }
 
-    const response = await retryWithBackoff(
-      () => schedulesClient.getSchedules(params),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => schedulesClient.getSchedules(params), { maxRetries: 2, delayMs: 500 });
 
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 

@@ -49,7 +49,11 @@ export default async function PeoplePageContent({ searchParams }: PageContentPro
     <PageContainer as="section">
       <PageHeader
         title={searchQuery ? `Search: ${searchQuery}` : "People & Voice Actors"}
-        description={searchQuery ? `Search results for "${searchQuery}"` : "Discover voice actors, directors, and other anime industry professionals"}
+        description={
+          searchQuery
+            ? `Search results for "${searchQuery}"`
+            : "Discover voice actors, directors, and other anime industry professionals"
+        }
       />
 
       <SearchInput
@@ -59,7 +63,8 @@ export default async function PeoplePageContent({ searchParams }: PageContentPro
         autoFocus={true}
       />
 
-      <PeopleGrid initialView={viewPref ?? "list"}
+      <PeopleGrid
+        initialView={viewPref ?? "list"}
         peopleData={peopleListData}
         currentPage={currentPage}
         basePath="/people"

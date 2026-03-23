@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Browse and discover anime. Search, filter by type and status, and explore thousands of anime titles.",
 };
 
-function AnimePageSkeleton({ searchParams, viewPref }: { searchParams: { q?: string }, viewPref: "grid" | "list" | null }) {
+function AnimePageSkeleton({ searchParams, viewPref }: { searchParams: { q?: string }; viewPref: "grid" | "list" | null }) {
   const hasSearchQuery = searchParams?.q && searchParams.q.trim() !== "";
   return hasSearchQuery ? <AnimeSearchSkeleton viewPref={viewPref} /> : <AnimeBrowseSkeleton />;
 }

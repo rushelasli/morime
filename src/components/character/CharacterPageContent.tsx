@@ -38,14 +38,10 @@ export default async function CharacterPageContent({ searchParams }: ProducerPag
         description={searchQuery ? `Search results for "${searchQuery}"` : "Discover anime and manga characters"}
       />
 
-      <SearchInput
-        defaultValue={searchQuery}
-        basePath="/character"
-        placeholder="Search characters..."
-        autoFocus={true}
-      />
+      <SearchInput defaultValue={searchQuery} basePath="/character" placeholder="Search characters..." autoFocus={true} />
 
-      <CharacterGrid initialView={viewPref ?? "list"}
+      <CharacterGrid
+        initialView={viewPref ?? "list"}
         charactersData={charactersData}
         currentPage={currentPage}
         basePath="/character"

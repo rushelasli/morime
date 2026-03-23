@@ -50,7 +50,8 @@ export default async function GenreMangaPage({ params, searchParams }: PageProps
   return (
     <PageContainer>
       <PageHeader title={`${genreName} Manga`} description={`Browse manga in the ${genreName} genre`} />
-      <MangaGrid initialView={viewPref ?? "grid"}
+      <MangaGrid
+        initialView={viewPref ?? "grid"}
         mangaData={mangaListData}
         currentPage={currentPage}
         basePath={`/manga/genre/${malId}/${title}`}

@@ -60,7 +60,8 @@ export default async function SeasonalAnimePage({ params, searchParams }: Season
     <>
       <TypeFilterTabs typeFilter={typeFilter} basePath={`/anime/season/${year}/${season}`} />
 
-      <AnimeGrid initialView={viewPref ?? "grid"}
+      <AnimeGrid
+        initialView={viewPref ?? "grid"}
         animeData={animeData}
         currentPage={currentPage}
         basePath={`/anime/season/${year}/${season}`}

@@ -9,7 +9,8 @@ const PeoplePageContent = dynamic(() => import("@/components/people/PeoplePageCo
 
 export const metadata: Metadata = {
   title: "People & Voice Actors",
-  description: "Browse anime voice actors, directors, composers and other industry professionals. Search and discover talented staff members.",
+  description:
+    "Browse anime voice actors, directors, composers and other industry professionals. Search and discover talented staff members.",
 };
 
 export default async function Page(props: SearchPageProps) {

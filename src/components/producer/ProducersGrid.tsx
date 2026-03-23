@@ -19,7 +19,13 @@ interface ProducersGridProps {
   initialView?: "grid" | "list";
 }
 
-export function ProducersGrid({ producersData, currentPage, basePath, queryParams, initialView = "list" }: ProducersGridProps) {
+export function ProducersGrid({
+  producersData,
+  currentPage,
+  basePath,
+  queryParams,
+  initialView = "list",
+}: ProducersGridProps) {
   const { view, toggleView } = useViewToggle("producer-display", initialView);
 
   if (!producersData || !producersData.data || producersData.data.length === 0) {
@@ -32,11 +38,13 @@ export function ProducersGrid({ producersData, currentPage, basePath, queryParam
         <ViewToggle view={view} onToggle={toggleView} />
       </div>
 
-      <div className={
-        view === "grid" 
-          ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" 
-          : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-      }>
+      <div
+        className={
+          view === "grid"
+            ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+            : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        }
+      >
         {producersData.data.map(producer => (
           <ProducerCard key={producer.mal_id} producers={producer} view={view} />
         ))}

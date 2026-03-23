@@ -51,8 +51,8 @@ export default async function Home() {
       episodes: anime.episodes,
       year: anime.year,
       type: anime.type,
-            members: anime.members,
-            favorites: anime.favorites,
+      members: anime.members,
+      favorites: anime.favorites,
     })) || [];
 
   const currentAnimeData =
@@ -64,8 +64,8 @@ export default async function Home() {
       episodes: anime.episodes,
       year: anime.year,
       type: anime.type,
-            members: anime.members,
-            favorites: anime.favorites,
+      members: anime.members,
+      favorites: anime.favorites,
     })) || [];
 
   return (

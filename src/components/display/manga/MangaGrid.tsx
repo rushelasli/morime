@@ -41,12 +41,7 @@ export function MangaGrid({ mangaData, currentPage, basePath, queryParams, initi
         </div>
       ) : (
         <div className="mt-0">
-          <MangaList 
-            mangaData={mangaData} 
-            currentPage={currentPage} 
-            basePath={basePath} 
-            queryParams={queryParams} 
-          />
+          <MangaList mangaData={mangaData} currentPage={currentPage} basePath={basePath} queryParams={queryParams} />
         </div>
       )}
 

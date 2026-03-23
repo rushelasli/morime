@@ -1,27 +1,15 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { House, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { Separator } from "@/components/ui/Separator";
 import { SfwToggle } from "@/components/toggles/SfwToggle";
 import { ModeToggle } from "@/components/toggles/ModeToggle";
 import { Link } from "@/components/ui/Link";
+import { GlobalSearch } from "@/components/forms/GlobalSearch";
 
 export function Header() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = e => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/anime?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery("");
-      setIsSearchVisible(false);
-    }
-  };
 
   const navItems = [
     { label: "ANIME LIST", link: "anime" },
@@ -62,16 +50,9 @@ export function Header() {
         </div>
 
         <div className="hidden md:flex min-w-lg flex-row gap-3 items-center">
-          <form onSubmit={handleSearch} className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              type="search"
-              placeholder="Search anime..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
-          </form>
+          <div className="relative flex-1 max-w-md w-full">
+            <GlobalSearch />
+          </div>
 
           <div className="flex items-center gap-2">
             <ModeToggle />
@@ -81,18 +62,8 @@ export function Header() {
       </div>
 
       {isSearchVisible && (
-        <div className="md:hidden px-4 pb-4">
-          <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              type="search"
-              placeholder="Search anime..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              autoFocus
-            />
-          </form>
+        <div className="md:hidden px-4 pb-4 animate-in slide-in-from-top-2">
+          <GlobalSearch autoFocus={true} onSearch={() => setIsSearchVisible(false)} />
         </div>
       )}
 

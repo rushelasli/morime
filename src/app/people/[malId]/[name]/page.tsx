@@ -36,9 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<MalIdParams
   }
 }
 
-export default async function PersonDetailPage({
-  params,
-}: DetailPageProps) {
+export default async function PersonDetailPage({ params }: DetailPageProps) {
   const { malId } = await params;
 
   if (isNaN(Number(malId))) {

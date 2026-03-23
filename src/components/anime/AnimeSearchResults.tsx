@@ -19,9 +19,12 @@ interface AnimeSearchResultsProps {
   initialView?: "grid" | "list";
 }
 
-
-
-export function AnimeSearchResults({ animeListData, currentPage, searchQuery, initialView = "grid" }: AnimeSearchResultsProps) {
+export function AnimeSearchResults({
+  animeListData,
+  currentPage,
+  searchQuery,
+  initialView = "grid",
+}: AnimeSearchResultsProps) {
   return (
     <AnimeGrid
       animeData={animeListData}

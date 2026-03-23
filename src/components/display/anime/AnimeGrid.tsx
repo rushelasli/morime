@@ -41,12 +41,7 @@ export function AnimeGrid({ animeData, currentPage, basePath, queryParams, initi
         </div>
       ) : (
         <div className="mt-0">
-          <AnimeList 
-            animeData={animeData} 
-            currentPage={currentPage} 
-            basePath={basePath} 
-            queryParams={queryParams} 
-          />
+          <AnimeList animeData={animeData} currentPage={currentPage} basePath={basePath} queryParams={queryParams} />
         </div>
       )}
 

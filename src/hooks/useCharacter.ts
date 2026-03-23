@@ -25,10 +25,10 @@ export async function getCharacters(
     if (options.q) params.q = options.q;
     if (options.letter) params.letter = options.letter;
 
-    const response = await retryWithBackoff(
-      () => charactersClient.getCharacterSearch(params),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => charactersClient.getCharacterSearch(params), {
+      maxRetries: 2,
+      delayMs: 500,
+    });
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -39,7 +39,7 @@ export async function getCharacters(
       pagination: pagination,
     };
   } catch (error: unknown) {
-    console.error('Error fetching characters after retries:', error);
+    console.error("Error fetching characters after retries:", error);
     return {
       data: [],
       totalPages: 0,
@@ -56,10 +56,10 @@ export async function getCharacterById(id: number) {
       throw new Error("Character ID is required");
     }
 
-    const response = await retryWithBackoff(
-      () => charactersClient.getCharacterFullById(id),
-      { maxRetries: 2, delayMs: 500 }
-    );
+    const response = await retryWithBackoff(() => charactersClient.getCharacterFullById(id), {
+      maxRetries: 2,
+      delayMs: 500,
+    });
 
     if (response.data) {
       const character = response.data as CharacterFull;
@@ -83,10 +83,10 @@ export async function getCharacterById(id: number) {
     console.error(`Error fetching character details for ID ${id}:`, error);
 
     try {
-      const basicResponse = await retryWithBackoff(
-        () => charactersClient.getCharacterById(id),
-        { maxRetries: 2, delayMs: 500 }
-      );
+      const basicResponse = await retryWithBackoff(() => charactersClient.getCharacterById(id), {
+        maxRetries: 2,
+        delayMs: 500,
+      });
 
       if (basicResponse.data) {
         const character = basicResponse.data as CharacterData;
@@ -127,12 +127,13 @@ export async function searchCharacters(
 
   try {
     const response = await retryWithBackoff(
-      async () => await getCharacters(page, {
-        q: query.trim(),
-        limit: options.limit || 24,
-        order_by: options.order_by,
-        sort: options.sort,
-      }),
+      async () =>
+        await getCharacters(page, {
+          q: query.trim(),
+          limit: options.limit || 24,
+          order_by: options.order_by,
+          sort: options.sort,
+        }),
       { maxRetries: 2, delayMs: 500 }
     );
 
