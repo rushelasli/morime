@@ -31,9 +31,8 @@ export async function getManga(
     if (options.order_by) params.order_by = options.order_by;
     if (options.sort) params.sort = options.sort;
 
-    const response: JikanResponseWithPagination<JikanManga[]> = await retryWithBackoff(
-      () => mangaClient.searchManga(params as Partial<MangaSearchParams>),
-      { maxRetries: 2, delayMs: 500 }
+    const response: JikanResponseWithPagination<JikanManga[]> = await retryWithBackoff(() =>
+      mangaClient.searchManga(params as Partial<MangaSearchParams>)
     );
 
     return {
@@ -73,7 +72,7 @@ export async function getTopManga(
     if (options.type) params.type = options.type;
     if (options.filter) params.filter = options.filter;
 
-    const response = await retryWithBackoff(() => topClient.getTopManga(params), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => topClient.getTopManga(params));
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -96,7 +95,7 @@ export async function getTopManga(
 
 export async function getDetailManga(malId: number) {
   try {
-    const response = await retryWithBackoff(() => mangaClient.getMangaFullById(malId), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => mangaClient.getMangaFullById(malId));
     return response.data;
   } catch (error) {
     console.error(`Error fetching manga details for ID ${malId} after retries:`, error);
@@ -106,7 +105,7 @@ export async function getDetailManga(malId: number) {
 
 export async function getMangaCharacters(malId: number) {
   try {
-    const response = await retryWithBackoff(() => mangaClient.getMangaCharacters(malId), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => mangaClient.getMangaCharacters(malId));
     return adaptAnimeCharacters(response.data || []);
   } catch (error) {
     console.error(`Error fetching characters for manga ID ${malId} after retries:`, error);
@@ -116,7 +115,7 @@ export async function getMangaCharacters(malId: number) {
 
 export async function getMangaGenresList() {
   try {
-    const response = await retryWithBackoff(() => genresClient.getMangaGenres(), { maxRetries: 3, delayMs: 500 });
+    const response = await retryWithBackoff(() => genresClient.getMangaGenres());
     const data = response.data || [];
     if (data.length === 0) {
       console.warn("[getMangaGenresList] Received empty genres list from API");
@@ -141,17 +140,15 @@ export async function searchManga(
   }
 
   try {
-    const response: JikanResponseWithPagination<JikanManga[]> = await retryWithBackoff(
-      () =>
-        mangaClient.searchManga({
-          q: query.trim(),
-          page,
-          limit,
-          sfw: sfw ?? true,
-          ...(order_by ? { order_by } : {}),
-          ...(sort ? { sort } : {}),
-        } as Partial<MangaSearchParams>),
-      { maxRetries: 2, delayMs: 500 }
+    const response: JikanResponseWithPagination<JikanManga[]> = await retryWithBackoff(() =>
+      mangaClient.searchManga({
+        q: query.trim(),
+        page,
+        limit,
+        sfw: sfw ?? true,
+        ...(order_by ? { order_by } : {}),
+        ...(sort ? { sort } : {}),
+      } as Partial<MangaSearchParams>)
     );
 
     return {

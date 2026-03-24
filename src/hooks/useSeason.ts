@@ -42,23 +42,20 @@ export async function getSeason(
     let response;
 
     if (options.type === "seasons/now") {
-      response = await retryWithBackoff(() => seasonsClient.getSeasonNow(params), { maxRetries: 2, delayMs: 500 });
+      response = await retryWithBackoff(() => seasonsClient.getSeasonNow(params));
     } else if (options.type === "seasons/upcoming") {
-      response = await retryWithBackoff(() => seasonsClient.getSeasonUpcoming(params), { maxRetries: 2, delayMs: 500 });
+      response = await retryWithBackoff(() => seasonsClient.getSeasonUpcoming(params));
     } else if (options.type?.startsWith("seasons/")) {
       const parts = options.type.split("/");
       if (parts.length === 3) {
         const year = parseInt(parts[1]);
         const season = parts[2] as "winter" | "spring" | "summer" | "fall";
-        response = await retryWithBackoff(() => seasonsClient.getSeason(year, season, params), {
-          maxRetries: 2,
-          delayMs: 500,
-        });
+        response = await retryWithBackoff(() => seasonsClient.getSeason(year, season, params));
       } else {
-        response = await retryWithBackoff(() => seasonsClient.getSeasonNow(params), { maxRetries: 2, delayMs: 500 });
+        response = await retryWithBackoff(() => seasonsClient.getSeasonNow(params));
       }
     } else {
-      response = await retryWithBackoff(() => seasonsClient.getSeasonNow(params), { maxRetries: 2, delayMs: 500 });
+      response = await retryWithBackoff(() => seasonsClient.getSeasonNow(params));
     }
 
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
@@ -84,7 +81,7 @@ export async function getSeason(
 
 export async function getSeasonList(): Promise<SeasonListItem[]> {
   try {
-    const response = await retryWithBackoff(() => seasonsClient.getSeasonsList(), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => seasonsClient.getSeasonsList());
     return response.data || [];
   } catch (error: unknown) {
     console.error("Error fetching season list after retries:", error);

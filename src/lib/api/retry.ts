@@ -6,8 +6,8 @@ export interface RetryOptions {
 }
 
 const DEFAULT_OPTIONS: Required<RetryOptions> = {
-  maxRetries: 3,
-  delayMs: 1000,
+  maxRetries: 2,
+  delayMs: 500,
   backoffMultiplier: 2,
   timeout: 30000,
 };

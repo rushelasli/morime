@@ -25,10 +25,7 @@ export async function getCharacters(
     if (options.q) params.q = options.q;
     if (options.letter) params.letter = options.letter;
 
-    const response = await retryWithBackoff(() => charactersClient.getCharacterSearch(params), {
-      maxRetries: 2,
-      delayMs: 500,
-    });
+    const response = await retryWithBackoff(() => charactersClient.getCharacterSearch(params));
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -56,10 +53,7 @@ export async function getCharacterById(id: number) {
       throw new Error("Character ID is required");
     }
 
-    const response = await retryWithBackoff(() => charactersClient.getCharacterFullById(id), {
-      maxRetries: 2,
-      delayMs: 500,
-    });
+    const response = await retryWithBackoff(() => charactersClient.getCharacterFullById(id));
 
     if (response.data) {
       const character = response.data as CharacterFull;
@@ -83,10 +77,7 @@ export async function getCharacterById(id: number) {
     console.error(`Error fetching character details for ID ${id}:`, error);
 
     try {
-      const basicResponse = await retryWithBackoff(() => charactersClient.getCharacterById(id), {
-        maxRetries: 2,
-        delayMs: 500,
-      });
+      const basicResponse = await retryWithBackoff(() => charactersClient.getCharacterById(id));
 
       if (basicResponse.data) {
         const character = basicResponse.data as CharacterData;
@@ -133,8 +124,7 @@ export async function searchCharacters(
           limit: options.limit || 24,
           order_by: options.order_by,
           sort: options.sort,
-        }),
-      { maxRetries: 2, delayMs: 500 }
+        })
     );
 
     return {

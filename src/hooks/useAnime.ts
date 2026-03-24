@@ -33,9 +33,8 @@ export async function getAnime(
     if (options.order_by) params.order_by = options.order_by;
     if (options.sort) params.sort = options.sort;
 
-    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(
-      () => animeClient.searchAnime(params as Partial<AnimeSearchParams>),
-      { maxRetries: 2, delayMs: 500 }
+    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(() =>
+      animeClient.searchAnime(params as Partial<AnimeSearchParams>)
     );
 
     return {
@@ -77,7 +76,7 @@ export async function getTopAnime(
     if (options.filter) params.filter = options.filter;
     if (options.rating) params.rating = options.rating;
 
-    const response = await retryWithBackoff(() => topClient.getTopAnime(params), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => topClient.getTopAnime(params));
     const pagination = "pagination" in response ? (response.pagination as Pagination | undefined) : undefined;
 
     return {
@@ -100,7 +99,7 @@ export async function getTopAnime(
 
 export async function getDetailAnime(malId: number) {
   try {
-    const response = await retryWithBackoff(() => animeClient.getAnimeFullById(malId), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => animeClient.getAnimeFullById(malId));
     return response.data;
   } catch (error) {
     console.error(`Error fetching anime details for ID ${malId} after retries:`, error);
@@ -110,7 +109,7 @@ export async function getDetailAnime(malId: number) {
 
 export async function getAnimeCharacters(malId: number) {
   try {
-    const response = await retryWithBackoff(() => animeClient.getAnimeCharacters(malId), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => animeClient.getAnimeCharacters(malId));
     return adaptAnimeCharacters(response.data || []);
   } catch (error) {
     console.error(`Error fetching characters for anime ID ${malId} after retries:`, error);
@@ -120,7 +119,7 @@ export async function getAnimeCharacters(malId: number) {
 
 export async function getEpisodeAnime(malId: number) {
   try {
-    const response = await retryWithBackoff(() => animeClient.getAnimeEpisodes(malId, 1), { maxRetries: 2, delayMs: 500 });
+    const response = await retryWithBackoff(() => animeClient.getAnimeEpisodes(malId, 1));
     return adaptAnimeEpisodes(response.data || []);
   } catch (error) {
     console.error(`Error fetching episodes for ID ${malId} after retries:`, error);
@@ -130,7 +129,7 @@ export async function getEpisodeAnime(malId: number) {
 
 export async function getAnimeGenresList() {
   try {
-    const response = await retryWithBackoff(() => genresClient.getAnimeGenres(), { maxRetries: 3, delayMs: 500 });
+    const response = await retryWithBackoff(() => genresClient.getAnimeGenres());
     const data = response.data || [];
     if (data.length === 0) {
       console.warn("[getAnimeGenresList] Received empty genres list from API");
@@ -155,17 +154,15 @@ export async function searchAnime(
   }
 
   try {
-    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(
-      () =>
-        animeClient.searchAnime({
-          q: query.trim(),
-          page,
-          limit,
-          sfw: sfw ?? true,
-          ...(order_by ? { order_by } : {}),
-          ...(sort ? { sort } : {}),
-        } as Partial<AnimeSearchParams>),
-      { maxRetries: 2, delayMs: 500 }
+    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(() =>
+      animeClient.searchAnime({
+        q: query.trim(),
+        page,
+        limit,
+        sfw: sfw ?? true,
+        ...(order_by ? { order_by } : {}),
+        ...(sort ? { sort } : {}),
+      } as Partial<AnimeSearchParams>)
     );
 
     return {
@@ -205,9 +202,8 @@ export async function getRecentlyCompletedAnime(
       params.type = options.type;
     }
 
-    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(
-      () => animeClient.searchAnime(params as Partial<AnimeSearchParams>),
-      { maxRetries: 2, delayMs: 500 }
+    const response: JikanResponseWithPagination<JikanAnime[]> = await retryWithBackoff(() =>
+      animeClient.searchAnime(params as Partial<AnimeSearchParams>)
     );
 
     return {
